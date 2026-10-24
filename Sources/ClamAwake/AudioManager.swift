@@ -1,5 +1,6 @@
 import Foundation
 import CoreAudio
+import AppKit
 
 /// Handles comprehensive audio muting, external DAC/USB redirection,
 /// and media playback pausing when the lid closes.
@@ -24,7 +25,7 @@ final class AudioManager: @unchecked Sendable {
     
     /// Called when the lid closes with audio control enabled.
     func handleLidClosed() {
-        // 1. Pause active media players (Spotify, Music, QuickTime, VLC, browser tabs)
+        // 1. Pause active media players safely without triggering application picker dialogs
         pauseAllMedia()
         
         // 2. Handle audio routing for external interfaces (like Focusrite Scarlett Solo / USB / HDMI)
@@ -71,25 +72,20 @@ final class AudioManager: @unchecked Sendable {
     // MARK: - Media Controls
     
     private func pauseAllMedia() {
-        // Command 1 = kMRPause (MediaRemote system-wide pause for NowPlaying apps)
+        // Command 1 = kMRPause (MediaRemote system-wide pause for NowPlaying apps:
+        // YouTube, Chrome, Safari, Podcasts, VLC, IINA, etc.)
         _ = sendMediaRemoteCommand?(1, nil)
         
-        // Direct script pause for specific local media apps
-        let script = """
-        if application "Music" is running then
-            tell application "Music" to pause
-        end if
-        if application "Spotify" is running then
-            tell application "Spotify" to pause
-        end if
-        if application "QuickTime Player" is running then
-            tell application "QuickTime Player" to pause every document
-        end if
-        if application "VLC" is running then
-            tell application "VLC" to pause
-        end if
-        """
-        runAppleScript(script)
+        // Only target apps by bundle identifier if they are actually running,
+        // preventing macOS from opening "Choose Application" (e.g. "Where is VLC?") dialogs.
+        let runningApps = NSWorkspace.shared.runningApplications
+        
+        if runningApps.contains(where: { $0.bundleIdentifier == "com.spotify.client" }) {
+            runAppleScript("tell application id \"com.spotify.client\" to pause")
+        }
+        if runningApps.contains(where: { $0.bundleIdentifier == "com.apple.Music" }) {
+            runAppleScript("tell application id \"com.apple.Music\" to pause")
+        }
     }
     
     // MARK: - CoreAudio Device Routing
