@@ -33,17 +33,21 @@ Aplicación nativa, ligera y minimalista para macOS (Apple Silicon y macOS 14+) 
 
 ## Versiones
 
-- **`v1.1.0` (Actual)**:
-  - **Soporte para acceso remoto (Sills, Screens, VNC, RustDesk)**: Al cerrar la tapa, la pantalla física se atenúa a 0% de brillo (`DisplayServices`) en lugar de suspender WindowServer con `displaysleepnow`. Esto mantiene vivo el framebuffer gráfico y la GPU, permitiendo ver e interactuar con todas las ventanas desde el móvil sin pantallas negras.
-  - **Silenciamiento para interfaces de audio USB (Focusrite Scarlett Solo, DACs, HDMI)**: Como los dispositivos USB no tienen control de volumen por software en macOS, ClamAwake pausa NowPlaying con `MediaRemote`, y redirige el flujo de audio hacia los altavoces internos silenciados a 0. Al reabrir la tapa, restaura la Scarlett automáticamente.
+- **`v1.2.0` (Actual)**:
+  - **Diseño Liquid Glass (Centro de Control)**: Rediseño visual completo estilo pods del Centro de Control de macOS. Tarjetas de cristal translúcido con sutil borde de refracción, iconos circulares vibrantes y tipografía con jerarquía nativa.
+  - **Textos completos y legibles**: Textos más concisos, elegantes y sin ningún truncamiento ("..."), con ancho adaptativo de 330 px.
+  - **Eliminación del selector de aplicaciones**: Se corrigió el diálogo de macOS ("Where is VLC?") que aparecía al cerrar la tapa. La pausa de medios ahora consulta directamente los bundle IDs activos antes de emitir cualquier comando y utiliza `MediaRemote` a nivel de sistema.
+- **`v1.1.0`**: Soporte para acceso remoto (pantalla atenuada a 0.0 en lugar de suspensión para permitir conexiones desde Sills/VNC) y redirección de audio USB (Focusrite Scarlett Solo).
 - **`v1.0.0`**: Versión inicial.
 
-## Volver a la versión v1.0.0
+## Cambiar o regresar de versión
 
-Si en algún momento deseas regresar a la versión inicial:
+Puedes cambiar a cualquiera de las versiones con un solo comando:
 ```bash
 cd ~/.gemini/antigravity/scratch/ClamAwake
-./rollback_v1.sh
+./rollback_v1.sh v1.0.0    # Para volver a la versión 1 inicial
+./rollback_v1.sh v1.1.0    # Para volver a la versión 1.1
+./rollback_v1.sh v1.2.0    # Para volver a la versión actual
 ```
 
 ## Scripts de desarrollo
