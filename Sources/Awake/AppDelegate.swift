@@ -10,9 +10,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var cancellables = Set<AnyCancellable>()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Setup Popover
+        // Setup Compact Liquid Glass Popover
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 325, height: 260)
+        popover.contentSize = NSSize(width: 250, height: 185)
         popover.behavior = .transient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuView(viewModel: viewModel))

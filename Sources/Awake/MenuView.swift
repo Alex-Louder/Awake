@@ -4,16 +4,16 @@ struct MenuView: View {
     @ObservedObject var viewModel: AppViewModel
     
     var body: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 8) {
             // Header Bar
             headerSection
             
-            // Primary Control Cards (Liquid Glass Pods)
-            VStack(spacing: 10) {
+            // Primary Control Cards (Compact Liquid Glass Pods)
+            VStack(spacing: 7) {
                 // Pod 1: Mantener Activa (Clamshell Awake)
                 controlPod(
                     title: "Mantener activa",
-                    subtitle: "No suspender al cerrar. Hubs y procesos activos.",
+                    subtitle: "Tapa cerrada sin suspender",
                     systemImage: "bolt.shield.fill",
                     isOn: viewModel.isKeepAwakeEnabled,
                     isBusy: viewModel.isBusy
@@ -24,7 +24,7 @@ struct MenuView: View {
                 // Pod 2: Silenciar al Cerrar Tapa
                 controlPod(
                     title: "Silenciar al cerrar",
-                    subtitle: "Pausa música y silencia audio automáticamente.",
+                    subtitle: "Pausa medios y silencia audio",
                     systemImage: "speaker.slash.fill",
                     isOn: viewModel.isMuteOnLidCloseEnabled,
                     isBusy: false
@@ -33,8 +33,8 @@ struct MenuView: View {
                 }
             }
             
-            // Status Pod (Hardware & Sensor Diagnostics)
-            statusPod
+            // Status Bar (Compact Diagnostics Pill)
+            statusBar
             
             if let error = viewModel.errorMessage {
                 errorBanner(message: error)
@@ -43,46 +43,43 @@ struct MenuView: View {
             // Footer
             footerSection
         }
-        .padding(14)
-        .frame(width: 325)
-        .background(VisualEffectView(material: .popover, blendingMode: .behindWindow))
+        .padding(11)
+        .frame(width: 250)
+        .background(NativeGlassBackground())
     }
     
     // MARK: - Header
     
     private var headerSection: some View {
-        HStack(alignment: .center) {
-            HStack(spacing: 8) {
-                // MacBook with A! icon
-                MacBookAIconView(size: 20)
-                
-                Text("Awake!")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.primary)
-            }
+        HStack(spacing: 6) {
+            MacBookAIconView(size: 18)
+            
+            Text("Awake!")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundColor(.primary)
             
             Spacer()
             
-            // Status Pill
-            HStack(spacing: 5) {
+            HStack(spacing: 4) {
                 Circle()
                     .fill(viewModel.isKeepAwakeEnabled ? Color.green : Color.secondary.opacity(0.4))
-                    .frame(width: 6, height: 6)
+                    .frame(width: 5, height: 5)
                 
                 Text(viewModel.isKeepAwakeEnabled ? "ACTIVO" : "INACTIVO")
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
+                    .font(.system(size: 9, weight: .bold))
+                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .green : .secondary)
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2.5)
             .background(
                 Capsule()
-                    .fill(viewModel.isKeepAwakeEnabled ? Color.green.opacity(0.14) : Color.primary.opacity(0.06))
+                    .fill(viewModel.isKeepAwakeEnabled ? Color.green.opacity(0.12) : Color.primary.opacity(0.06))
             )
         }
+        .padding(.horizontal, 2)
     }
     
-    // MARK: - Liquid Glass Control Pod
+    // MARK: - Compact Liquid Glass Pod
     
     private func controlPod(
         title: String,
@@ -92,28 +89,28 @@ struct MenuView: View {
         isBusy: Bool,
         onToggle: @escaping () -> Void
     ) -> some View {
-        HStack(alignment: .center, spacing: 12) {
-            // Circular Icon Badge
+        HStack(spacing: 9) {
+            // Circular Glass Badge
             ZStack {
                 Circle()
                     .fill(isOn ? Color.accentColor : Color.primary.opacity(0.08))
-                    .frame(width: 34, height: 34)
+                    .frame(width: 26, height: 26)
                 
                 Image(systemName: systemImage)
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(isOn ? .white : .secondary)
             }
             
-            // Titles & Description (No truncation)
-            VStack(alignment: .leading, spacing: 3) {
+            // Titles (Concise, zero truncation)
+            VStack(alignment: .leading, spacing: 1) {
                 Text(title)
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.primary)
                 
                 Text(subtitle)
-                    .font(.system(size: 11, weight: .regular))
+                    .font(.system(size: 10, weight: .regular))
                     .foregroundColor(.secondary)
-                    .fixedSize(horizontal: false, vertical: true)
+                    .lineLimit(1)
             }
             
             Spacer(minLength: 4)
@@ -121,8 +118,8 @@ struct MenuView: View {
             // Toggle Switch or Spinner
             if isBusy {
                 ProgressView()
-                    .scaleEffect(0.65)
-                    .frame(width: 38, height: 22)
+                    .scaleEffect(0.6)
+                    .frame(width: 32, height: 20)
             } else {
                 Toggle("", isOn: Binding(
                     get: { isOn },
@@ -130,86 +127,82 @@ struct MenuView: View {
                 ))
                 .toggleStyle(SwitchToggleStyle(tint: .accentColor))
                 .labelsHidden()
+                .scaleEffect(0.75)
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 6)
         .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(Color(NSColor.controlBackgroundColor).opacity(0.45))
+            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                .fill(.ultraThinMaterial)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(Color.white.opacity(0.14), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                        .stroke(
+                            LinearGradient(
+                                colors: [Color.white.opacity(0.38), Color.white.opacity(0.08)],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 0.6
+                        )
                 )
         )
     }
     
-    // MARK: - Status Pod
+    // MARK: - Compact Diagnostics Status Bar
     
-    private var statusPod: some View {
-        VStack(spacing: 8) {
-            // Row 1: Lid Sensor
-            HStack {
-                HStack(spacing: 6) {
-                    Image(systemName: viewModel.isLidClosed ? "macbook.gen2" : "macbook")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                    
-                    Text("Sensor de tapa")
-                        .font(.system(size: 11.5, weight: .regular))
-                        .foregroundColor(.secondary)
-                }
+    private var statusBar: some View {
+        HStack {
+            // Lid Sensor
+            HStack(spacing: 4) {
+                Image(systemName: viewModel.isLidClosed ? "macbook.gen2" : "macbook")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
                 
-                Spacer()
+                Text("Tapa:")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
                 
-                HStack(spacing: 5) {
-                    Circle()
-                        .fill(viewModel.isLidClosed ? Color.orange : Color.green)
-                        .frame(width: 6, height: 6)
-                    
-                    Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
-                        .font(.system(size: 11.5, weight: .medium))
-                        .foregroundColor(.primary)
-                }
+                Circle()
+                    .fill(viewModel.isLidClosed ? Color.orange : Color.green)
+                    .frame(width: 5, height: 5)
+                
+                Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.primary)
             }
             
-            Divider()
-                .opacity(0.3)
+            Spacer()
             
-            // Row 2: Hub & Services
-            HStack {
-                HStack(spacing: 6) {
-                    Image(systemName: "cable.connector.horizontal")
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-                    
-                    Text("Hub USB & servicios")
-                        .font(.system(size: 11.5, weight: .regular))
-                        .foregroundColor(.secondary)
+            // USB & Services
+            HStack(spacing: 4) {
+                Image(systemName: "cable.connector.horizontal")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
+                
+                Text("USB:")
+                    .font(.system(size: 10))
+                    .foregroundColor(.secondary)
+                
+                if viewModel.isKeepAwakeEnabled {
+                    Image(systemName: "bolt.fill")
+                        .font(.system(size: 8))
+                        .foregroundColor(.green)
                 }
                 
-                Spacer()
-                
-                HStack(spacing: 4) {
-                    if viewModel.isKeepAwakeEnabled {
-                        Image(systemName: "bolt.fill")
-                            .font(.system(size: 9))
-                            .foregroundColor(.green)
-                    }
-                    Text(viewModel.isKeepAwakeEnabled ? "Siempre activos" : "Modo normal")
-                        .font(.system(size: 11.5, weight: .medium))
-                        .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
-                }
+                Text(viewModel.isKeepAwakeEnabled ? "Activo" : "Normal")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .padding(.horizontal, 9)
+        .padding(.vertical, 5)
         .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(Color(NSColor.controlBackgroundColor).opacity(0.3))
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .fill(Color.primary.opacity(0.03))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
                 )
         )
     }
@@ -217,26 +210,22 @@ struct MenuView: View {
     // MARK: - Error Banner
     
     private func errorBanner(message: String) -> some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 5) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 12))
+                .font(.system(size: 10))
                 .foregroundColor(.orange)
             
             Text(message)
-                .font(.system(size: 11))
+                .font(.system(size: 9.5))
                 .foregroundColor(.primary)
                 .lineLimit(2)
             
             Spacer()
         }
-        .padding(8)
+        .padding(6)
         .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
                 .fill(Color.orange.opacity(0.12))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Color.orange.opacity(0.2), lineWidth: 0.5)
-                )
         )
     }
     
@@ -244,8 +233,8 @@ struct MenuView: View {
     
     private var footerSection: some View {
         HStack {
-            Text("v2.1")
-                .font(.system(size: 10, weight: .regular))
+            Text("v2.2")
+                .font(.system(size: 9))
                 .foregroundColor(.secondary.opacity(0.6))
             
             Spacer()
@@ -257,62 +246,62 @@ struct MenuView: View {
                 NSApplication.shared.terminate(nil)
             }
             .buttonStyle(.plain)
-            .font(.system(size: 11, weight: .medium))
+            .font(.system(size: 10, weight: .medium))
             .foregroundColor(.secondary)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 4)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 2.5)
             .background(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
                     .fill(Color.primary.opacity(0.06))
             )
         }
+        .padding(.horizontal, 2)
+        .padding(.top, 1)
     }
 }
 
 // MacBook icon with "A!" rendered on the screen
 struct MacBookAIconView: View {
-    var size: CGFloat = 20
+    var size: CGFloat = 18
     
     var body: some View {
         ZStack {
-            // Base / keyboard
             VStack(spacing: 1) {
-                // Screen
                 ZStack {
                     RoundedRectangle(cornerRadius: size * 0.1)
-                        .stroke(Color.primary, lineWidth: 1.2)
-                        .frame(width: size * 0.85, height: size * 0.6)
+                        .stroke(Color.primary, lineWidth: 1.1)
+                        .frame(width: size * 0.85, height: size * 0.58)
                     
                     Text("A!")
                         .font(.system(size: size * 0.32, weight: .black, design: .default))
                         .foregroundColor(.primary)
                 }
                 
-                // Bottom deck
-                RoundedRectangle(cornerRadius: 0.8)
+                RoundedRectangle(cornerRadius: 0.7)
                     .fill(Color.primary)
-                    .frame(width: size, height: size * 0.1)
+                    .frame(width: size, height: size * 0.09)
             }
         }
         .frame(width: size, height: size)
     }
 }
 
-// Native macOS visual effect helper
-struct VisualEffectView: NSViewRepresentable {
-    let material: NSVisualEffectView.Material
-    let blendingMode: NSVisualEffectView.BlendingMode
-    
-    func makeNSView(context: Context) -> NSVisualEffectView {
-        let view = NSVisualEffectView()
-        view.material = material
-        view.blendingMode = blendingMode
-        view.state = .active
-        return view
+// Native Apple Liquid Glass background using NSGlassEffectView where available,
+// falling back to NSVisualEffectView popover material with behindWindow blending.
+struct NativeGlassBackground: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        if let glassClass = NSClassFromString("NSGlassEffectView") as? NSView.Type {
+            let v = glassClass.init(frame: .zero)
+            v.setValue(14.0, forKey: "cornerRadius")
+            return v
+        } else {
+            let v = NSVisualEffectView()
+            v.material = .popover
+            v.blendingMode = .behindWindow
+            v.state = .active
+            return v
+        }
     }
     
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
-        nsView.material = material
-        nsView.blendingMode = blendingMode
-    }
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }

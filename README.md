@@ -1,39 +1,36 @@
-# Awake! ☕⚡
+# Awake! 💻⚡
 
-Aplicación nativa, hiperligera y elegante para macOS (Apple Silicon y macOS 14+) con interfaz inspirada en CaffeinateBar, que permite mantener la Mac funcionando al cerrar la tapa sin necesidad de monitores externos ni adaptadores ficticios.
+Aplicación nativa, hiperligera y elegante para macOS (Apple Silicon y macOS 14+) con interfaz **Liquid Glass** purificada, que mantiene la Mac funcionando al cerrar la tapa sin necesidad de monitores externos ni adaptadores ficticios.
 
-## Comportamiento del icono en la barra de menú
+## Icono oficial y de barra de menú
 
-- **Clic izquierdo (Left Click)**: Activa o desactiva instantáneamente la función principal (**Mantener activa**). El icono de la taza de café se llena al estar activa o pasa a contorno al estar inactiva.
-- **Clic derecho (Right Click)**: Despliega el panel de opciones y ajustes detallados al estilo CaffeinateBar.
-- **Atajo global `⌘K`**: Alterna el estado activo/inactivo desde el teclado.
+- **Logo oficial de la app (`AppIcon.icns`)**: La silueta estilizada de una MacBook abierta con **`A!`** en la pantalla.
+- **Icono en la barra de menú**: MacBook nativa en plantilla vectorial con **`A!`** en la pantalla (se ilumina cuando está activa y se adapta automáticamente a modo oscuro/claro).
+- **Comportamiento**: Un clic en el icono abre directamente el menú Liquid Glass sin pedir contraseñas ni avisos de seguridad.
 
-## Características
+## Opciones esenciales (Sin sobrecarga)
 
-1. **Mantener Mac activa al cerrar la tapa**:
+1. **Mantener activa**:
    - Tu Mac sigue trabajando exactamente como si estuviera abierta.
    - Tu **hub USB**, interfaces de audio (Focusrite Scarlett Solo, etc.), discos externos y periféricos se mantienen encendidos.
    - Todos los servicios, compilaciones, servidores y descargas continúan ejecutándose.
    - Atenúa el brillo físico de la pantalla interna a 0% sin matar WindowServer, permitiendo conexiones remotas desde **Sills, Screens, VNC o RustDesk** sin pantallas negras.
-2. **Silenciar sonido al cerrar la tapa**:
+2. **Silenciar al cerrar**:
    - Pausa automáticamente la música (Spotify, Apple Music, YouTube en navegadores, Podcasts, VLC) mediante `MediaRemote` nativo.
    - Redirige el flujo de audio de interfaces USB externas hacia los altavoces internos silenciados a 0.
    - Al volver a abrir la tapa, restaura el volumen y tu interfaz USB original inmediatamente.
-3. **Interfaz CaffeinateBar**:
-   - Tarjeta superior de estado con taza de café animada e indicador luminoso.
-   - Botón de acción rápida (☀️ Activar Awake! / 🌙 Desactivar Awake!) con atajo `⌘K`.
-   - Secciones `BLOQUEOS`, `ESTADO Y SENSORES` y `AJUSTES` con toggles nativos y etiquetas monospace (`-pm`, `mute`, `-d`).
-   - Caja de comando terminal con el estado en vivo de `pmset`.
-   - Peso total: apenas **~330 KB**.
+3. **Indicadores de estado en vivo**:
+   - Sensor físico de tapa: *Abierta 🟢 / Cerrada 🟠*.
+   - Hub USB y servicios: *Siempre activos ⚡ / Modo normal*.
 
 ## Versiones
 
-- **`v2.0.0` (Actual)**:
-  - Cambio de nombre oficial a **Awake!**.
-  - Comportamiento de doble acción: clic izquierdo activa/desactiva instantáneamente, clic derecho abre el menú.
-  - Rediseño visual 1:1 idéntico a la estructura de CaffeinateBar (tarjeta superior, filas de bloqueos con etiquetas `-pm`, `-d`, sensores de hardware y caja de terminal).
-  - Eliminación definitiva del diálogo de VLC mediante introspección de bundles activos.
-- **`v1.2.0`**: Pods Liquid Glass y corrección de truncado de textos.
+- **`v2.1.0` (Actual)**:
+  - Regreso al logo de la MacBook abierta con **`A!`** en la pantalla (oficial en barra de menú y en `.icns`).
+  - Eliminación total de avisos de seguridad al hacer clic en el icono: el clic abre el menú Liquid Glass sin ejecutar llamadas de administración innecesarias.
+  - Eliminación de atajos, temporizadores y opciones superfluas; sólo las opciones esenciales solicitadas con textos 100% legibles.
+- **`v2.0.0`**: Versión con diseño CaffeinateBar.
+- **`v1.2.0`**: Pods Liquid Glass.
 - **`v1.1.0`**: Soporte para acceso remoto sin pantallas negras (Sills/VNC) y silenciamiento para interfaces USB (Scarlett Solo).
 - **`v1.0.0`**: Versión inicial.
 
@@ -42,8 +39,8 @@ Aplicación nativa, hiperligera y elegante para macOS (Apple Silicon y macOS 14+
 Puedes cambiar a cualquiera de las versiones con un solo comando:
 ```bash
 cd ~/.gemini/antigravity/scratch/ClamAwake
+./rollback_v1.sh v2.1.0    # Versión actual (MacBook con A!, Liquid Glass puro)
+./rollback_v1.sh v2.0.0    # Versión con diseño CaffeinateBar
+./rollback_v1.sh v1.2.0    # Versión 1.2
 ./rollback_v1.sh v1.0.0    # Versión inicial
-./rollback_v1.sh v1.1.0    # Versión 1.1 (Scarlett + Sills)
-./rollback_v1.sh v1.2.0    # Versión 1.2 (Liquid Glass pods)
-./rollback_v1.sh v2.0.0    # Versión 2.0 (Awake! estilo CaffeinateBar)
 ```
