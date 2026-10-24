@@ -33,9 +33,9 @@ cat << 'EOF' > "$APP_DIR/Contents/Info.plist"
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>2.0.0</string>
+    <string>2.1.0</string>
     <key>CFBundleVersion</key>
-    <string>2.0.0</string>
+    <string>2.1.0</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>LSUIElement</key>
@@ -48,8 +48,8 @@ cat << 'EOF' > "$APP_DIR/Contents/Info.plist"
 </plist>
 EOF
 
-if [ -f "/tmp/AppIcon.iconset/icon_512x512@2x.png" ]; then
-    iconutil -c icns /tmp/AppIcon.iconset -o "$APP_DIR/Contents/Resources/AppIcon.icns"
+if [ -f "/tmp/AwakeAppIcon.icns" ]; then
+    cp "/tmp/AwakeAppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
 fi
 
 echo "==> Firmando aplicación localmente..."

@@ -4,335 +4,213 @@ struct MenuView: View {
     @ObservedObject var viewModel: AppViewModel
     
     var body: some View {
-        VStack(spacing: 0) {
-            // 1. Top Header Card
-            topHeaderCard
-                .padding(.horizontal, 14)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
+        VStack(spacing: 12) {
+            // Header Bar
+            headerSection
             
-            Divider()
-                .opacity(0.4)
-            
-            // 2. Primary Quick-Action Row (Sun / Power banner)
-            quickActionButton
-                .padding(.horizontal, 14)
-                .padding(.vertical, 8)
-            
-            Divider()
-                .opacity(0.4)
-            
-            // 3. Scrollable/List Content
-            VStack(spacing: 12) {
-                // Section: BLOQUEOS
-                assertionsSection
+            // Primary Control Cards (Liquid Glass Pods)
+            VStack(spacing: 10) {
+                // Pod 1: Mantener Activa (Clamshell Awake)
+                controlPod(
+                    title: "Mantener activa",
+                    subtitle: "No suspender al cerrar. Hubs y procesos activos.",
+                    systemImage: "bolt.shield.fill",
+                    isOn: viewModel.isKeepAwakeEnabled,
+                    isBusy: viewModel.isBusy
+                ) {
+                    viewModel.toggleKeepAwake()
+                }
                 
-                // Section: ESTADO Y SENSORES
-                diagnosticsSection
-                
-                // Section: AJUSTES
-                settingsSection
+                // Pod 2: Silenciar al Cerrar Tapa
+                controlPod(
+                    title: "Silenciar al cerrar",
+                    subtitle: "Pausa música y silencia audio automáticamente.",
+                    systemImage: "speaker.slash.fill",
+                    isOn: viewModel.isMuteOnLidCloseEnabled,
+                    isBusy: false
+                ) {
+                    viewModel.toggleMuteOnLidClose()
+                }
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
+            
+            // Status Pod (Hardware & Sensor Diagnostics)
+            statusPod
             
             if let error = viewModel.errorMessage {
                 errorBanner(message: error)
-                    .padding(.horizontal, 14)
-                    .padding(.bottom, 8)
             }
             
-            // 4. Terminal Command Box (Monospace Caffeinate-style banner)
-            terminalCommandPill
-                .padding(.horizontal, 14)
-                .padding(.bottom, 8)
-            
-            Divider()
-                .opacity(0.4)
-            
-            // 5. Quit Row
-            quitRow
-                .padding(.horizontal, 14)
-                .padding(.vertical, 9)
+            // Footer
+            footerSection
         }
-        .frame(width: 295)
+        .padding(14)
+        .frame(width: 325)
         .background(VisualEffectView(material: .popover, blendingMode: .behindWindow))
     }
     
-    // MARK: - 1. Top Header Card
+    // MARK: - Header
     
-    private var topHeaderCard: some View {
-        HStack(spacing: 12) {
-            Image(systemName: viewModel.isKeepAwakeEnabled ? "cup.and.saucer.fill" : "cup.and.saucer")
-                .font(.system(size: 26, weight: .regular))
-                .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary.opacity(0.8))
-                .frame(width: 32, height: 32)
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(viewModel.isKeepAwakeEnabled ? "Awake! Activo" : "Reposo permitido")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(.primary)
+    private var headerSection: some View {
+        HStack(alignment: .center) {
+            HStack(spacing: 8) {
+                // MacBook with A! icon
+                MacBookAIconView(size: 20)
                 
-                Text(viewModel.isKeepAwakeEnabled ? "La Mac permanecerá despierta al cerrar" : "La pantalla puede entrar en reposo...")
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
+                Text("Awake!")
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(.primary)
             }
             
             Spacer()
             
-            Circle()
-                .fill(viewModel.isKeepAwakeEnabled ? Color.green : Color.secondary.opacity(0.35))
-                .frame(width: 8, height: 8)
+            // Status Pill
+            HStack(spacing: 5) {
+                Circle()
+                    .fill(viewModel.isKeepAwakeEnabled ? Color.green : Color.secondary.opacity(0.4))
+                    .frame(width: 6, height: 6)
+                
+                Text(viewModel.isKeepAwakeEnabled ? "ACTIVO" : "INACTIVO")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(
+                Capsule()
+                    .fill(viewModel.isKeepAwakeEnabled ? Color.green.opacity(0.14) : Color.primary.opacity(0.06))
+            )
         }
     }
     
-    // MARK: - 2. Quick Action Row
+    // MARK: - Liquid Glass Control Pod
     
-    private var quickActionButton: some View {
-        Button(action: {
-            viewModel.toggleKeepAwake()
-        }) {
-            HStack(spacing: 8) {
-                Image(systemName: viewModel.isKeepAwakeEnabled ? "moon.stars.fill" : "sun.max.fill")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .indigo : .orange)
+    private func controlPod(
+        title: String,
+        subtitle: String,
+        systemImage: String,
+        isOn: Bool,
+        isBusy: Bool,
+        onToggle: @escaping () -> Void
+    ) -> some View {
+        HStack(alignment: .center, spacing: 12) {
+            // Circular Icon Badge
+            ZStack {
+                Circle()
+                    .fill(isOn ? Color.accentColor : Color.primary.opacity(0.08))
+                    .frame(width: 34, height: 34)
                 
-                Text(viewModel.isKeepAwakeEnabled ? "Desactivar Awake!" : "Activar Awake!")
+                Image(systemName: systemImage)
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundColor(isOn ? .white : .secondary)
+            }
+            
+            // Titles & Description (No truncation)
+            VStack(alignment: .leading, spacing: 3) {
+                Text(title)
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(.primary)
                 
+                Text(subtitle)
+                    .font(.system(size: 11, weight: .regular))
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Spacer(minLength: 4)
+            
+            // Toggle Switch or Spinner
+            if isBusy {
+                ProgressView()
+                    .scaleEffect(0.65)
+                    .frame(width: 38, height: 22)
+            } else {
+                Toggle("", isOn: Binding(
+                    get: { isOn },
+                    set: { _ in onToggle() }
+                ))
+                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                .labelsHidden()
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(Color(NSColor.controlBackgroundColor).opacity(0.45))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(Color.white.opacity(0.14), lineWidth: 0.5)
+                )
+        )
+    }
+    
+    // MARK: - Status Pod
+    
+    private var statusPod: some View {
+        VStack(spacing: 8) {
+            // Row 1: Lid Sensor
+            HStack {
+                HStack(spacing: 6) {
+                    Image(systemName: viewModel.isLidClosed ? "macbook.gen2" : "macbook")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                    
+                    Text("Sensor de tapa")
+                        .font(.system(size: 11.5, weight: .regular))
+                        .foregroundColor(.secondary)
+                }
+                
                 Spacer()
                 
-                if viewModel.isBusy {
-                    ProgressView()
-                        .scaleEffect(0.6)
-                        .frame(width: 20, height: 16)
-                } else {
-                    Text("⌘K")
-                        .font(.system(size: 11, weight: .medium, design: .default))
-                        .foregroundColor(.secondary.opacity(0.7))
+                HStack(spacing: 5) {
+                    Circle()
+                        .fill(viewModel.isLidClosed ? Color.orange : Color.green)
+                        .frame(width: 6, height: 6)
+                    
+                    Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
+                        .font(.system(size: 11.5, weight: .medium))
+                        .foregroundColor(.primary)
                 }
             }
-            .padding(.vertical, 4)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-    }
-    
-    // MARK: - 3. BLOQUEOS Section
-    
-    private var assertionsSection: some View {
-        VStack(spacing: 7) {
-            sectionHeader(title: "BLOQUEOS", icon: "slider.horizontal.3")
             
-            // Row 1: Mantener activa al cerrar tapa
-            menuRow(
-                icon: "laptopcomputer",
-                iconColor: .blue,
-                title: "Evitar reposo con tapa",
-                tag: "-pm",
-                isOn: Binding(
-                    get: { viewModel.isKeepAwakeEnabled },
-                    set: { _ in viewModel.toggleKeepAwake() }
-                )
-            )
+            Divider()
+                .opacity(0.3)
             
-            // Row 2: Silenciar sonido
-            menuRow(
-                icon: "speaker.slash",
-                iconColor: .cyan,
-                title: "Silenciar sonido al cerrar",
-                tag: "mute",
-                isOn: Binding(
-                    get: { viewModel.isMuteOnLidCloseEnabled },
-                    set: { _ in viewModel.toggleMuteOnLidClose() }
-                )
-            )
-            
-            // Row 3: Evitar reposo de pantalla
-            menuRow(
-                icon: "display",
-                iconColor: .blue,
-                title: "Evitar reposo de pantalla",
-                tag: "-d",
-                isOn: Binding(
-                    get: { viewModel.preventScreenSleep },
-                    set: { _ in viewModel.togglePreventScreenSleep() }
-                )
-            )
-        }
-    }
-    
-    // MARK: - 4. ESTADO Y SENSORES Section
-    
-    private var diagnosticsSection: some View {
-        VStack(spacing: 7) {
-            sectionHeader(title: "ESTADO Y SENSORES", icon: "gauge.with.dots.needle.bottom.50percent")
-            
-            // Row 1: Sensor de tapa
-            HStack(spacing: 8) {
-                Image(systemName: "macbook.gen2")
-                    .font(.system(size: 12))
-                    .foregroundColor(.purple)
-                    .frame(width: 18)
-                
-                Text("Sensor físico de tapa")
-                    .font(.system(size: 12))
-                    .foregroundColor(.primary)
+            // Row 2: Hub & Services
+            HStack {
+                HStack(spacing: 6) {
+                    Image(systemName: "cable.connector.horizontal")
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
+                    
+                    Text("Hub USB & servicios")
+                        .font(.system(size: 11.5, weight: .regular))
+                        .foregroundColor(.secondary)
+                }
                 
                 Spacer()
                 
                 HStack(spacing: 4) {
-                    Circle()
-                        .fill(viewModel.isLidClosed ? Color.orange : Color.green)
-                        .frame(width: 5, height: 5)
-                    Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding(.vertical, 2)
-            
-            // Row 2: Hub USB y servicios
-            HStack(spacing: 8) {
-                Image(systemName: "cable.connector.horizontal")
-                    .font(.system(size: 12))
-                    .foregroundColor(.teal)
-                    .frame(width: 18)
-                
-                Text("Hub USB & servicios")
-                    .font(.system(size: 12))
-                    .foregroundColor(.primary)
-                
-                Spacer()
-                
-                HStack(spacing: 3) {
                     if viewModel.isKeepAwakeEnabled {
                         Image(systemName: "bolt.fill")
                             .font(.system(size: 9))
                             .foregroundColor(.green)
                     }
-                    Text(viewModel.isKeepAwakeEnabled ? "Protegidos" : "Normal")
-                        .font(.system(size: 11, weight: .medium))
+                    Text(viewModel.isKeepAwakeEnabled ? "Siempre activos" : "Modo normal")
+                        .font(.system(size: 11.5, weight: .medium))
                         .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
                 }
             }
-            .padding(.vertical, 2)
         }
-    }
-    
-    // MARK: - 5. AJUSTES Section
-    
-    private var settingsSection: some View {
-        VStack(spacing: 7) {
-            sectionHeader(title: "AJUSTES", icon: "gearshape")
-            
-            // Row 1: Abrir al iniciar sesión
-            menuRow(
-                icon: "power",
-                iconColor: .secondary,
-                title: "Abrir al iniciar sesión",
-                tag: nil,
-                isOn: Binding(
-                    get: { viewModel.isLaunchAtLoginEnabled },
-                    set: { _ in viewModel.toggleLaunchAtLogin() }
-                )
-            )
-            
-            // Row 2: Clic izquierdo para activar
-            menuRow(
-                icon: "cursorarrow.rays",
-                iconColor: .secondary,
-                title: "Clic izquierdo para activar",
-                tag: nil,
-                isOn: Binding(
-                    get: { viewModel.leftClickToggles },
-                    set: { _ in viewModel.toggleLeftClickMode() }
-                )
-            )
-        }
-    }
-    
-    // MARK: - Helper Views
-    
-    private func sectionHeader(title: String, icon: String) -> some View {
-        HStack(spacing: 5) {
-            Image(systemName: icon)
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundColor(.secondary.opacity(0.8))
-            
-            Text(title)
-                .font(.system(size: 10, weight: .bold))
-                .foregroundColor(.secondary.opacity(0.8))
-            
-            Spacer()
-            
-            Image(systemName: "chevron.down")
-                .font(.system(size: 8, weight: .semibold))
-                .foregroundColor(.secondary.opacity(0.5))
-        }
-        .padding(.bottom, 1)
-    }
-    
-    private func menuRow(
-        icon: String,
-        iconColor: Color,
-        title: String,
-        tag: String?,
-        isOn: Binding<Bool>
-    ) -> some View {
-        HStack(spacing: 8) {
-            Image(systemName: icon)
-                .font(.system(size: 13))
-                .foregroundColor(iconColor)
-                .frame(width: 18)
-            
-            Text(title)
-                .font(.system(size: 12))
-                .foregroundColor(.primary)
-            
-            if let tag = tag {
-                Text(tag)
-                    .font(.system(size: 9, weight: .medium, design: .monospaced))
-                    .foregroundColor(.secondary.opacity(0.8))
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 1)
-                    .background(Color.primary.opacity(0.06))
-                    .cornerRadius(3)
-            }
-            
-            Spacer()
-            
-            Toggle("", isOn: isOn)
-                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                .labelsHidden()
-                .scaleEffect(0.85)
-        }
-        .padding(.vertical, 1)
-    }
-    
-    // MARK: - Terminal Command Box
-    
-    private var terminalCommandPill: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "terminal")
-                .font(.system(size: 10))
-                .foregroundColor(.secondary)
-            
-            Text(viewModel.isKeepAwakeEnabled ? "pmset -a disablesleep 1 -d -s" : "pmset -a disablesleep 0")
-                .font(.system(size: 10, weight: .regular, design: .monospaced))
-                .foregroundColor(.secondary)
-                .lineLimit(1)
-            
-            Spacer()
-        }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 5)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
         .background(
-            RoundedRectangle(cornerRadius: 6)
-                .stroke(Color.primary.opacity(0.12), lineWidth: 0.5)
-                .background(Color.primary.opacity(0.03).cornerRadius(6))
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color(NSColor.controlBackgroundColor).opacity(0.3))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                )
         )
     }
     
@@ -341,50 +219,82 @@ struct MenuView: View {
     private func errorBanner(message: String) -> some View {
         HStack(spacing: 6) {
             Image(systemName: "exclamationmark.triangle.fill")
-                .font(.system(size: 11))
+                .font(.system(size: 12))
                 .foregroundColor(.orange)
             
             Text(message)
-                .font(.system(size: 10.5))
+                .font(.system(size: 11))
                 .foregroundColor(.primary)
                 .lineLimit(2)
             
             Spacer()
         }
-        .padding(6)
+        .padding(8)
         .background(
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
                 .fill(Color.orange.opacity(0.12))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                        .stroke(Color.orange.opacity(0.2), lineWidth: 0.5)
+                )
         )
     }
     
-    // MARK: - Quit Row
+    // MARK: - Footer
     
-    private var quitRow: some View {
-        Button(action: {
-            PowerManager.shared.restoreOnQuit()
-            BrightnessController.shared.restoreOnQuit()
-            AudioManager.shared.restoreOnQuit()
-            NSApplication.shared.terminate(nil)
-        }) {
-            HStack(spacing: 8) {
-                Image(systemName: "power")
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
-                
-                Text("Salir de Awake!")
-                    .font(.system(size: 12))
-                    .foregroundColor(.primary)
-                
-                Spacer()
-                
-                Text("⌘Q")
-                    .font(.system(size: 11))
-                    .foregroundColor(.secondary.opacity(0.7))
+    private var footerSection: some View {
+        HStack {
+            Text("v2.1")
+                .font(.system(size: 10, weight: .regular))
+                .foregroundColor(.secondary.opacity(0.6))
+            
+            Spacer()
+            
+            Button("Salir") {
+                PowerManager.shared.restoreOnQuit()
+                BrightnessController.shared.restoreOnQuit()
+                AudioManager.shared.restoreOnQuit()
+                NSApplication.shared.terminate(nil)
             }
-            .contentShape(Rectangle())
+            .buttonStyle(.plain)
+            .font(.system(size: 11, weight: .medium))
+            .foregroundColor(.secondary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(Color.primary.opacity(0.06))
+            )
         }
-        .buttonStyle(.plain)
+    }
+}
+
+// MacBook icon with "A!" rendered on the screen
+struct MacBookAIconView: View {
+    var size: CGFloat = 20
+    
+    var body: some View {
+        ZStack {
+            // Base / keyboard
+            VStack(spacing: 1) {
+                // Screen
+                ZStack {
+                    RoundedRectangle(cornerRadius: size * 0.1)
+                        .stroke(Color.primary, lineWidth: 1.2)
+                        .frame(width: size * 0.85, height: size * 0.6)
+                    
+                    Text("A!")
+                        .font(.system(size: size * 0.32, weight: .black, design: .default))
+                        .foregroundColor(.primary)
+                }
+                
+                // Bottom deck
+                RoundedRectangle(cornerRadius: 0.8)
+                    .fill(Color.primary)
+                    .frame(width: size, height: size * 0.1)
+            }
+        }
+        .frame(width: size, height: size)
     }
 }
 

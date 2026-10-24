@@ -12,7 +12,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         // Setup Popover
         popover = NSPopover()
-        popover.contentSize = NSSize(width: 295, height: 440)
+        popover.contentSize = NSSize(width: 325, height: 260)
         popover.behavior = .transient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuView(viewModel: viewModel))
@@ -23,7 +23,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             updateStatusIcon(isActive: viewModel.isKeepAwakeEnabled)
             button.target = self
             button.action = #selector(handleStatusItemClick)
-            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
         
         // React to KeepAwake state changes to update the menu bar icon
@@ -33,66 +32,88 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.updateStatusIcon(isActive: active)
             }
             .store(in: &cancellables)
-        
-        // Setup local monitor for ⌘K shortcut
-        NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
-            if event.modifierFlags.contains(.command) && event.charactersIgnoringModifiers == "k" {
-                self?.viewModel.toggleKeepAwake()
-                return nil
-            }
-            return event
-        }
     }
     
     @objc private func handleStatusItemClick() {
-        guard statusItem.button != nil else { return }
+        guard let button = statusItem.button else { return }
         
-        // If popover is already open, close it
+        // Clicking the menu bar icon simply toggles the Liquid Glass popover
         if popover.isShown {
             popover.performClose(nil)
-            return
-        }
-        
-        guard let event = NSApp.currentEvent else {
-            togglePopover()
-            return
-        }
-        
-        let isRightClick = event.type == .rightMouseUp || event.modifierFlags.contains(.control)
-        
-        if isRightClick {
-            // Right-click: Open the options popover
-            togglePopover()
         } else {
-            // Left-click:
-            if viewModel.leftClickToggles {
-                // Instantly toggle Awake! mode
-                viewModel.toggleKeepAwake()
-            } else {
-                togglePopover()
-            }
+            viewModel.refreshSystemState()
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            popover.contentViewController?.view.window?.makeKey()
         }
-    }
-    
-    private func togglePopover() {
-        guard let button = statusItem.button else { return }
-        viewModel.refreshSystemState()
-        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-        popover.contentViewController?.view.window?.makeKey()
     }
     
     private func updateStatusIcon(isActive: Bool) {
         guard let button = statusItem.button else { return }
         
-        // Caffeinate coffee cup icon: outline when inactive, filled when active
-        let symbolName = isActive ? "cup.and.saucer.fill" : "cup.and.saucer"
-        if let image = NSImage(systemSymbolName: symbolName, accessibilityDescription: "Awake!") {
-            let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .regular)
-            button.image = image.withSymbolConfiguration(config)
-            button.image?.isTemplate = true
+        // MacBook icon with "A!" rendered on the screen
+        let icon = createMacBookAIcon(isActive: isActive)
+        button.image = icon
+        button.toolTip = isActive ? "Awake!: Activo" : "Awake!: Inactivo"
+    }
+    
+    /// Generates a crisp vector MacBook with "A!" on the screen for the menu bar
+    private func createMacBookAIcon(isActive: Bool) -> NSImage {
+        let size = NSSize(width: 19, height: 18)
+        let img = NSImage(size: size)
+        img.lockFocus()
+        
+        let w: CGFloat = 17.0
+        let h: CGFloat = 12.0
+        let x: CGFloat = 1.0
+        let y: CGFloat = 3.0
+        
+        // Screen
+        let screenW = w * 0.82
+        let screenH = h * 0.78
+        let screenX = x + (w - screenW) / 2
+        let screenY = y + (h - screenH)
+        
+        let screenRect = CGRect(x: screenX, y: screenY, width: screenW, height: screenH)
+        let screenPath = NSBezierPath(roundedRect: screenRect, xRadius: 1.5, yRadius: 1.5)
+        
+        if isActive {
+            NSColor.labelColor.setFill()
+            screenPath.fill()
+        } else {
+            NSColor.labelColor.setStroke()
+            screenPath.lineWidth = 1.2
+            screenPath.stroke()
         }
         
-        button.toolTip = isActive ? "Awake!: Activo (Clic izquierdo para desactivar, clic derecho para opciones)" : "Awake!: Inactivo (Clic izquierdo para activar, clic derecho para opciones)"
+        // Text "A!" inside screen
+        let font = NSFont.systemFont(ofSize: 7.0, weight: .black)
+        let text = "A!" as NSString
+        let textColor = isActive ? NSColor.windowBackgroundColor : NSColor.labelColor
+        let attrs: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: textColor
+        ]
+        let textSize = text.size(withAttributes: attrs)
+        let textRect = CGRect(
+            x: screenRect.midX - textSize.width / 2,
+            y: screenRect.midY - textSize.height / 2 + 0.3,
+            width: textSize.width,
+            height: textSize.height
+        )
+        text.draw(in: textRect, withAttributes: attrs)
+        
+        // Laptop Base
+        let baseW = w
+        let baseH: CGFloat = 2.0
+        let baseY = y
+        let baseRect = CGRect(x: x, y: baseY, width: baseW, height: baseH)
+        let basePath = NSBezierPath(roundedRect: baseRect, xRadius: 1.0, yRadius: 1.0)
+        NSColor.labelColor.setFill()
+        basePath.fill()
+        
+        img.unlockFocus()
+        img.isTemplate = true
+        return img
     }
     
     func applicationWillTerminate(_ notification: Notification) {

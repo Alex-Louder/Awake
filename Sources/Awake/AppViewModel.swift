@@ -1,15 +1,11 @@
 import Foundation
 import Combine
 import SwiftUI
-import ServiceManagement
 
 @MainActor
 final class AppViewModel: ObservableObject {
     @Published var isKeepAwakeEnabled: Bool = false
     @Published var isMuteOnLidCloseEnabled: Bool = true
-    @Published var preventScreenSleep: Bool = true
-    @Published var leftClickToggles: Bool = true
-    @Published var isLaunchAtLoginEnabled: Bool = false
     
     @Published var isLidClosed: Bool = false
     @Published var isSystemSleepDisabled: Bool = false
@@ -23,23 +19,13 @@ final class AppViewModel: ObservableObject {
     
     private let kKeepAwakePrefKey = "awake.keepawake.enabled"
     private let kMutePrefKey = "awake.mute.enabled"
-    private let kPreventScreenPrefKey = "awake.preventscreen.enabled"
-    private let kLeftClickPrefKey = "awake.leftclick.enabled"
     
     init() {
         // Load preferences
         let savedKeepAwake = UserDefaults.standard.bool(forKey: kKeepAwakePrefKey)
         let savedMute = UserDefaults.standard.object(forKey: kMutePrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kMutePrefKey)
-        let savedScreen = UserDefaults.standard.object(forKey: kPreventScreenPrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kPreventScreenPrefKey)
-        let savedLeftClick = UserDefaults.standard.object(forKey: kLeftClickPrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kLeftClickPrefKey)
         
         self.isMuteOnLidCloseEnabled = savedMute
-        self.preventScreenSleep = savedScreen
-        self.leftClickToggles = savedLeftClick
-        
-        if #available(macOS 13.0, *) {
-            self.isLaunchAtLoginEnabled = SMAppService.mainApp.status == .enabled
-        }
         
         // Sync system state
         let currentSystemState = powerManager.readSleepDisabledStatus()
@@ -95,32 +81,6 @@ final class AppViewModel: ObservableObject {
         UserDefaults.standard.set(isMuteOnLidCloseEnabled, forKey: kMutePrefKey)
     }
     
-    func togglePreventScreenSleep() {
-        preventScreenSleep.toggle()
-        UserDefaults.standard.set(preventScreenSleep, forKey: kPreventScreenPrefKey)
-    }
-    
-    func toggleLeftClickMode() {
-        leftClickToggles.toggle()
-        UserDefaults.standard.set(leftClickToggles, forKey: kLeftClickPrefKey)
-    }
-    
-    func toggleLaunchAtLogin() {
-        if #available(macOS 13.0, *) {
-            do {
-                if SMAppService.mainApp.status == .enabled {
-                    try SMAppService.mainApp.unregister()
-                    isLaunchAtLoginEnabled = false
-                } else {
-                    try SMAppService.mainApp.register()
-                    isLaunchAtLoginEnabled = true
-                }
-            } catch {
-                errorMessage = "No se pudo cambiar el inicio automático: \(error.localizedDescription)"
-            }
-        }
-    }
-    
     func refreshSystemState() {
         let currentSystemState = powerManager.readSleepDisabledStatus()
         self.isSystemSleepDisabled = currentSystemState
@@ -135,7 +95,7 @@ final class AppViewModel: ObservableObject {
         if isClosed {
             // Lid closed
             if isKeepAwakeEnabled {
-                // Dim screen backlight to 0.0 preserving WindowServer framebuffer
+                // Dim physical screen backlight without killing WindowServer framebuffer
                 brightnessController.dimForLidClose()
             }
             if isMuteOnLidCloseEnabled {
@@ -145,7 +105,7 @@ final class AppViewModel: ObservableObject {
         } else {
             // Lid opened
             if isKeepAwakeEnabled {
-                // Restore screen brightness
+                // Restore physical screen brightness
                 brightnessController.restoreForLidOpen()
             }
             if isMuteOnLidCloseEnabled {
