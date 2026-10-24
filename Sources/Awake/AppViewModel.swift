@@ -1,11 +1,16 @@
 import Foundation
 import Combine
 import SwiftUI
+import ServiceManagement
 
 @MainActor
 final class AppViewModel: ObservableObject {
     @Published var isKeepAwakeEnabled: Bool = false
     @Published var isMuteOnLidCloseEnabled: Bool = true
+    @Published var preventScreenSleep: Bool = true
+    @Published var leftClickToggles: Bool = true
+    @Published var isLaunchAtLoginEnabled: Bool = false
+    
     @Published var isLidClosed: Bool = false
     @Published var isSystemSleepDisabled: Bool = false
     @Published var isBusy: Bool = false
@@ -16,17 +21,27 @@ final class AppViewModel: ObservableObject {
     private let audioManager = AudioManager.shared
     private let brightnessController = BrightnessController.shared
     
-    private let kKeepAwakePrefKey = "clamawake.keepawake.enabled"
-    private let kMutePrefKey = "clamawake.mute.enabled"
+    private let kKeepAwakePrefKey = "awake.keepawake.enabled"
+    private let kMutePrefKey = "awake.mute.enabled"
+    private let kPreventScreenPrefKey = "awake.preventscreen.enabled"
+    private let kLeftClickPrefKey = "awake.leftclick.enabled"
     
     init() {
-        // Load stored preferences
+        // Load preferences
         let savedKeepAwake = UserDefaults.standard.bool(forKey: kKeepAwakePrefKey)
         let savedMute = UserDefaults.standard.object(forKey: kMutePrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kMutePrefKey)
+        let savedScreen = UserDefaults.standard.object(forKey: kPreventScreenPrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kPreventScreenPrefKey)
+        let savedLeftClick = UserDefaults.standard.object(forKey: kLeftClickPrefKey) == nil ? true : UserDefaults.standard.bool(forKey: kLeftClickPrefKey)
         
         self.isMuteOnLidCloseEnabled = savedMute
+        self.preventScreenSleep = savedScreen
+        self.leftClickToggles = savedLeftClick
         
-        // Check actual system state from pmset -g
+        if #available(macOS 13.0, *) {
+            self.isLaunchAtLoginEnabled = SMAppService.mainApp.status == .enabled
+        }
+        
+        // Sync system state
         let currentSystemState = powerManager.readSleepDisabledStatus()
         self.isSystemSleepDisabled = currentSystemState
         self.isKeepAwakeEnabled = currentSystemState || savedKeepAwake
@@ -65,7 +80,6 @@ final class AppViewModel: ObservableObject {
                 await MainActor.run {
                     self.isBusy = false
                     if case PowerError.authorizationCancelled = error {
-                        // User cancelled auth, restore toggle state without error banner
                         self.isKeepAwakeEnabled = self.powerManager.readSleepDisabledStatus()
                     } else {
                         self.errorMessage = error.localizedDescription
@@ -79,6 +93,32 @@ final class AppViewModel: ObservableObject {
     func toggleMuteOnLidClose() {
         isMuteOnLidCloseEnabled.toggle()
         UserDefaults.standard.set(isMuteOnLidCloseEnabled, forKey: kMutePrefKey)
+    }
+    
+    func togglePreventScreenSleep() {
+        preventScreenSleep.toggle()
+        UserDefaults.standard.set(preventScreenSleep, forKey: kPreventScreenPrefKey)
+    }
+    
+    func toggleLeftClickMode() {
+        leftClickToggles.toggle()
+        UserDefaults.standard.set(leftClickToggles, forKey: kLeftClickPrefKey)
+    }
+    
+    func toggleLaunchAtLogin() {
+        if #available(macOS 13.0, *) {
+            do {
+                if SMAppService.mainApp.status == .enabled {
+                    try SMAppService.mainApp.unregister()
+                    isLaunchAtLoginEnabled = false
+                } else {
+                    try SMAppService.mainApp.register()
+                    isLaunchAtLoginEnabled = true
+                }
+            } catch {
+                errorMessage = "No se pudo cambiar el inicio automático: \(error.localizedDescription)"
+            }
+        }
     }
     
     func refreshSystemState() {
@@ -95,22 +135,21 @@ final class AppViewModel: ObservableObject {
         if isClosed {
             // Lid closed
             if isKeepAwakeEnabled {
-                // Dim physical screen panel without killing WindowServer framebuffer.
-                // Remote access (Sills, VNC, Screens) stays 100% visible!
+                // Dim screen backlight to 0.0 preserving WindowServer framebuffer
                 brightnessController.dimForLidClose()
             }
             if isMuteOnLidCloseEnabled {
-                // Pause media, redirect USB/external audio (Scarlett) to muted internal speaker
+                // Pause media and redirect external DACs to muted speaker
                 audioManager.handleLidClosed()
             }
         } else {
             // Lid opened
             if isKeepAwakeEnabled {
-                // Restore physical screen brightness
+                // Restore screen brightness
                 brightnessController.restoreForLidOpen()
             }
             if isMuteOnLidCloseEnabled {
-                // Unmute audio and restore original external audio interface
+                // Unmute and restore external DAC
                 audioManager.handleLidOpened()
             }
         }

@@ -2,17 +2,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "ClamAwake",
+    name: "Awake",
     platforms: [
         .macOS(.v14)
     ],
     products: [
-        .executable(name: "ClamAwake", targets: ["ClamAwake"])
+        .executable(name: "Awake", targets: ["Awake"])
     ],
     targets: [
         .executableTarget(
-            name: "ClamAwake",
-            path: "Sources/ClamAwake"
+            name: "Awake",
+            path: "Sources/Awake"
         )
     ]
 )
