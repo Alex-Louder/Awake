@@ -31,6 +31,21 @@ Aplicación nativa, ligera y minimalista para macOS (Apple Silicon y macOS 14+) 
    - Estado del sensor físico de la tapa (Abierta / Cerrada).
    - Estado de protección del hub USB y procesos del sistema.
 
+## Versiones
+
+- **`v1.1.0` (Actual)**:
+  - **Soporte para acceso remoto (Sills, Screens, VNC, RustDesk)**: Al cerrar la tapa, la pantalla física se atenúa a 0% de brillo (`DisplayServices`) en lugar de suspender WindowServer con `displaysleepnow`. Esto mantiene vivo el framebuffer gráfico y la GPU, permitiendo ver e interactuar con todas las ventanas desde el móvil sin pantallas negras.
+  - **Silenciamiento para interfaces de audio USB (Focusrite Scarlett Solo, DACs, HDMI)**: Como los dispositivos USB no tienen control de volumen por software en macOS, ClamAwake pausa NowPlaying con `MediaRemote`, y redirige el flujo de audio hacia los altavoces internos silenciados a 0. Al reabrir la tapa, restaura la Scarlett automáticamente.
+- **`v1.0.0`**: Versión inicial.
+
+## Volver a la versión v1.0.0
+
+Si en algún momento deseas regresar a la versión inicial:
+```bash
+cd ~/.gemini/antigravity/scratch/ClamAwake
+./rollback_v1.sh
+```
+
 ## Scripts de desarrollo
 
 - `./build.sh`: Compila el paquete `.app` optimizado en Release.
