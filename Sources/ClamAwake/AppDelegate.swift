@@ -62,5 +62,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     
     func applicationWillTerminate(_ notification: Notification) {
         PowerManager.shared.restoreOnQuit()
+        BrightnessController.shared.restoreOnQuit()
+        AudioManager.shared.restoreOnQuit()
     }
 }

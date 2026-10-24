@@ -14,6 +14,7 @@ final class AppViewModel: ObservableObject {
     private let lidDetector = LidDetector()
     private let powerManager = PowerManager.shared
     private let audioManager = AudioManager.shared
+    private let brightnessController = BrightnessController.shared
     
     private let kKeepAwakePrefKey = "clamawake.keepawake.enabled"
     private let kMutePrefKey = "clamawake.mute.enabled"
@@ -94,21 +95,22 @@ final class AppViewModel: ObservableObject {
         if isClosed {
             // Lid closed
             if isKeepAwakeEnabled {
-                // Keep computer running, sleep internal display
-                powerManager.sleepDisplay()
+                // Dim physical screen panel without killing WindowServer framebuffer.
+                // Remote access (Sills, VNC, Screens) stays 100% visible!
+                brightnessController.dimForLidClose()
             }
             if isMuteOnLidCloseEnabled {
-                // Pause media and mute audio
+                // Pause media, redirect USB/external audio (Scarlett) to muted internal speaker
                 audioManager.handleLidClosed()
             }
         } else {
             // Lid opened
             if isKeepAwakeEnabled {
-                // Wake display up
-                powerManager.wakeDisplay()
+                // Restore physical screen brightness
+                brightnessController.restoreForLidOpen()
             }
             if isMuteOnLidCloseEnabled {
-                // Unmute audio
+                // Unmute audio and restore original external audio interface
                 audioManager.handleLidOpened()
             }
         }

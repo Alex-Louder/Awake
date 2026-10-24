@@ -240,7 +240,7 @@ struct MenuView: View {
     
     private var footerSection: some View {
         HStack {
-            Text("v1.0")
+            Text("v1.1")
                 .font(.system(size: 10))
                 .foregroundColor(.secondary.opacity(0.7))
             
@@ -248,6 +248,8 @@ struct MenuView: View {
             
             Button("Salir") {
                 PowerManager.shared.restoreOnQuit()
+                BrightnessController.shared.restoreOnQuit()
+                AudioManager.shared.restoreOnQuit()
                 NSApplication.shared.terminate(nil)
             }
             .buttonStyle(.plain)

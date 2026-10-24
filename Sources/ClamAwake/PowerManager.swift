@@ -16,7 +16,7 @@ enum PowerError: LocalizedError {
 }
 
 /// Manages system sleep prevention, pmset disablesleep state,
-/// IOKit power assertions, and display sleep/wake states.
+/// and IOKit power assertions (keeping USB and services active).
 final class PowerManager: @unchecked Sendable {
     static let shared = PowerManager()
     
@@ -130,30 +130,6 @@ final class PowerManager: @unchecked Sendable {
         if userIdleAssertionID != 0 {
             IOPMAssertionRelease(userIdleAssertionID)
             userIdleAssertionID = 0
-        }
-    }
-    
-    // MARK: - Display Power Sleep / Wake
-    
-    /// Turns off the internal screen while the laptop is closed to save battery and prevent heat.
-    func sleepDisplay() {
-        DispatchQueue.global(qos: .utility).async {
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/pmset")
-            process.arguments = ["displaysleepnow"]
-            try? process.run()
-            process.waitUntilExit()
-        }
-    }
-    
-    /// Wakes up the display immediately when the laptop lid is reopened.
-    func wakeDisplay() {
-        DispatchQueue.global(qos: .utility).async {
-            let process = Process()
-            process.executableURL = URL(fileURLWithPath: "/usr/bin/caffeinate")
-            process.arguments = ["-u", "-t", "1"]
-            try? process.run()
-            process.waitUntilExit()
         }
     }
     
