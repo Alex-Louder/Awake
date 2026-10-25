@@ -1,45 +1,35 @@
 # Awake! 💻⚡
 
-Aplicación nativa, hiperligera y elegante para macOS (Apple Silicon y macOS 14+) con interfaz **Liquid Glass** ultracompacta (250 px), que mantiene la Mac funcionando al cerrar la tapa sin necesidad de monitores externos ni adaptadores ficticios.
+Aplicación nativa, hiperligera y elegante para macOS (Apple Silicon y macOS 14+) con interfaz **Liquid Glass** idéntica a la del Centro de Control de Apple (cápsulas translúcidas de 240 px con biseles refractivos).
+
+## Cero avisos de contraseña (0 Prompts)
+
+- La aplicación utiliza una regla segura `NOPASSWD` para `/usr/bin/pmset -a disablesleep *` en `/etc/sudoers.d/awake`.
+- Activar o desactivar la suspensión ocurre instantáneamente en **1 milisegundo**, **sin pedir contraseñas ni mostrar avisos de seguridad jamás**.
+
+## Interfaz Control Center Liquid Glass
+
+- **Cápsulas de cristal líquido**: Diseño idéntico a los módulos de Wi-Fi y Bluetooth del Centro de Control de macOS.
+- **Bisel especular refractivo**: Gradiente luminoso que simula la refracción física de la luz sobre el cristal.
+- **Textos ultra concisos (3 a 4 palabras)**:
+  - *Mantener activa*: **"Nunca se duerme"**
+  - *Silenciar sonido*: **"Muta al cerrar"**
+- **Diagnóstico en vivo**:
+  - *Tapa: Abierta 🟢 / Cerrada 🟠*
+  - *USB: Activo ⚡ / Normal*
 
 ## Icono oficial y de barra de menú
 
-- **Logo oficial de la app (`AppIcon.icns`)**: La silueta estilizada de una MacBook abierta con **`A!`** en la pantalla.
-- **Icono en la barra de menú**: MacBook nativa en plantilla vectorial con **`A!`** en la pantalla (se ilumina cuando está activa y se adapta automáticamente a modo oscuro/claro).
-- **Comportamiento**: Un clic en el icono abre directamente el menú Liquid Glass sin pedir contraseñas ni avisos de seguridad.
-
-## Opciones esenciales (Ultra compacta y ligera: 250 px)
-
-1. **Mantener activa**:
-   - Tu Mac sigue trabajando exactamente como si estuviera abierta.
-   - Tu **hub USB**, interfaces de audio (Focusrite Scarlett Solo, etc.), discos externos y periféricos se mantienen encendidos.
-   - Todos los servicios, compilaciones, servidores y descargas continúan ejecutándose.
-   - Atenúa el brillo físico de la pantalla interna a 0% sin matar WindowServer, permitiendo conexiones remotas desde **Sills, Screens, VNC o RustDesk** sin pantallas negras.
-2. **Silenciar al cerrar**:
-   - Pausa automáticamente la música (Spotify, Apple Music, YouTube en navegadores, Podcasts, VLC) mediante `MediaRemote` nativo.
-   - Redirige el flujo de audio de interfaces USB externas hacia los altavoces internos silenciados a 0.
-   - Al volver a abrir la tapa, restaura el volumen y tu interfaz USB original inmediatamente.
-3. **Indicadores de estado en vivo**:
-   - Sensor físico de tapa: *Abierta 🟢 / Cerrada 🟠*.
-   - Hub USB y servicios: *Activo ⚡ / Normal*.
+- **Logo oficial de la app (`AppIcon.icns`)**: La silueta de una MacBook abierta con **`A!`** en la pantalla.
+- **Icono en la barra de menú**: MacBook vectorial con **`A!`** en la pantalla que se adapta automáticamente a modo oscuro/claro y se ilumina al estar activa.
 
 ## Versiones
 
-- **`v2.2.0` (Actual)**:
-  - **Diseño Ultra Compacto (250 px)**: Reducción drástica del ancho y del padding a proporciones ideales de macOS (Anti-AI-Slop).
-  - **Liquid Glass Nativo**: Fondo integrado con `NSGlassEffectView` (la API nativa de Apple para Liquid Glass en macOS 26/27) y refracción especular en los bordes mediante `LinearGradient`.
-  - **Textos refinados y livianos**: Sin cortes ni redundancias.
-- **`v2.1.0`**: Regreso al logo de MacBook con `A!` y eliminación del aviso de seguridad al hacer clic.
+- **`v2.3.0` (Actual)**:
+  - Acabado visual idéntico al Centro de Control de Apple (cápsulas oscuras translúcidas con biseles refractivos y botones circulares blancos).
+  - Eliminación definitiva del aviso de contraseña al activar/desactivar mediante integración `NOPASSWD` con `pmset`.
+  - Textos resumidos a un máximo de 3 a 4 palabras.
+- **`v2.2.0`**: Reducción de dimensiones a 250 px.
+- **`v2.1.0`**: Regreso al logo de MacBook con `A!`.
 - **`v2.0.0`**: Versión con diseño CaffeinateBar.
-- **`v1.2.0`**: Pods Liquid Glass.
-- **`v1.1.0`**: Soporte para acceso remoto sin pantallas negras (Sills/VNC) y silenciamiento para interfaces USB (Scarlett Solo).
 - **`v1.0.0`**: Versión inicial.
-
-## Cambiar o regresar de versión
-
-Puedes cambiar a cualquiera de las versiones con un solo comando:
-```bash
-cd ~/.gemini/antigravity/scratch/ClamAwake
-./rollback_v1.sh v2.2.0    # Versión actual (Ultra compacta Liquid Glass 250px)
-./rollback_v1.sh v1.0.0    # Versión original
-```
