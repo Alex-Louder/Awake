@@ -58,8 +58,31 @@ final class PowerManager: @unchecked Sendable {
         return false
     }
     
-    /// Sets the system-wide disablesleep setting using macOS administrator authorization.
+    /// Sets the system-wide disablesleep setting without asking for passwords
+    /// using passwordless sudoers, falling back to osascript if needed.
     func setSystemSleepDisabled(_ disabled: Bool) async throws {
+        // 1. Try passwordless sudo first (runs in 1 millisecond, 0 prompts!)
+        let sudoProcess = Process()
+        sudoProcess.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
+        sudoProcess.arguments = ["-n", "/usr/bin/pmset", "-a", "disablesleep", disabled ? "1" : "0"]
+        do {
+            try sudoProcess.run()
+            sudoProcess.waitUntilExit()
+            if sudoProcess.terminationStatus == 0 {
+                if disabled {
+                    self.didChangeSleepSetting = true
+                    self.acquirePowerAssertions()
+                } else {
+                    self.releasePowerAssertions()
+                    self.didChangeSleepSetting = false
+                }
+                return
+            }
+        } catch {
+            // Continue to fallback
+        }
+        
+        // 2. Fallback to osascript only if sudoers entry is not available
         let command = "/usr/bin/pmset -a disablesleep \(disabled ? 1 : 0)"
         let script = "do shell script \"\(command)\" with administrator privileges"
         
@@ -77,7 +100,7 @@ final class PowerManager: @unchecked Sendable {
                     let errorNumber = error[NSAppleScript.errorNumber] as? Int ?? 0
                     let errorBrief = error[NSAppleScript.errorBriefMessage] as? String ?? "Error desconocido"
                     
-                    if errorNumber == -128 { // User cancelled the dialog
+                    if errorNumber == -128 {
                         continuation.resume(throwing: PowerError.authorizationCancelled)
                     } else {
                         continuation.resume(throwing: PowerError.commandFailed(errorBrief))
@@ -103,9 +126,8 @@ final class PowerManager: @unchecked Sendable {
     func acquirePowerAssertions() {
         releasePowerAssertions()
         
-        let reason = "ClamAwake Clamshell Mode (USB & Services Protection)" as CFString
+        let reason = "Awake! Mode (USB & Services Protection)" as CFString
         
-        // Prevent system from going to sleep
         _ = IOPMAssertionCreateWithName(
             kIOPMAssertionTypePreventSystemSleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
@@ -113,7 +135,6 @@ final class PowerManager: @unchecked Sendable {
             &systemSleepAssertionID
         )
         
-        // Prevent user idle sleep
         _ = IOPMAssertionCreateWithName(
             kIOPMAssertionTypePreventUserIdleSystemSleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
@@ -138,13 +159,11 @@ final class PowerManager: @unchecked Sendable {
     func restoreOnQuit() {
         releasePowerAssertions()
         if didChangeSleepSetting {
-            // Restore default sleep mode synchronously on exit
-            let command = "/usr/bin/pmset -a disablesleep 0"
-            let script = "do shell script \"\(command)\" with administrator privileges"
-            var error: NSDictionary?
-            if let appleScript = NSAppleScript(source: script) {
-                _ = appleScript.executeAndReturnError(&error)
-            }
+            let sudoProcess = Process()
+            sudoProcess.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
+            sudoProcess.arguments = ["-n", "/usr/bin/pmset", "-a", "disablesleep", "0"]
+            try? sudoProcess.run()
+            sudoProcess.waitUntilExit()
         }
     }
 }

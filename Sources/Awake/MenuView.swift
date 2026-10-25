@@ -5,15 +5,15 @@ struct MenuView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            // Header Bar
+            // 1. Header Bar
             headerSection
             
-            // Primary Control Cards (Compact Liquid Glass Pods)
+            // 2. Control Center Liquid Glass Capsules
             VStack(spacing: 7) {
-                // Pod 1: Mantener Activa (Clamshell Awake)
-                controlPod(
+                // Capsule 1: Mantener Activa
+                controlCapsule(
                     title: "Mantener activa",
-                    subtitle: "Tapa cerrada sin suspender",
+                    subtitle: "Nunca se duerme",
                     systemImage: "bolt.shield.fill",
                     isOn: viewModel.isKeepAwakeEnabled,
                     isBusy: viewModel.isBusy
@@ -21,10 +21,10 @@ struct MenuView: View {
                     viewModel.toggleKeepAwake()
                 }
                 
-                // Pod 2: Silenciar al Cerrar Tapa
-                controlPod(
-                    title: "Silenciar al cerrar",
-                    subtitle: "Pausa medios y silencia audio",
+                // Capsule 2: Silenciar Sonido
+                controlCapsule(
+                    title: "Silenciar sonido",
+                    subtitle: "Muta al cerrar",
                     systemImage: "speaker.slash.fill",
                     isOn: viewModel.isMuteOnLidCloseEnabled,
                     isBusy: false
@@ -33,55 +33,62 @@ struct MenuView: View {
                 }
             }
             
-            // Status Bar (Compact Diagnostics Pill)
-            statusBar
+            // 3. Diagnostics Status Capsule
+            diagnosticsCapsule
             
             if let error = viewModel.errorMessage {
                 errorBanner(message: error)
             }
             
-            // Footer
+            // 4. Footer
             footerSection
         }
-        .padding(11)
-        .frame(width: 250)
-        .background(NativeGlassBackground())
+        .padding(10)
+        .frame(width: 240)
+        .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
+        .preferredColorScheme(.dark)
     }
     
     // MARK: - Header
     
     private var headerSection: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 7) {
+            // MacBook with A!
             MacBookAIconView(size: 18)
             
             Text("Awake!")
-                .font(.system(size: 13, weight: .bold))
-                .foregroundColor(.primary)
+                .font(.system(size: 13.5, weight: .bold))
+                .foregroundColor(.white)
             
             Spacer()
             
             HStack(spacing: 4) {
                 Circle()
-                    .fill(viewModel.isKeepAwakeEnabled ? Color.green : Color.secondary.opacity(0.4))
-                    .frame(width: 5, height: 5)
+                    .fill(viewModel.isKeepAwakeEnabled ? Color(red: 0.2, green: 0.85, blue: 0.55) : Color.white.opacity(0.35))
+                    .frame(width: 5.5, height: 5.5)
                 
                 Text(viewModel.isKeepAwakeEnabled ? "ACTIVO" : "INACTIVO")
-                    .font(.system(size: 9, weight: .bold))
-                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .green : .secondary)
+                    .font(.system(size: 9.5, weight: .heavy))
+                    .foregroundColor(viewModel.isKeepAwakeEnabled ? Color(red: 0.2, green: 0.85, blue: 0.55) : Color.white.opacity(0.6))
             }
-            .padding(.horizontal, 6)
-            .padding(.vertical, 2.5)
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
             .background(
                 Capsule()
-                    .fill(viewModel.isKeepAwakeEnabled ? Color.green.opacity(0.12) : Color.primary.opacity(0.06))
+                    .fill(Color.white.opacity(0.12))
+                    .overlay(
+                        Capsule()
+                            .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
+                    )
             )
         }
-        .padding(.horizontal, 2)
+        .padding(.horizontal, 4)
+        .padding(.top, 2)
     }
     
-    // MARK: - Compact Liquid Glass Pod
+    // MARK: - Control Center Liquid Glass Capsule
     
-    private func controlPod(
+    private func controlCapsule(
         title: String,
         subtitle: String,
         systemImage: String,
@@ -89,120 +96,124 @@ struct MenuView: View {
         isBusy: Bool,
         onToggle: @escaping () -> Void
     ) -> some View {
-        HStack(spacing: 9) {
-            // Circular Glass Badge
-            ZStack {
-                Circle()
-                    .fill(isOn ? Color.accentColor : Color.primary.opacity(0.08))
-                    .frame(width: 26, height: 26)
+        Button(action: onToggle) {
+            HStack(spacing: 10) {
+                // Circular Button (Matching Control Center Wi-Fi / Bluetooth)
+                ZStack {
+                    Circle()
+                        .fill(isOn ? Color.white : Color.white.opacity(0.15))
+                        .frame(width: 32, height: 32)
+                    
+                    Image(systemName: systemImage)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(isOn ? Color(red: 0.0, green: 0.48, blue: 1.0) : Color.white.opacity(0.8))
+                }
                 
-                Image(systemName: systemImage)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(isOn ? .white : .secondary)
-            }
-            
-            // Titles (Concise, zero truncation)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(title)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.primary)
+                // Text (Max 3 words, ultra concise)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(title)
+                        .font(.system(size: 12.5, weight: .bold))
+                        .foregroundColor(.white)
+                    
+                    Text(subtitle)
+                        .font(.system(size: 10.5, weight: .medium))
+                        .foregroundColor(.white.opacity(0.7))
+                        .lineLimit(1)
+                }
                 
-                Text(subtitle)
-                    .font(.system(size: 10, weight: .regular))
-                    .foregroundColor(.secondary)
-                    .lineLimit(1)
+                Spacer(minLength: 4)
+                
+                // Toggle Switch or Progress Spinner
+                if isBusy {
+                    ProgressView()
+                        .scaleEffect(0.6)
+                        .frame(width: 32, height: 20)
+                } else {
+                    Toggle("", isOn: Binding(
+                        get: { isOn },
+                        set: { _ in onToggle() }
+                    ))
+                    .toggleStyle(SwitchToggleStyle(tint: Color(red: 0.0, green: 0.48, blue: 1.0)))
+                    .labelsHidden()
+                    .scaleEffect(0.75)
+                }
             }
-            
-            Spacer(minLength: 4)
-            
-            // Toggle Switch or Spinner
-            if isBusy {
-                ProgressView()
-                    .scaleEffect(0.6)
-                    .frame(width: 32, height: 20)
-            } else {
-                Toggle("", isOn: Binding(
-                    get: { isOn },
-                    set: { _ in onToggle() }
-                ))
-                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
-                .labelsHidden()
-                .scaleEffect(0.75)
-            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 7)
+            .contentShape(Rectangle())
         }
-        .padding(.horizontal, 9)
-        .padding(.vertical, 6)
+        .buttonStyle(.plain)
         .background(
-            RoundedRectangle(cornerRadius: 11, style: .continuous)
-                .fill(.ultraThinMaterial)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(Color(white: 0.20).opacity(0.42))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .stroke(
                             LinearGradient(
-                                colors: [Color.white.opacity(0.38), Color.white.opacity(0.08)],
-                                startPoint: .top,
-                                endPoint: .bottom
+                                colors: [Color.white.opacity(0.65), Color.white.opacity(0.14)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
                             ),
-                            lineWidth: 0.6
+                            lineWidth: 0.8
                         )
                 )
         )
     }
     
-    // MARK: - Compact Diagnostics Status Bar
+    // MARK: - Diagnostics Capsule
     
-    private var statusBar: some View {
+    private var diagnosticsCapsule: some View {
         HStack {
             // Lid Sensor
             HStack(spacing: 4) {
-                Image(systemName: viewModel.isLidClosed ? "macbook.gen2" : "macbook")
+                Image(systemName: "macbook")
                     .font(.system(size: 10))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white.opacity(0.7))
                 
                 Text("Tapa:")
-                    .font(.system(size: 10))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.white.opacity(0.7))
                 
                 Circle()
-                    .fill(viewModel.isLidClosed ? Color.orange : Color.green)
+                    .fill(viewModel.isLidClosed ? Color.orange : Color(red: 0.2, green: 0.85, blue: 0.55))
                     .frame(width: 5, height: 5)
                 
                 Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.primary)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.white)
             }
             
             Spacer()
             
-            // USB & Services
+            // USB
             HStack(spacing: 4) {
                 Image(systemName: "cable.connector.horizontal")
                     .font(.system(size: 10))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white.opacity(0.7))
                 
                 Text("USB:")
-                    .font(.system(size: 10))
-                    .foregroundColor(.secondary)
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundColor(.white.opacity(0.7))
                 
                 if viewModel.isKeepAwakeEnabled {
                     Image(systemName: "bolt.fill")
                         .font(.system(size: 8))
-                        .foregroundColor(.green)
+                        .foregroundColor(Color(red: 0.2, green: 0.85, blue: 0.55))
                 }
                 
                 Text(viewModel.isKeepAwakeEnabled ? "Activo" : "Normal")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(viewModel.isKeepAwakeEnabled ? .primary : .secondary)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(.white)
             }
         }
-        .padding(.horizontal, 9)
+        .padding(.horizontal, 10)
         .padding(.vertical, 5)
         .background(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .fill(Color.primary.opacity(0.03))
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(Color(white: 0.15).opacity(0.35))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .stroke(Color.white.opacity(0.08), lineWidth: 0.5)
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(Color.white.opacity(0.25), lineWidth: 0.6)
                 )
         )
     }
@@ -217,7 +228,7 @@ struct MenuView: View {
             
             Text(message)
                 .font(.system(size: 9.5))
-                .foregroundColor(.primary)
+                .foregroundColor(.white)
                 .lineLimit(2)
             
             Spacer()
@@ -225,7 +236,7 @@ struct MenuView: View {
         .padding(6)
         .background(
             RoundedRectangle(cornerRadius: 6, style: .continuous)
-                .fill(Color.orange.opacity(0.12))
+                .fill(Color.orange.opacity(0.25))
         )
     }
     
@@ -233,9 +244,9 @@ struct MenuView: View {
     
     private var footerSection: some View {
         HStack {
-            Text("v2.2")
+            Text("v2.3")
                 .font(.system(size: 9))
-                .foregroundColor(.secondary.opacity(0.6))
+                .foregroundColor(.white.opacity(0.4))
             
             Spacer()
             
@@ -246,17 +257,21 @@ struct MenuView: View {
                 NSApplication.shared.terminate(nil)
             }
             .buttonStyle(.plain)
-            .font(.system(size: 10, weight: .medium))
-            .foregroundColor(.secondary)
-            .padding(.horizontal, 7)
-            .padding(.vertical, 2.5)
+            .font(.system(size: 10, weight: .semibold))
+            .foregroundColor(.white.opacity(0.85))
+            .padding(.horizontal, 9)
+            .padding(.vertical, 3)
             .background(
-                RoundedRectangle(cornerRadius: 4, style: .continuous)
-                    .fill(Color.primary.opacity(0.06))
+                Capsule()
+                    .fill(Color.white.opacity(0.12))
+                    .overlay(
+                        Capsule()
+                            .stroke(Color.white.opacity(0.25), lineWidth: 0.5)
+                    )
             )
         }
-        .padding(.horizontal, 2)
-        .padding(.top, 1)
+        .padding(.horizontal, 4)
+        .padding(.top, 2)
     }
 }
 
@@ -269,16 +284,16 @@ struct MacBookAIconView: View {
             VStack(spacing: 1) {
                 ZStack {
                     RoundedRectangle(cornerRadius: size * 0.1)
-                        .stroke(Color.primary, lineWidth: 1.1)
+                        .stroke(Color.white, lineWidth: 1.2)
                         .frame(width: size * 0.85, height: size * 0.58)
                     
                     Text("A!")
                         .font(.system(size: size * 0.32, weight: .black, design: .default))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
                 }
                 
                 RoundedRectangle(cornerRadius: 0.7)
-                    .fill(Color.primary)
+                    .fill(Color.white)
                     .frame(width: size, height: size * 0.09)
             }
         }
@@ -286,22 +301,23 @@ struct MacBookAIconView: View {
     }
 }
 
-// Native Apple Liquid Glass background using NSGlassEffectView where available,
-// falling back to NSVisualEffectView popover material with behindWindow blending.
-struct NativeGlassBackground: NSViewRepresentable {
-    func makeNSView(context: Context) -> NSView {
-        if let glassClass = NSClassFromString("NSGlassEffectView") as? NSView.Type {
-            let v = glassClass.init(frame: .zero)
-            v.setValue(14.0, forKey: "cornerRadius")
-            return v
-        } else {
-            let v = NSVisualEffectView()
-            v.material = .popover
-            v.blendingMode = .behindWindow
-            v.state = .active
-            return v
-        }
+// Native macOS visual effect helper with dark HUD liquid glass
+struct VisualEffectView: NSViewRepresentable {
+    let material: NSVisualEffectView.Material
+    let blendingMode: NSVisualEffectView.BlendingMode
+    
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        view.material = material
+        view.blendingMode = blendingMode
+        view.state = .active
+        view.appearance = NSAppearance(named: .vibrantDark)
+        return view
     }
     
-    func updateNSView(_ nsView: NSView, context: Context) {}
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+        nsView.material = material
+        nsView.blendingMode = blendingMode
+        nsView.appearance = NSAppearance(named: .vibrantDark)
+    }
 }
