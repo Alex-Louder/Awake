@@ -9,12 +9,13 @@
 *Keep your Mac fully awake when the lid is closed without external monitors, with complete USB protection, active background services, and smart auto-mute.*
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge&logo=apple)](https://github.com/Alex-Louder/Awake/releases)
+[![Website](https://img.shields.io/badge/Website-alex--louder.github.io%2FAwake-0071e3.svg?style=for-the-badge&logo=safari&logoColor=white)](https://alex-louder.github.io/Awake/)
 [![macOS](https://img.shields.io/badge/macOS-14%2B%20Sonoma%20%7C%2015%20Sequoia%20%7C%2027%20Golden%20Gate-purple.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20%26%20Intel-success.svg?style=for-the-badge)](https://github.com/Alex-Louder/Awake)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Ko-fi Sponsor](https://img.shields.io/badge/Sponsor-Ko--fi%20alexlouder-FF5E5B.svg?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/alexlouder)
 
-[🇲🇽 Leer en Español](#-español) • [🇺🇸 Read in English](#-english)
+[🌐 Sitio Web Oficial](https://alex-louder.github.io/Awake/) • [🇲🇽 Leer en Español](#-español) • [🇺🇸 Read in English](#-english)
 
 </div>
 
