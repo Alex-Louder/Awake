@@ -10,7 +10,7 @@
   // --- Complete Bilingual Dictionaries (English & Español) ---
   const i18n = {
     en: {
-      page_title: "Awake! — Lid Down. Work Goes On.",
+      page_title: "Awake! — Lid Down. Your Mac Keeps Working.",
       nav_overview: "Overview",
       nav_ecosystem: "Ecosystem",
       nav_comparison: "Comparison",
@@ -19,11 +19,19 @@
       nav_faq: "FAQ",
       nav_download: "Download DMG",
 
-      hero_badge: "macOS 14+ Sonoma • 15 Sequoia • 27 Golden Gate",
-      hero_title: "Lid down.<br>Work goes on.",
-      hero_desc: "Your Mac sleeps when you say so, not when the hinge clicks. Keep background AI agents running, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.",
+      hero_badge: "macOS 27 Golden Gate",
+      hero_title: "Lid down.<br>Your Mac keeps working.",
+      hero_desc: "Prevent macOS from putting your work to sleep when you close your laptop. Your background AI agents, downloads, and remote desktop sessions keep running at full speed, with automatic audio mute on lid shut.",
       hero_cta_dmg: "Download Awake! v1.0.0",
       hero_cta_github: "GitHub Repository",
+
+      vd_title: "Virtual Display • Headless Stream",
+      vd_badge: "60 FPS Active",
+      vd_sill_status: "Active stream at 120 Hz",
+      vd_ollama_status: "Inference at 48 tok/s",
+      vd_footer_screen: "Physical screen: 0% brightness",
+      vd_footer_shh: "Audio: Muted with Shh!",
+      vd_footer_usb: "USB: 5V continuous",
 
       capsule_awake_label: "Awake!",
       capsule_awake_sub: "Keep your Mac awake",
@@ -41,63 +49,63 @@
       demo_btn_open: "Auto Demo: Open Lid",
       demo_btn_running: "Simulating...",
 
-      tagline_eyebrow: "The Clamshell Problem Solved",
-      tagline_text: "Engineered for developers, creators, and remote teams who refuse to let a closed hinge interrupt a single server, render, or download.",
+      tagline_eyebrow: "Continuous Compute",
+      tagline_text: "Close the lid. Your AI agents, local servers, and remote connections keep running.",
 
       eco_badge: "Ecosystem",
       eco_title: "Engineered for Background AI & Remote Workflows",
-      eco_sub: "Awake! was designed specifically for developers running long compute tasks and creators accessing their Mac from anywhere.",
+      eco_sub: "Awake! keeps your background tasks alive without external displays or complex terminal hacks.",
       eco_ai_title: "Background AI Agents & Compute",
       eco_ai_badge: "Never Interrupted",
-      eco_ai_desc: "Multi-hour coding agents, LLM inference, local model fine-tuning, and overnight batch builds continue at 100% Apple Silicon speed with your screen closed.",
+      eco_ai_desc: "Autonomous coding agents, local model inference, and background tasks run without interruption at full Apple Silicon performance with the screen shut.",
       app_claude_role: "Autonomous Coding",
       app_agy_role: "Agentic Pair Programmer",
       app_codex_role: "Terminal & Build Pipelines",
       app_ollama_role: "Local LLMs (Llama, DeepSeek)",
       eco_remote_title: "Remote Access & Control",
       eco_remote_badge: "Zero Black Screens",
-      eco_remote_desc: "Your physical screen backlight drops to zero to save energy, while the macOS WindowServer GPU framebuffer stays active at 60 FPS. Connect anytime from any device.",
-      app_sills_role: "Mobile iOS to Mac Stream",
-      app_rustdesk_role: "Open Source Remote P2P",
-      app_anydesk_role: "Ultra-Low Latency Access",
-      app_tv_role: "Headless Desktop Control",
+      eco_remote_desc: "Your physical screen turns off to conserve power, while the GPU framebuffer remains active at 60 FPS for instant remote access.",
+      app_sills_role: "iOS to Mac Streaming",
+      app_rustdesk_role: "Open Source Remote Access",
+      app_anydesk_role: "Low Latency Control",
+      app_tv_role: "Headless Desktop",
 
       duel_badge: "Architecture",
-      duel_title: "The Clamshell Trap vs. The Awake! Protocol",
-      duel_sub: "macOS assumes that closing your laptop means you have stopped working. Awake! gives you back total control.",
+      duel_title: "Standard Sleep vs. The Awake! Protocol",
+      duel_sub: "macOS suspends all user tasks when you lower the screen. Awake! gives you effortless control over when your Mac actually sleeps.",
       trap_title: "Default macOS Behavior",
       trap_badge: "Disruptive",
       trap_1_b: "Background tasks freeze:",
-      trap_1_t: " 4K video renders, Docker containers, database migrations, and large downloads halt immediately.",
-      trap_2_b: "USB bus power cut:",
-      trap_2_t: " External SSDs and audio interfaces abruptly disconnect, risking file corruption and audio glitches.",
+      trap_1_t: " Video renders, AI agents, Docker containers, and large downloads halt immediately.",
+      trap_2_b: "USB bus power cuts:",
+      trap_2_t: " External NVMe drives and audio interfaces abruptly disconnect, risking data corruption.",
       trap_3_b: "Remote Desktop black screens:",
-      trap_3_t: " WindowServer kills the display framebuffer. Remote sessions via Sills, VNC, and RustDesk go dark.",
-      trap_4_b: "Audio blares in public:",
-      trap_4_t: " Podcasts, music, or videos keep playing if you lower the lid quickly in quiet rooms.",
+      trap_3_t: " The WindowServer framebuffer shuts down. Remote sessions via Sill and AnyDesk go completely dark.",
+      trap_4_b: "Audio blares in quiet spaces:",
+      trap_4_t: " Media keeps playing out loud if you lower the lid quickly in quiet rooms or meetings.",
 
       awake_protocol_title: "The Awake! Protocol",
       awake_protocol_badge: "Seamless",
       awake_1_b: "Uninterrupted compute:",
-      awake_1_t: " CPU and GPU continue operating at full capacity. Local servers and renders finish without stopping.",
+      awake_1_t: " CPU and GPU continue operating at full capacity. AI agents and renders finish without stopping.",
       awake_2_b: "Guaranteed USB bus power:",
-      awake_2_t: " External NVMe drives, USB hubs, and audio DACs (Focusrite, Apollo) stay continuously powered.",
-      awake_3_b: "Crystal-clear Remote Desktop:",
-      awake_3_t: " Screen brightness drops to zero to save battery, but GPU framebuffer streams at 60 FPS.",
+      awake_2_t: " External NVMe drives and USB audio interfaces stay reliably powered at 5V DC.",
+      awake_3_b: "Fluid Remote Desktop:",
+      awake_3_t: " Screen backlight drops to zero to save battery, while the GPU framebuffer streams at 60 FPS.",
       awake_4_b: "Shh! Auto-Mute Guardian:",
-      awake_4_t: " Instantly pauses playback and mutes speakers/AirPods on lid shut. Restores volume on open.",
+      awake_4_t: " Instantly pauses media playback and mutes audio output when the lid is closed. Restores volume on open.",
 
       bento_badge: "Capabilities",
       bento_title: "Built for power users. Refined for everyone.",
-      bento_sub: "Engineered in pure native Swift. No Electron, no Chromium overhead, and no background daemons when idle.",
+      bento_sub: "Engineered in pure native Swift. No Electron, no background bloat, and zero idle overhead.",
       bento_shh_title: "Shh! Smart Audio & Media Curtain",
       bento_shh_desc: "Hooks directly into macOS CoreAudio and MediaRemote. Whether you listen via internal speakers, AirPods, or an external USB audio interface, closing the lid mutes sound instantly and pauses playback. It seamlessly restores your previous volume when you open the lid.",
-      bento_remote_title: "No Dummy Plugs Needed",
-      bento_remote_desc: "Awake! dims your physical display backlight to 0 via DisplayServices while maintaining the WindowServer framebuffer. Connect remotely via Sills, VNC, RustDesk, or AnyDesk without black screen errors.",
-      bento_security_title: "Zero Daily Password Prompts",
-      bento_security_desc: "Awake! executes with minimum privileges. It sets a single rule in /etc/sudoers.d/awake scoped strictly to pmset -a disablesleep. The app itself never runs as root.",
-      bento_ram_title: "~15 MB RAM • 0.0% Idle CPU",
-      bento_ram_desc: "No periodic polling loops. Awake! relies purely on IOKit kernel event interrupts, leaving your CPU, RAM, and battery completely free for actual compilation and creative work.",
+      bento_remote_title: "Continuous Remote Desktop",
+      bento_remote_desc: "Connect from your iPad or secondary machine via Sill, RustDesk, or AnyDesk without black screens or disconnects. Display brightness dims to zero to save battery while 60 FPS streaming stays active.",
+      bento_security_title: "One-Click Setup",
+      bento_security_desc: "Only requires authorization once during initial setup. Toggle it anytime from the menu bar without repetitive password prompts.",
+      bento_ram_title: "Native Swift & Lightweight",
+      bento_ram_desc: "Zero Electron, zero background bloat. A lean menu bar utility that uses no CPU cycles while idling.",
 
       pipe_badge: "How It Operates",
       pipe_title: "The 3-Step Hardware Pipeline",
@@ -118,7 +126,7 @@
       th_caff: "caffeinate (CLI)",
       row_1: "Lid closed without external monitor",
       row_2: "Continuous USB bus power",
-      row_3: "Remote Desktop (Sills, VNC) without black screen",
+      row_3: "Remote Desktop (Sill, VNC) without black screen",
       row_4: "Smart Mute on lid close (Shh!)",
       row_5: "Daily password prompts",
       row_6: "Memory footprint",
@@ -146,14 +154,14 @@
       faq_q4: "How do I completely uninstall Awake!?",
       faq_a4: "Awake! leaves zero hidden daemons or orphaned background services. Simply drag Awake!.app to your Trash, and remove the sudoers rule with: sudo rm -f /etc/sudoers.d/awake.",
 
-      final_title: "Lid down. Work goes on.",
+      final_title: "Lid down. Your Mac keeps working.",
       final_desc: "Download the universal macOS DMG or compile directly from source. 100% free, private, and open source.",
       final_download_btn: "Download Awake! v1.0.0 (DMG)",
       final_github_btn: "View Source on GitHub"
     },
 
     es: {
-      page_title: "Awake! — Bajas la tapa. Nada se detiene.",
+      page_title: "Awake! — Bajas la tapa. Tu Mac sigue trabajando.",
       nav_overview: "Inicio",
       nav_ecosystem: "Ecosistema",
       nav_comparison: "Comparativa",
@@ -162,11 +170,19 @@
       nav_faq: "FAQ",
       nav_download: "Descargar DMG",
 
-      hero_badge: "macOS 14+ Sonoma • 15 Sequoia • 27 Golden Gate",
-      hero_title: "Bajas la tapa.<br>Nada se detiene.",
-      hero_desc: "Tu Mac duerme cuando tú lo decides, no cuando la bisagra se cierra. Mantén agentes de IA en segundo plano, discos NVMe conectados y escritorio remoto funcionando sin adaptadores dummy. Con silencio inteligente al cerrar la pantalla.",
+      hero_badge: "macOS 27 Golden Gate",
+      hero_title: "Bajas la tapa.<br>Tu Mac sigue trabajando.",
+      hero_desc: "Evita que macOS suspenda tus procesos al cerrar la pantalla. Tus agentes de IA, descargas y sesiones de escritorio remoto continúan ejecutándose a toda velocidad, con silencio automático al bajar la pantalla.",
       hero_cta_dmg: "Descargar Awake! v1.0.0",
       hero_cta_github: "Repositorio en GitHub",
+
+      vd_title: "Pantalla Virtual • Stream Headless",
+      vd_badge: "60 FPS Activo",
+      vd_sill_status: "Streaming activo a 120 Hz",
+      vd_ollama_status: "Inferencia a 48 tok/s",
+      vd_footer_screen: "Pantalla física: 0% brillo",
+      vd_footer_shh: "Audio: Silenciado con Shh!",
+      vd_footer_usb: "USB: 5V continuo",
 
       capsule_awake_label: "Awake!",
       capsule_awake_sub: "Mantén despierta tu mac",
@@ -184,47 +200,47 @@
       demo_btn_open: "Auto Demo: Abrir Tapa",
       demo_btn_running: "Simulando...",
 
-      tagline_eyebrow: "El Problema de Clamshell Resuelto",
-      tagline_text: "Diseñada para desarrolladores, creadores y profesionales remotos que se niegan a que una bisagra cerrada interrumpa un solo servidor, render o descarga.",
+      tagline_eyebrow: "Cómputo Continuo",
+      tagline_text: "Cierra la pantalla. Tus agentes de IA, servidores y conexiones no se detienen.",
 
       eco_badge: "Ecosistema",
       eco_title: "Diseñado para Agentes de IA y Escritorio Remoto",
-      eco_sub: "Awake! fue creada específicamente para desarrolladores con tareas de cómputo extensas y profesionales que acceden a su Mac a distancia.",
+      eco_sub: "Awake! mantiene tus tareas activas sin necesidad de pantallas externas ni comandos complicados de terminal.",
       eco_ai_title: "Agentes de IA y Cómputo en Segundo Plano",
       eco_ai_badge: "Nunca se Interrumpen",
-      eco_ai_desc: "Agentes de programación autónomos de varias horas, inferencia de LLMs, afinación de modelos y compilaciones nocturnas continúan al 100% de velocidad Apple Silicon con la pantalla cerrada.",
+      eco_ai_desc: "Agentes de programación autónomos de varias horas, inferencia de LLMs y compilaciones continúan al 100% de velocidad Apple Silicon con la pantalla cerrada.",
       app_claude_role: "Programación Autónoma",
       app_agy_role: "Programador Pair en Terminal",
       app_codex_role: "Pipelines y Terminal LLMs",
       app_ollama_role: "LLMs Locales (Llama, DeepSeek)",
       eco_remote_title: "Acceso Remoto y Control",
       eco_remote_badge: "Cero Pantallas Negras",
-      eco_remote_desc: "El brillo de tu pantalla física baja a cero para ahorrar batería, mientras el framebuffer GPU de WindowServer sigue activo a 60 FPS. Conéctate cuando quieras desde cualquier equipo.",
+      eco_remote_desc: "El brillo físico se apaga para ahorrar batería, mientras el framebuffer GPU de WindowServer sigue activo a 60 FPS para conectarte al instante.",
       app_sills_role: "Streaming iOS a Mac",
       app_rustdesk_role: "P2P Remoto Código Abierto",
       app_anydesk_role: "Acceso de Ultra Baja Latencia",
       app_tv_role: "Control de Escritorio Headless",
 
       duel_badge: "Arquitectura",
-      duel_title: "La Trampa de Clamshell vs. El Protocolo Awake!",
-      duel_sub: "macOS asume que bajar la pantalla significa dejar de trabajar. Awake! te devuelve el control absoluto.",
+      duel_title: "Suspensión Normal vs. El Protocolo Awake!",
+      duel_sub: "macOS suspende todas tus tareas al bajar la pantalla. Awake! te devuelve el control total de cuándo tu Mac realmente duerme.",
       trap_title: "Comportamiento por Defecto en macOS",
       trap_badge: "Disruptivo",
       trap_1_b: "Las tareas en segundo plano se congelan:",
-      trap_1_t: " Renders en 4K, contenedores Docker, migraciones de base de datos y descargas pesadas se detienen de inmediato.",
+      trap_1_t: " Renders en 4K, agentes de IA, contenedores Docker y descargas pesadas se detienen de inmediato.",
       trap_2_b: "Corte de energía en puertos USB:",
-      trap_2_t: " Las unidades SSD externas e interfaces de audio se desconectan forzadamente, arriesgando datos y audio.",
+      trap_2_t: " Las unidades NVMe externas e interfaces de audio se desconectan forzadamente, arriesgando datos y audio.",
       trap_3_b: "Pantalla negra en Escritorio Remoto:",
-      trap_3_t: " WindowServer apaga el framebuffer. Sesiones de Sills, VNC y RustDesk quedan en negro total.",
+      trap_3_t: " WindowServer apaga el framebuffer. Sesiones de Sill, VNC y AnyDesk quedan en negro total.",
       trap_4_b: "Audio imprevisto en público:",
-      trap_4_t: " La música o videos siguen sonando si bajas la pantalla apresuradamente en una biblioteca o reunión.",
+      trap_4_t: " La música o videos siguen sonando si bajas la pantalla apresuradamente en una reunión o biblioteca.",
 
       awake_protocol_title: "El Protocolo Awake!",
       awake_protocol_badge: "Impecable",
       awake_1_b: "Cómputo ininterrumpido:",
-      awake_1_t: " CPU y GPU continúan operando al máximo. Servidores locales y renders terminan sin interrupciones.",
+      awake_1_t: " CPU y GPU continúan operando al máximo. Servidores locales y agentes de IA terminan sin interrupciones.",
       awake_2_b: "Energía garantizada en puertos USB:",
-      awake_2_t: " Discos NVMe, hubs USB e interfaces de audio (Focusrite, Apollo) se mantienen alimentados a 5V.",
+      awake_2_t: " Discos NVMe, hubs USB e interfaces de audio se mantienen alimentados de forma continua.",
       awake_3_b: "Escritorio Remoto fluido:",
       awake_3_t: " El brillo del display baja a 0 para ahorrar batería, pero el framebuffer sigue transmitiendo a 60 FPS.",
       awake_4_b: "Guardián Shh! Silencio Inteligente:",
@@ -232,15 +248,15 @@
 
       bento_badge: "Capacidades",
       bento_title: "Creado para usuarios avanzados. Diseñado para todos.",
-      bento_sub: "Ingeniería en Swift nativo puro. Sin Electron, sin sobrecarga de Chromium y sin procesos fantasma.",
+      bento_sub: "Ingeniería en Swift nativo puro. Sin Electron, sin sobrecarga y sin procesos innecesarios.",
       bento_shh_title: "Shh! Cortina Inteligente de Audio y Medios",
       bento_shh_desc: "Se conecta directamente a CoreAudio y MediaRemote. Ya sea que escuches con altavoces internos, AirPods o interfaces USB de audio, cerrar la tapa silencia el sonido y pausa la música al instante. Al volver a abrir la pantalla, restaura tu volumen automáticamente.",
-      bento_remote_title: "Cero Adaptadores Dummy HDMI",
-      bento_remote_desc: "Awake! atenúa la retroiluminación a cero con DisplayServices mientras sostiene activo el framebuffer de WindowServer. Conéctate vía Sills, VNC o RustDesk sin pantallas negras.",
-      bento_security_title: "Cero Contraseñas en el Día a Día",
-      bento_security_desc: "Awake! opera con mínimo privilegio. Configura una sola regla en /etc/sudoers.d/awake limitada estrictamente a pmset -a disablesleep. La aplicación jamás corre como root.",
-      bento_ram_title: "~15 MB RAM • 0.0% CPU Inactivo",
-      bento_ram_desc: "Sin bucles de sondeo continuo. Awake! funciona con interrupciones de eventos del kernel IOKit, dejando el 99.9% de tus recursos libres para compilar y crear.",
+      bento_remote_title: "Escritorio Remoto Continuo",
+      bento_remote_desc: "Conéctate desde tu iPad o computadora secundaria con Sill, RustDesk o AnyDesk sin pantallas negras ni interrupciones. El brillo físico se apaga para no gastar batería, pero el streaming a 60 FPS continúa activo.",
+      bento_security_title: "Configuración en un Clic",
+      bento_security_desc: "Solo necesita autorización durante la instalación inicial. Después de eso, puedes activarla o pausarla directamente desde la barra de menús sin que vuelva a pedirte contraseña.",
+      bento_ram_title: "Swift Nativo y Ligero",
+      bento_ram_desc: "Cero Electron, cero procesos innecesarios. Una utilidad de barra de menús rápida que no consume recursos de tu procesador cuando está en espera.",
 
       pipe_badge: "Cómo Opera",
       pipe_title: "El Pipeline de Hardware en 3 Pasos",
@@ -261,7 +277,7 @@
       th_caff: "caffeinate (CLI)",
       row_1: "Tapa cerrada sin monitor externo",
       row_2: "Energía USB continua",
-      row_3: "Escritorio Remoto (Sills, VNC) sin pantalla negra",
+      row_3: "Escritorio Remoto (Sill, VNC) sin pantalla negra",
       row_4: "Silencio inteligente al cerrar (Shh!)",
       row_5: "Solicitudes de contraseña diarias",
       row_6: "Consumo de memoria RAM",
@@ -289,19 +305,20 @@
       faq_q4: "¿Cómo desinstalo Awake! por completo?",
       faq_a4: "Awake! no deja ningún daemon oculto ni procesos en segundo plano. Simplemente arrastra Awake!.app a la Papelera y elimina la regla de sudoers con: sudo rm -f /etc/sudoers.d/awake.",
 
-      final_title: "Bajas la tapa. Nada se detiene.",
+      final_title: "Bajas la tapa. Tu Mac sigue trabajando.",
       final_desc: "Descarga el DMG universal para macOS o compila directamente desde código fuente. 100% libre y seguro.",
       final_download_btn: "Descargar Awake! v1.0.0 (DMG)",
       final_github_btn: "Ver Código en GitHub"
     }
   };
 
-  let currentLang = 'en';
+  let currentLang = 'es';
 
   // --- Dynamic DOM Translation Engine ---
   function setLanguage(lang) {
     currentLang = lang;
-    const dict = i18n[lang] || i18n.en;
+    localStorage.setItem('awake_lang', lang);
+    const dict = i18n[lang] || i18n.es;
 
     document.querySelectorAll('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
@@ -314,18 +331,19 @@
       }
     });
 
-    // Update Lang Nav Buttons
+    // Update Lang Nav Button
     const langDisplay = document.getElementById('langDisplay');
     if (langDisplay) {
-      langDisplay.innerHTML = lang === 'en' ? '<strong>EN</strong> / 🇲🇽 ES' : '🇺🇸 EN / <strong>🇲🇽 ES</strong>';
+      langDisplay.innerHTML = lang === 'es' ? '<strong>🇲🇽 ES</strong> / 🇺🇸 EN' : '🇲🇽 ES / <strong>🇺🇸 EN</strong>';
     }
 
     const simLangToggle = document.getElementById('simLangToggle');
     if (simLangToggle) {
-      simLangToggle.textContent = lang === 'en' ? '[ EN | ES ]' : '[ ES | EN ]';
+      simLangToggle.textContent = lang === 'es' ? '[ ES | EN ]' : '[ EN | ES ]';
     }
 
     document.title = dict.page_title || "Awake!";
+    document.documentElement.setAttribute('lang', lang);
 
     // Rebuild Tagline reveal words with guaranteed spacing
     buildTaglineReveal();
@@ -339,7 +357,7 @@
     const box = document.getElementById('taglineBox');
     if (!box) return;
 
-    const dict = i18n[currentLang] || i18n.en;
+    const dict = i18n[currentLang] || i18n.es;
     const fullText = dict.tagline_text;
     const words = fullText.split(' ');
 
@@ -361,10 +379,10 @@
     const rect = box.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
-    if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
+    if (rect.top < windowHeight * 0.88 && rect.bottom > 0) {
       const spans = box.querySelectorAll('.tagline-word');
-      const progress = Math.min(1, Math.max(0, (windowHeight * 0.78 - rect.top) / (rect.height + 120)));
-      const wordsToReveal = Math.floor(progress * spans.length * 1.4);
+      const progress = Math.min(1, Math.max(0, (windowHeight * 0.80 - rect.top) / (rect.height + 140)));
+      const wordsToReveal = Math.floor(progress * spans.length * 1.35);
 
       spans.forEach((span, idx) => {
         if (idx <= wordsToReveal) {
@@ -376,7 +394,7 @@
     }
   }
 
-  // --- Dynamic Interactive Ambient Background Particle Canvas ---
+  // --- Volumetric Radiant Aurora & Micro-Stage Canvas Engine ---
   function initAmbientCanvas() {
     const canvas = document.getElementById('ambientCanvas');
     if (!canvas) return;
@@ -385,23 +403,67 @@
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    let mouse = { x: -1000, y: -1000, active: false };
-    const particles = [];
-    const particleCount = Math.min(55, Math.floor((width * height) / 22000));
+    let mouse = { x: width * 0.5, y: height * 0.35, targetX: width * 0.5, targetY: height * 0.35, active: false };
 
-    function createParticle() {
-      return {
+    // 4 Volumetric Aurora Orbs
+    const orbs = [
+      {
+        baseX: 0.3,
+        baseY: 0.28,
+        r: 480,
+        color: [10, 132, 255], // Apple Electric Blue
+        speedX: 0.0006,
+        speedY: 0.0008,
+        ampX: 180,
+        ampY: 130,
+        phase: 0
+      },
+      {
+        baseX: 0.72,
+        baseY: 0.34,
+        r: 520,
+        color: [99, 102, 241], // Deep Violet / Indigo
+        speedX: 0.0005,
+        speedY: 0.0007,
+        ampX: 200,
+        ampY: 150,
+        phase: Math.PI * 0.5
+      },
+      {
+        baseX: 0.5,
+        baseY: 0.52,
+        r: 440,
+        color: [16, 185, 129], // Emerald / Teal
+        speedX: 0.0008,
+        speedY: 0.0005,
+        ampX: 160,
+        ampY: 110,
+        phase: Math.PI
+      },
+      {
+        baseX: 0.2,
+        baseY: 0.65,
+        r: 420,
+        color: [0, 113, 227], // Vibrant Azure
+        speedX: 0.0004,
+        speedY: 0.0006,
+        ampX: 140,
+        ampY: 120,
+        phase: Math.PI * 1.5
+      }
+    ];
+
+    // Subtle micro-stars
+    const stars = [];
+    const starCount = 35;
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
-        radius: Math.random() * 1.5 + 0.8,
-        alpha: Math.random() * 0.35 + 0.15
-      };
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(createParticle());
+        r: Math.random() * 1.1 + 0.6,
+        alpha: Math.random() * 0.35 + 0.1,
+        speed: (Math.random() - 0.5) * 0.2
+      });
     }
 
     function onResize() {
@@ -412,78 +474,111 @@
     window.addEventListener('resize', onResize, { passive: true });
 
     window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      mouse.targetX = e.clientX;
+      mouse.targetY = e.clientY;
       mouse.active = true;
     }, { passive: true });
 
     window.addEventListener('mouseleave', () => {
       mouse.active = false;
+      mouse.targetX = width * 0.5;
+      mouse.targetY = height * 0.35;
     });
 
-    let animationFrameId = null;
+    let startTime = performance.now();
 
-    function renderCanvas() {
+    function renderCanvas(now) {
       if (document.hidden) {
-        animationFrameId = requestAnimationFrame(renderCanvas);
+        requestAnimationFrame(renderCanvas);
         return;
       }
+
+      const elapsed = now - startTime;
+
+      // Smooth mouse spring interpolation
+      mouse.x += (mouse.targetX - mouse.x) * 0.045;
+      mouse.y += (mouse.targetY - mouse.y) * 0.045;
 
       ctx.clearRect(0, 0, width, height);
 
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      const particleColor = isDark ? '255, 255, 255' : '20, 20, 30';
-      const lineColor = isDark ? '10, 132, 255' : '10, 132, 255';
 
-      // Update & Draw particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      // 1. Draw Volumetric Glowing Orbs
+      ctx.save();
+      ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
 
-        p.x += p.vx;
-        p.y += p.vy;
+      orbs.forEach((orb) => {
+        const ox = orb.baseX * width + Math.sin(elapsed * orb.speedX + orb.phase) * orb.ampX + (mouse.x - width * 0.5) * 0.07;
+        const oy = orb.baseY * height + Math.cos(elapsed * orb.speedY + orb.phase) * orb.ampY + (mouse.y - height * 0.35) * 0.07;
+        const rad = Math.min(width, height) * 0.45;
 
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
+        const grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, rad);
+        const [r, g, b] = orb.color;
+        const maxAlpha = isDark ? 0.14 : 0.07;
 
-        // Mouse gentle repulsion
-        if (mouse.active) {
-          const dx = mouse.x - p.x;
-          const dy = mouse.y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 140) {
-            const force = (140 - dist) / 140;
-            p.x -= (dx / dist) * force * 1.2;
-            p.y -= (dy / dist) * force * 1.2;
-          }
-        }
+        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${maxAlpha})`);
+        grad.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.5})`);
+        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
+        ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${particleColor}, ${p.alpha})`;
+        ctx.arc(ox, oy, rad, 0, Math.PI * 2);
         ctx.fill();
+      });
+      ctx.restore();
 
-        // Connect nearby particles
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 115) {
-            const lineAlpha = (1 - dist / 115) * 0.12;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(${lineColor}, ${lineAlpha})`;
-            ctx.lineWidth = 0.8;
-            ctx.stroke();
-          }
-        }
+      // 2. Cursor Proximity Radiant Halo
+      if (mouse.active) {
+        ctx.save();
+        ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
+        const halo = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 280);
+        halo.addColorStop(0, isDark ? 'rgba(10, 132, 255, 0.12)' : 'rgba(10, 132, 255, 0.05)');
+        halo.addColorStop(0.5, isDark ? 'rgba(99, 102, 241, 0.05)' : 'rgba(99, 102, 241, 0.02)');
+        halo.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, 280, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
 
-      animationFrameId = requestAnimationFrame(renderCanvas);
+      // 3. Perspective Stage Horizon Lines (Floor depth behind hero)
+      if (isDark) {
+        ctx.save();
+        const stageY = height * 0.62;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+        ctx.lineWidth = 1;
+
+        // Subtle horizontal gridlines
+        for (let i = 0; i < 4; i++) {
+          const y = stageY + i * 36;
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      // 4. Subtle Micro-Stars Drift
+      ctx.save();
+      const starFill = isDark ? 'rgba(255, 255, 255,' : 'rgba(20, 20, 30,';
+      stars.forEach((s) => {
+        s.y += s.speed;
+        if (s.y < 0) s.y = height;
+        if (s.y > height) s.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `${starFill} ${s.alpha})`;
+        ctx.fill();
+      });
+      ctx.restore();
+
+      requestAnimationFrame(renderCanvas);
     }
 
-    renderCanvas();
+    requestAnimationFrame(renderCanvas);
   }
 
   // --- Interactive MacBook & Awake! HUD Simulator Engine ---
@@ -494,10 +589,12 @@
   let isAutoDemoRunning = false;
 
   function updateSimulatorState() {
-    const dict = i18n[currentLang] || i18n.en;
+    const dict = i18n[currentLang] || i18n.es;
+    const heroStage = document.querySelector('.hero-stage');
     const lidAssembly = document.getElementById('macbookLidAssembly');
     const screenOverlay = document.getElementById('screenSleepOverlay');
     const hudCard = document.getElementById('hudCard');
+    const virtualDisplay = document.getElementById('virtualDisplayHud');
     const menuBarIcon = document.getElementById('menuBarIcon');
     const lidDot = document.getElementById('simLidDot');
     const lidText = document.getElementById('simLidStatusText');
@@ -517,6 +614,12 @@
     const telRemote = document.getElementById('telRemote');
 
     const isLidClosed = lidAngle <= 25;
+
+    // Toggle container classes for Virtual Display & 3D Model
+    if (heroStage) {
+      heroStage.classList.toggle('is-lid-closed', isLidClosed);
+    }
+
     const macbookModel = document.getElementById('macbookModel');
     if (macbookModel) {
       macbookModel.classList.toggle('is-closed', isLidClosed);
@@ -547,7 +650,20 @@
       autoDemoText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
     }
 
-    // 4. Lid Status Pill & Dot
+    // 4. Virtual Display HUD State
+    if (virtualDisplay) {
+      if (isLidClosed) {
+        if (isAwakeActive) {
+          virtualDisplay.style.filter = 'none';
+          virtualDisplay.style.opacity = '1';
+        } else {
+          virtualDisplay.style.filter = 'grayscale(1) brightness(0.4)';
+          virtualDisplay.style.opacity = '0.3';
+        }
+      }
+    }
+
+    // 5. Lid Status Pill & Dot
     if (lidDot && lidText) {
       if (isLidClosed) {
         lidDot.className = 'indicator-circle orange';
@@ -558,7 +674,7 @@
       }
     }
 
-    // 5. USB Bus Power, Hardware LEDs & Ports
+    // 6. USB Bus Power, Hardware LEDs & Ports
     if (usbText) {
       if (isAwakeActive) {
         usbText.textContent = dict.hud_usb_active;
@@ -580,7 +696,7 @@
       }
     }
 
-    // 6. Screen Sleep Overlay & HUD Visibility
+    // 7. Screen Sleep Overlay & Internal HUD Visibility
     if (screenOverlay && hudCard) {
       if (isLidClosed) {
         if (isAwakeActive) {
@@ -601,12 +717,12 @@
       }
     }
 
-    // 7. Menu Bar Icon State
+    // 8. Menu Bar Icon State
     if (menuBarIcon) {
       menuBarIcon.classList.toggle('active', isAwakeActive);
     }
 
-    // 8. Shh! Smart Audio & Waveform Meter
+    // 9. Shh! Smart Audio & Waveform Meter
     if (waveformRow && audioLabel) {
       if (isShhActive && isLidClosed) {
         waveformRow.classList.add('muted');
@@ -617,7 +733,7 @@
       }
     }
 
-    // 9. Real-Time Hardware Telemetry Badges
+    // 10. Real-Time Hardware Telemetry Badges
     if (telCpu) {
       if (isAwakeActive) {
         telCpu.textContent = currentLang === 'es' ? '100% Sin Freno' : '100% Unthrottled';
@@ -703,24 +819,24 @@
     if (isAutoDemoRunning) return;
     isAutoDemoRunning = true;
 
-    const dict = i18n[currentLang] || i18n.en;
+    const dict = i18n[currentLang] || i18n.es;
     const autoDemoText = document.getElementById('autoDemoText');
     if (autoDemoText) autoDemoText.textContent = dict.demo_btn_running;
 
     const shouldClose = lidAngle > 30;
     const targetAngle = shouldClose ? 0 : 135;
 
-    animateLid(targetAngle, 1300, () => {
+    animateLid(targetAngle, 1100, () => {
       isAutoDemoRunning = false;
       updateSimulatorState();
       showToast(
         shouldClose
           ? (currentLang === 'es' 
-              ? 'Tapa cerrada: Discos NVMe, IA en background y streaming 60 FPS siguen activos' 
-              : 'Lid shut: NVMe drives, background AI, and 60 FPS streaming stay alive')
+              ? 'Tapa cerrada: Pantalla Virtual activa, agentes e inferencia al 100%' 
+              : 'Lid shut: Virtual Display active, AI agents and streaming running at 100%')
           : (currentLang === 'es' 
-              ? 'Tapa abierta: Volumen de audio restaurado y display activo' 
-              : 'Lid opened: Audio volume restored and display illuminated')
+              ? 'Tapa abierta: Volumen de audio restaurado y pantalla encendida' 
+              : 'Lid opened: Audio volume restored and screen illuminated')
       );
     });
   }
@@ -888,9 +1004,10 @@
 
   // --- Global Initialization ---
   document.addEventListener('DOMContentLoaded', () => {
-    // Detect Browser Language or default to Spanish as prioritized by user
-    const userPrefersEs = navigator.language && navigator.language.startsWith('es');
-    setLanguage(userPrefersEs ? 'es' : 'en');
+    // Default to Spanish (user preference) or saved choice
+    const savedLang = localStorage.getItem('awake_lang');
+    const defaultLang = savedLang || 'es';
+    setLanguage(defaultLang);
 
     // Language Toggle Button in Nav
     const langBtn = document.getElementById('langToggleBtn');
