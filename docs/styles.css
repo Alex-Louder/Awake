@@ -65,6 +65,11 @@
   --duration-norm: 280ms;
   --duration-slow: 600ms;
 
+  /* Transitions.dev Spring & Micro-Interaction Tokens */
+  --t-ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-panel-blur: 4px;
+
   /* Layout Constraints */
   --container-max: 1200px;
   --container-narrow: 860px;
@@ -401,9 +406,9 @@ body {
 
 .hero-desc {
   font-size: clamp(1.05rem, 1.4vw, 1.25rem);
-  line-height: 1.5;
+  line-height: 1.4;
   color: var(--text-secondary);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   max-width: 540px;
   text-wrap: pretty;
 }
@@ -517,37 +522,37 @@ body {
 }
 
 /* Virtual Floating Display HUD (Projects above closed MacBook) */
+/* Virtual Floating Display HUD (Floats above closed MacBook) */
 .virtual-display-hud {
+  position: absolute;
+  top: 10px;
   width: 100%;
-  max-width: 530px;
-  background: rgba(12, 15, 26, 0.92);
-  backdrop-filter: blur(40px) saturate(190%);
-  -webkit-backdrop-filter: blur(40px) saturate(190%);
-  border: 1px solid rgba(10, 132, 255, 0.42);
+  max-width: 490px;
+  background: rgba(12, 14, 22, 0.94);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(10, 132, 255, 0.45);
   border-radius: var(--radius-xl);
-  box-shadow: 0 0 50px rgba(10, 132, 255, 0.25), 0 24px 60px rgba(0, 0, 0, 0.85);
-  padding: 0 20px;
-  max-height: 0;
-  margin-bottom: 0;
-  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(10, 132, 255, 0.22);
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  position: relative;
+  z-index: 50;
   opacity: 0;
-  transform: translateY(18px) scale(0.96);
+  transform: translateY(24px) scale(0.96);
+  filter: blur(3px);
   pointer-events: none;
-  transition: opacity 420ms cubic-bezier(0.16, 1, 0.3, 1), transform 420ms cubic-bezier(0.16, 1, 0.3, 1), max-height 420ms cubic-bezier(0.16, 1, 0.3, 1), margin-bottom 420ms cubic-bezier(0.16, 1, 0.3, 1), padding 420ms cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 10;
+  transition: opacity 450ms var(--t-ease-spring),
+              transform 450ms var(--t-ease-spring),
+              filter 450ms var(--t-ease-spring);
 }
 
-/* When the MacBook is closed, Virtual Display expands into view */
+/* When the MacBook is closed, Virtual Display blooms into view */
 .hero-stage.is-lid-closed .virtual-display-hud {
   opacity: 1;
-  max-height: 420px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
   transform: translateY(0) scale(1);
+  filter: blur(0);
   pointer-events: auto;
 }
 
@@ -623,8 +628,8 @@ body {
   padding: 7px 10px;
 }
 .vd-app-icon {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 }
 .vd-task-info {
@@ -652,52 +657,194 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
+/* ==========================================================================
+   AUTHENTIC 3D MACBOOK CLAMSHELL ENGINE
+   Perspective Base + Rear Hinged Liquid Retina Lid Assembly
+   ========================================================================== */
+
 .macbook-3d-scene {
   perspective: 1200px;
-  perspective-origin: 50% 50%;
+  perspective-origin: 50% 45%;
   width: 100%;
-  max-width: 530px;
+  max-width: 520px;
+  height: 430px;
   display: flex;
+  align-items: center;
   justify-content: center;
   position: relative;
 }
 
-.macbook-3d-model {
-  width: 100%;
+/* Base: Magic Keyboard, Trackpad & Side Ports tilted on desk plane */
+.macbook-base {
+  width: 480px;
+  height: 300px;
+  background: linear-gradient(180deg, #24242d 0%, #121218 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   transform-style: preserve-3d;
-  transition: transform var(--duration-slow) var(--ease-smooth);
-}
-
-/* The Rotating Lid Assembly */
-.macbook-lid-assembly {
-  width: 100%;
-  height: 350px;
-  position: relative;
-  transform-origin: 50% 100%;
-  transform-style: preserve-3d;
-  transform: rotateX(var(--lid-rotate, 0deg));
+  transform: rotateX(54deg);
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
   transition: transform var(--duration-norm) var(--ease-smooth);
-  z-index: 2;
 }
 
-/* Front Face: Screen, Glass, Menu Bar & HUD */
-.macbook-lid-front {
+/* Keyboard Deck */
+.keyboard-deck {
+  width: 90%;
+  height: 145px;
+  background: #060609;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.95);
+  margin-top: 8px;
+  padding: 4px 6px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.keyboard-row {
+  display: flex;
+  gap: 3px;
+  height: 23px;
+}
+.keyboard-row.f-keys { height: 16px; }
+.key {
+  background: #181822;
+  border-radius: 3px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7.5px;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-sans);
+  border-bottom: 1px solid #101015;
+  user-select: none;
+}
+.key.space { flex: 5; }
+.key.touch-id { background: #000000; border: 1px solid rgba(255, 255, 255, 0.18); }
+
+.trackpad {
+  width: 150px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  margin-top: 14px;
+}
+
+.thumb-scoop {
+  width: 54px;
+  height: 4px;
+  background: #000000;
+  border-radius: 0 0 6px 6px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.speaker-grille {
+  position: absolute;
+  top: 24px;
+  width: 14px;
+  height: 110px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+.speaker-grille.left { left: 12px; }
+.speaker-grille.right { right: 12px; }
+
+.usb-port {
+  position: absolute;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  transition: all var(--duration-quick) ease;
+}
+#portLeft { left: 14px; }
+#portRight { right: 14px; }
+
+.port-led {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+.usb-port.active .port-led {
+  background: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green);
+}
+.usb-port.sleep-risk .port-led {
+  background: var(--accent-red);
+  box-shadow: 0 0 8px var(--accent-red);
+}
+
+/* Hinged Upper Lid Assembly (Attached at top: 0 rear edge of base) */
+.macbook-lid {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: #09090c;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 18px 18px 4px 4px;
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--lid-rot, 115deg));
+  transition: transform 650ms var(--t-ease-spring);
+  border-radius: 14px;
+  z-index: 10;
+}
+
+/* Back Face (Apple Logo): Visible when closed (0deg) */
+.lid-shell-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(145deg, #2c2c36 0%, #15151e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.lid-apple-logo {
+  width: 54px;
+  height: 54px;
+  fill: rgba(255, 255, 255, 0.88);
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
+}
+
+/* Inside Face (Screen & Popover HUD): Visible when open (115deg) */
+.lid-screen-inside {
+  position: absolute;
+  inset: 0;
+  background: #08080c;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+  display: flex;
   flex-direction: column;
-  transition: opacity 300ms ease;
   z-index: 3;
 }
 
@@ -707,92 +854,34 @@ body {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 110px;
-  height: 14px;
+  width: 80px;
+  height: 11px;
   background: #000000;
-  border-radius: 0 0 10px 10px;
+  border-radius: 0 0 8px 8px;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .macbook-camera-lens {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   background: #111116;
   border: 1px solid #22222b;
   border-radius: 50%;
 }
 
-/* Back Face: Matte Anodized Aluminum Shell with Laser Apple Logo */
-.macbook-lid-back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #2b2b36 0%, #17171f 50%, #0d0d13 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 18px 18px 4px 4px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 300ms ease, transform 300ms ease;
-  z-index: 2;
-}
-
-/* Seamless 3D Clamshell Lid-Closed State */
-.macbook-3d-model.is-closed {
-  height: 175px;
-}
-.macbook-3d-model.is-closed .macbook-lid-assembly {
-  height: 175px;
-  transform: none !important;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 5;
-}
-.macbook-3d-model.is-closed .macbook-lid-front {
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-}
-.macbook-3d-model.is-closed .macbook-lid-back {
-  transform: none;
-  opacity: 1;
-  pointer-events: auto;
-  border-radius: 12px 12px 18px 18px;
-  background: linear-gradient(180deg, #2c2c38 0%, #1c1c24 60%, #121218 100%);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  z-index: 6;
-}
-
-.lid-apple-logo {
-  width: 58px;
-  height: 58px;
-  fill: rgba(255, 255, 255, 0.88);
-  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
-  transition: all var(--duration-norm) ease;
-}
-
 /* Simulated macOS Menu Bar */
 .macbook-menubar {
-  height: 28px;
-  background: rgba(20, 20, 28, 0.9);
+  height: 24px;
+  background: rgba(20, 20, 28, 0.92);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  font-size: 11.5px;
+  padding: 0 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.9);
   user-select: none;
   z-index: 5;
@@ -801,7 +890,7 @@ body {
 .menubar-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .apple-logo {
   width: 11px;
@@ -813,7 +902,7 @@ body {
 }
 .menubar-item {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 11px;
+  font-size: 10.5px;
 }
 
 .menubar-right {
@@ -824,12 +913,12 @@ body {
 .menubar-awake-pill {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   background: rgba(255, 255, 255, 0.12);
   padding: 2px 7px;
   border-radius: var(--radius-full);
   font-weight: 600;
-  font-size: 10.5px;
+  font-size: 10px;
   color: #ffffff;
   cursor: pointer;
   transition: all var(--duration-quick) var(--ease-spring);
@@ -846,10 +935,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
+  padding: 12px;
   position: relative;
   overflow: hidden;
-  transition: background var(--duration-norm) ease;
 }
 
 /* Power-Save Dimming Overlay */
@@ -866,25 +954,26 @@ body {
   z-index: 8;
 }
 .screen-sleep-overlay.dimmed {
-  opacity: 0.85; /* Screen is 0 brightness, HUD glows faintly */
+  opacity: 0.85;
 }
 .screen-sleep-overlay.dark-sleep {
-  opacity: 0.98; /* True power off when Awake! is disabled */
+  opacity: 0.98;
 }
 
 /* Native Vector HUD Popover */
 .awake-hud-card {
-  width: 275px;
-  background: rgba(22, 22, 32, 0.84);
+  width: 250px;
+  background: rgba(22, 22, 32, 0.88);
   backdrop-filter: blur(36px) saturate(190%);
   -webkit-backdrop-filter: blur(36px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-hud);
   padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
+  user-select: none;
   position: relative;
   z-index: 9;
   transition: transform var(--duration-norm) var(--ease-spring), opacity var(--duration-norm) ease;
@@ -1080,121 +1169,7 @@ body {
   background: var(--accent-orange);
 }
 
-/* Full MacBook Lower Unibody Case (Top Case + Keyboard Deck + Trackpad) */
-.macbook-lower-unibody {
-  width: 100%;
-  height: 175px;
-  background: linear-gradient(180deg, #24242d 0%, #15151c 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-top: none;
-  border-radius: 0 0 18px 18px;
-  position: relative;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 14px;
-  overflow: hidden;
-  z-index: 1;
-}
 
-.keyboard-deck {
-  width: 440px;
-  height: 94px;
-  background: #08080c;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 7px;
-  padding: 4px 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85);
-  position: relative;
-  z-index: 2;
-}
-.keyboard-row {
-  display: flex;
-  gap: 3px;
-  height: 14.5px;
-}
-.keyboard-row.f-keys { height: 10px; }
-.key {
-  background: #181820;
-  border-radius: 2px;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 6.5px;
-  color: rgba(255, 255, 255, 0.45);
-  font-family: var(--font-sans);
-  border-bottom: 1px solid #101015;
-  user-select: none;
-}
-.key.space { flex: 4.8; }
-.key.touch-id { background: #000000; border: 1px solid rgba(255, 255, 255, 0.18); }
-
-.trackpad {
-  width: 155px;
-  height: 48px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  margin-top: 8px;
-  position: relative;
-  z-index: 2;
-}
-
-.thumb-scoop {
-  width: 60px;
-  height: 4px;
-  background: #000000;
-  border-radius: 0 0 6px 6px;
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-}
-
-.speaker-grille {
-  position: absolute;
-  top: 12px;
-  width: 16px;
-  height: 86px;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
-  background-size: 3px 3px;
-  z-index: 2;
-}
-.speaker-grille.left { left: 12px; }
-.speaker-grille.right { right: 12px; }
-
-.usb-port {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  transition: all var(--duration-quick) ease;
-}
-.port-led {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
-  transition: all var(--duration-norm) ease;
-}
-.usb-port.active .port-led {
-  background: var(--accent-green);
-  box-shadow: 0 0 10px var(--accent-green);
-}
-.usb-port.sleep-risk .port-led {
-  background: var(--accent-red);
-  box-shadow: 0 0 8px var(--accent-red);
-}
 
 /* Control Deck (Auto-Demo Button + Angle Slider + Telemetry Pills) */
 .simulator-controls {
@@ -1378,9 +1353,10 @@ body {
 
 .section-sub {
   font-size: 1.1rem;
+  line-height: 1.4;
   color: var(--text-secondary);
   max-width: 620px;
-  margin-bottom: 48px;
+  margin-bottom: 34px;
   text-wrap: pretty;
 }
 
@@ -1447,7 +1423,7 @@ body {
 .group-desc {
   font-size: 14.5px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.38;
 }
 
 .app-items-grid {
@@ -1595,7 +1571,7 @@ body {
   align-items: flex-start;
   gap: 14px;
   font-size: 14.5px;
-  line-height: 1.45;
+  line-height: 1.38;
 }
 .duel-bullet {
   font-weight: 700;
@@ -1671,9 +1647,9 @@ body {
 
 .bento-card-desc {
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.38;
   color: var(--text-secondary);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   text-wrap: pretty;
 }
 
@@ -1754,7 +1730,7 @@ body {
 .pipeline-card-desc {
   font-size: 13.5px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.38;
 }
 
 .pipeline-code {
@@ -1791,6 +1767,7 @@ body {
   padding: 16px 20px;
   border-bottom: 1px solid var(--border-subtle);
   font-size: 13.5px;
+  color: var(--text-primary);
 }
 
 .matrix-table th {
@@ -1881,8 +1858,8 @@ body {
 .creator-bio {
   font-size: 15px;
   color: var(--text-secondary);
-  line-height: 1.5;
-  margin-bottom: 28px;
+  line-height: 1.4;
+  margin-bottom: 24px;
 }
 
 .tip-options-row {
@@ -2037,7 +2014,7 @@ body {
   padding: 0 24px 20px 24px;
   color: var(--text-secondary);
   font-size: 14.5px;
-  line-height: 1.55;
+  line-height: 1.42;
 }
 .faq-item.open .faq-content {
   display: block;
@@ -2199,8 +2176,46 @@ body {
   }
 }
 
+/* ==========================================================================
+   TRANSITIONS.DEV MICRO-INTERACTIONS & MOTION PRIMITIVES
+   Spring Curves, Blur Crossfade, and Scroll Panel Travel
+   ========================================================================== */
+
+.t-panel-slide {
+  transform: translateY(22px) scale(0.98);
+  opacity: 0;
+  filter: blur(var(--t-panel-blur, 4px));
+  transition: transform 650ms var(--t-ease-spring),
+              opacity 500ms var(--t-ease-smooth),
+              filter 500ms var(--t-ease-smooth);
+  will-change: transform, opacity, filter;
+}
+
+.t-panel-slide[data-open="true"],
+.t-panel-slide.t-revealed {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  filter: blur(0);
+}
+
+.t-spring-card {
+  transition: transform 380ms var(--t-ease-spring),
+              border-color 200ms ease,
+              box-shadow 380ms var(--t-ease-spring);
+}
+.t-spring-card:hover {
+  transform: translateY(-4px) scale(1.008);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
 /* Reduced Motion Compliance */
 @media (prefers-reduced-motion: reduce) {
+  .t-panel-slide {
+    transform: none !important;
+    filter: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;

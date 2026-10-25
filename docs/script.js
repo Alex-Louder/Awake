@@ -128,8 +128,8 @@
       row_2: "Continuous USB bus power",
       row_3: "Remote Desktop (Sill, VNC) without black screen",
       row_4: "Smart Mute on lid close (Shh!)",
-      row_5: "Daily password prompts",
-      row_6: "Memory footprint",
+      row_5: "Admin Privileges",
+      row_6: "Idle Performance",
       row_7: "License & Telemetry",
 
       creator_bio: "Awake! is an independent, 100% open-source tool built with great care. No ads, no telemetry, no tracking. If it saved your downloads or streamlined your remote workflow, consider buying me a coffee to support continuous development!",
@@ -279,8 +279,8 @@
       row_2: "Energía USB continua",
       row_3: "Escritorio Remoto (Sill, VNC) sin pantalla negra",
       row_4: "Silencio inteligente al cerrar (Shh!)",
-      row_5: "Solicitudes de contraseña diarias",
-      row_6: "Consumo de memoria RAM",
+      row_5: "Permisos de Administrador",
+      row_6: "Rendimiento en Reposo",
       row_7: "Licencia y Telemetría",
 
       creator_bio: "Awake! es un proyecto independiente y 100% código abierto desarrollado con mucho cariño. Sin anuncios, sin telemetría y sin rastreadores. Si te ahorró tiempo o cuidó tus descargas y servidores, ¡invítame un café para apoyar el desarrollo continuo!",
@@ -394,7 +394,7 @@
     }
   }
 
-  // --- Volumetric Radiant Aurora & Micro-Stage Canvas Engine ---
+  // --- Awwwards-Tier Dark Obsidian Depth & Constellation Mesh Canvas ---
   function initAmbientCanvas() {
     const canvas = document.getElementById('ambientCanvas');
     if (!canvas) return;
@@ -403,66 +403,25 @@
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
-    let mouse = { x: width * 0.5, y: height * 0.35, targetX: width * 0.5, targetY: height * 0.35, active: false };
+    let mouse = {
+      x: width * 0.5,
+      y: height * 0.35,
+      targetX: width * 0.5,
+      targetY: height * 0.35,
+      active: false
+    };
 
-    // 4 Volumetric Aurora Orbs
-    const orbs = [
-      {
-        baseX: 0.3,
-        baseY: 0.28,
-        r: 480,
-        color: [10, 132, 255], // Apple Electric Blue
-        speedX: 0.0006,
-        speedY: 0.0008,
-        ampX: 180,
-        ampY: 130,
-        phase: 0
-      },
-      {
-        baseX: 0.72,
-        baseY: 0.34,
-        r: 520,
-        color: [99, 102, 241], // Deep Violet / Indigo
-        speedX: 0.0005,
-        speedY: 0.0007,
-        ampX: 200,
-        ampY: 150,
-        phase: Math.PI * 0.5
-      },
-      {
-        baseX: 0.5,
-        baseY: 0.52,
-        r: 440,
-        color: [16, 185, 129], // Emerald / Teal
-        speedX: 0.0008,
-        speedY: 0.0005,
-        ampX: 160,
-        ampY: 110,
-        phase: Math.PI
-      },
-      {
-        baseX: 0.2,
-        baseY: 0.65,
-        r: 420,
-        color: [0, 113, 227], // Vibrant Azure
-        speedX: 0.0004,
-        speedY: 0.0006,
-        ampX: 140,
-        ampY: 120,
-        phase: Math.PI * 1.5
-      }
-    ];
-
-    // Subtle micro-stars
-    const stars = [];
-    const starCount = 35;
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
+    // Pre-allocated Constellation Nodes
+    const particleCount = 42;
+    const particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        r: Math.random() * 1.1 + 0.6,
-        alpha: Math.random() * 0.35 + 0.1,
-        speed: (Math.random() - 0.5) * 0.2
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        r: Math.random() * 1.5 + 0.8,
+        baseAlpha: Math.random() * 0.38 + 0.18
       });
     }
 
@@ -493,65 +452,40 @@
         return;
       }
 
-      const elapsed = now - startTime;
-
       // Smooth mouse spring interpolation
-      mouse.x += (mouse.targetX - mouse.x) * 0.045;
-      mouse.y += (mouse.targetY - mouse.y) * 0.045;
+      mouse.x += (mouse.targetX - mouse.x) * 0.05;
+      mouse.y += (mouse.targetY - mouse.y) * 0.05;
 
       ctx.clearRect(0, 0, width, height);
 
       const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      const scrollY = window.scrollY || 0;
 
-      // 1. Draw Volumetric Glowing Orbs
-      ctx.save();
-      ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
-
-      orbs.forEach((orb) => {
-        const ox = orb.baseX * width + Math.sin(elapsed * orb.speedX + orb.phase) * orb.ampX + (mouse.x - width * 0.5) * 0.07;
-        const oy = orb.baseY * height + Math.cos(elapsed * orb.speedY + orb.phase) * orb.ampY + (mouse.y - height * 0.35) * 0.07;
-        const rad = Math.min(width, height) * 0.45;
-
-        const grad = ctx.createRadialGradient(ox, oy, 0, ox, oy, rad);
-        const [r, g, b] = orb.color;
-        const maxAlpha = isDark ? 0.14 : 0.07;
-
-        grad.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${maxAlpha})`);
-        grad.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, ${maxAlpha * 0.5})`);
-        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(ox, oy, rad, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      ctx.restore();
-
-      // 2. Cursor Proximity Radiant Halo
-      if (mouse.active) {
-        ctx.save();
-        ctx.globalCompositeOperation = isDark ? 'screen' : 'source-over';
-        const halo = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 280);
-        halo.addColorStop(0, isDark ? 'rgba(10, 132, 255, 0.12)' : 'rgba(10, 132, 255, 0.05)');
-        halo.addColorStop(0.5, isDark ? 'rgba(99, 102, 241, 0.05)' : 'rgba(99, 102, 241, 0.02)');
-        halo.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        ctx.fillStyle = halo;
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 280, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
-      }
-
-      // 3. Perspective Stage Horizon Lines (Floor depth behind hero)
+      // 1. Perspective Depth Grid (Floor below hero stage)
       if (isDark) {
         ctx.save();
-        const stageY = height * 0.62;
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+        const horizonY = height * 0.56 - scrollY * 0.15;
+        const gridAlpha = Math.max(0.015, 0.055 - scrollY * 0.00008);
+
+        ctx.strokeStyle = `rgba(255, 255, 255, ${gridAlpha})`;
         ctx.lineWidth = 1;
 
-        // Subtle horizontal gridlines
-        for (let i = 0; i < 4; i++) {
-          const y = stageY + i * 36;
+        // Radiating perspective lines from vanishing point
+        const vpX = width * 0.5 + (mouse.x - width * 0.5) * 0.08;
+        const rays = 14;
+        for (let i = 0; i <= rays; i++) {
+          const targetX = (width / rays) * i;
+          ctx.beginPath();
+          ctx.moveTo(vpX, horizonY);
+          ctx.lineTo(targetX, height);
+          ctx.stroke();
+        }
+
+        // Horizontal perspective rungs
+        const rungs = 7;
+        for (let j = 1; j <= rungs; j++) {
+          const t = Math.pow(j / rungs, 1.8);
+          const y = horizonY + t * (height - horizonY);
           ctx.beginPath();
           ctx.moveTo(0, y);
           ctx.lineTo(width, y);
@@ -560,19 +494,78 @@
         ctx.restore();
       }
 
-      // 4. Subtle Micro-Stars Drift
+      // 2. Kinetic Constellation Mesh Nodes & Hairlines
       ctx.save();
-      const starFill = isDark ? 'rgba(255, 255, 255,' : 'rgba(20, 20, 30,';
-      stars.forEach((s) => {
-        s.y += s.speed;
-        if (s.y < 0) s.y = height;
-        if (s.y > height) s.y = 0;
+      const nodeColor = isDark ? '255, 255, 255' : '20, 20, 30';
+      const accentColor = isDark ? '10, 132, 255' : '0, 113, 227';
 
+      // Update positions
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Bounce gently off bounds
+        if (p.x < 0) { p.x = 0; p.vx *= -1; }
+        if (p.x > width) { p.x = width; p.vx *= -1; }
+        if (p.y < 0) { p.y = 0; p.vy *= -1; }
+        if (p.y > height) { p.y = height; p.vy *= -1; }
+
+        // Cursor soft deflection
+        if (mouse.active) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130 && dist > 0) {
+            const force = (130 - dist) / 130;
+            p.x += (dx / dist) * force * 1.2;
+            p.y += (dy / dist) * force * 1.2;
+          }
+        }
+
+        // Draw particle dot
         ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `${starFill} ${s.alpha})`;
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${nodeColor}, ${p.baseAlpha})`;
         ctx.fill();
       });
+
+      // Draw inter-node connecting hairlines
+      for (let i = 0; i < particleCount; i++) {
+        for (let j = i + 1; j < particleCount; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < 115) {
+            const alpha = (1 - dist / 115) * (isDark ? 0.12 : 0.06);
+            ctx.strokeStyle = `rgba(${nodeColor}, ${alpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw cursor proximity beam to nearby particles
+      if (mouse.active) {
+        particles.forEach((p) => {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 160) {
+            const alpha = (1 - dist / 160) * (isDark ? 0.22 : 0.12);
+            ctx.strokeStyle = `rgba(${accentColor}, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+          }
+        });
+      }
+
       ctx.restore();
 
       requestAnimationFrame(renderCanvas);
@@ -626,10 +619,11 @@
     }
 
     // 1. Physically apply 3D Lid Folding Transform
-    // Maps 135deg (open) -> rotateX(0deg), and 0deg (closed) -> rotateX(-72deg)
+    // Maps 135deg (open) -> 115deg (upright facing viewer)
+    // and 0deg (closed) -> 0deg (flat aluminum lid on base)
     if (lidAssembly) {
-      const rotX = -72 * (1 - lidAngle / 135);
-      lidAssembly.style.setProperty('--lid-rotate', `${rotX.toFixed(2)}deg`);
+      const lidRot = (lidAngle / 135) * 115;
+      lidAssembly.style.setProperty('--lid-rot', `${lidRot.toFixed(2)}deg`);
     }
 
     // 2. Synchronize Slider & Readout text
@@ -852,18 +846,24 @@
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
 
-      const tiltY = (x / (rect.width / 2)) * 8; // subtle tilt left-right
-      const tiltX = -(y / (rect.height / 2)) * 6; // subtle tilt up-down
+      const tiltY = (x / (rect.width / 2)) * 5; // subtle tilt left-right
+      const tiltX = -(y / (rect.height / 2)) * 3; // subtle tilt up-down
 
-      model.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
+      model.style.transform = `rotateX(${54 + tiltX}deg) rotateY(${tiltY.toFixed(2)}deg)`;
     });
 
     scene.addEventListener('mouseleave', () => {
-      model.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      model.style.transform = 'rotateX(54deg) rotateY(0deg)';
     });
   }
 
   function initSimulator() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('lid')) {
+      const parsed = parseInt(urlParams.get('lid'), 10);
+      if (!isNaN(parsed)) lidAngle = Math.max(0, Math.min(135, parsed));
+    }
+
     const awakeCapsule = document.getElementById('simAwakeCapsule');
     const shhCapsule = document.getElementById('simShhCapsule');
     const powerBtn = document.getElementById('simPowerBtn');
@@ -932,6 +932,7 @@
     }
 
     init3DTilt();
+    updateSimulatorState();
   }
 
   // --- Terminal Command Copying & Toast ---
@@ -1002,6 +1003,41 @@
     });
   }
 
+  // --- Transitions.dev Scroll & Spring Panel Reveal Observer ---
+  function initScrollTransitions() {
+    const panels = document.querySelectorAll('.t-panel-slide');
+    if (!('IntersectionObserver' in window)) {
+      panels.forEach((el) => {
+        el.classList.add('t-revealed');
+        el.dataset.open = "true";
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('t-revealed');
+          entry.target.dataset.open = "true";
+          obs.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px 40px 0px',
+      threshold: 0.05
+    });
+
+    panels.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 50) {
+        el.classList.add('t-revealed');
+        el.dataset.open = "true";
+      } else {
+        observer.observe(el);
+      }
+    });
+  }
+
   // --- Global Initialization ---
   document.addEventListener('DOMContentLoaded', () => {
     // Default to Spanish (user preference) or saved choice
@@ -1022,6 +1058,7 @@
     initSimulator();
     initCopyHandler();
     initFaq();
+    initScrollTransitions();
 
     // Scroll listeners (throttled)
     window.addEventListener('scroll', handleTaglineScroll, { passive: true });

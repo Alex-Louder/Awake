@@ -47,7 +47,7 @@
       <ul class="nav-links">
         <li><a href="#overview" class="nav-link" data-i18n="nav_overview">Overview</a></li>
         <li><a href="#ecosystem" class="nav-link" data-i18n="nav_ecosystem">Ecosystem</a></li>
-        <li><a href="#duel" class="nav-link" data-i18n="nav_comparison">Comparison</a></li>
+        <li><a href="#comparison" class="nav-link" data-i18n="nav_comparison">Comparison</a></li>
         <li><a href="#architecture" class="nav-link" data-i18n="nav_architecture">Architecture</a></li>
         <li><a href="#creator" class="nav-link" data-i18n="nav_creator">Creator</a></li>
         <li><a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a></li>
@@ -98,7 +98,7 @@
           <div class="hero-content">
             <div class="badge-tag">
               <span class="status-dot"></span>
-              <span data-i18n="hero_badge">macOS 27 Golden Gate</span>
+              <span data-i18n="hero_badge">macOS 27 Golden Gate • Apple Silicon</span>
             </div>
 
             <h1 class="hero-title" data-i18n="hero_title">
@@ -106,7 +106,7 @@
             </h1>
 
             <p class="hero-desc" data-i18n="hero_desc">
-              Evita que macOS suspenda tus procesos al cerrar la pantalla. Tus agentes de IA, servidores locales, descargas y sesiones de escritorio remoto continúan ejecutándose a toda velocidad, con silencio automático al bajar la pantalla.
+              Evita que macOS suspenda tus tareas al cerrar la pantalla. Agentes de IA, compilaciones, descargas y sesiones de escritorio remoto continúan ejecutándose a máxima velocidad, con silencio automático al bajar la pantalla.
             </p>
 
             <div class="hero-cta-group">
@@ -144,59 +144,104 @@
           <!-- Photorealistic 3D MacBook Simulation Stage with Floating Virtual Display -->
           <div class="hero-stage">
             
-            <!-- Virtual Floating Display (Appears when lid is closed) -->
-            <div class="virtual-display-hud" id="virtualDisplayHud">
-              <div class="vd-header">
-                <div class="vd-title-group">
-                  <span class="vd-pulse-dot"></span>
-                  <span class="vd-title" data-i18n="vd_title">Pantalla Virtual • Stream Headless</span>
-                </div>
-                <span class="vd-badge" data-i18n="vd_badge">60 FPS Activo</span>
-              </div>
-
-              <div class="vd-terminal">
-                <div class="vd-term-line"><span class="term-prompt">$</span> <span class="term-cmd">claude code --autonomous</span></div>
-                <div class="vd-term-line term-dim">● Compilando proyecto en segundo plano... <span class="term-highlight">GPU 96%</span></div>
-                <div class="vd-term-line term-success">✓ 42/42 tests pasaron. Servidor activo en puerto 3000.</div>
-              </div>
-
-              <div class="vd-tasks-grid">
-                <div class="vd-task-item">
-                  <img src="assets/logos/sill.svg" alt="Sill" class="vd-app-icon" width="16" height="16">
-                  <div class="vd-task-info">
-                    <span class="vd-task-name">Sill • iPad Pro</span>
-                    <span class="vd-task-sub" data-i18n="vd_sill_status">Streaming activo a 120 Hz</span>
-                  </div>
-                </div>
-                <div class="vd-task-item">
-                  <img src="assets/logos/ollama.svg" alt="Ollama" class="vd-app-icon" width="16" height="16">
-                  <div class="vd-task-info">
-                    <span class="vd-task-name">Ollama • Llama 3.3</span>
-                    <span class="vd-task-sub" data-i18n="vd_ollama_status">Generando a 48 tok/s</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="vd-footer">
-                <span data-i18n="vd_footer_screen">Pantalla física: 0% brillo</span>
-                <span data-i18n="vd_footer_shh">Audio: Silenciado con Shh!</span>
-                <span data-i18n="vd_footer_usb">USB: 5V continuo</span>
-              </div>
-            </div>
-
             <div class="macbook-3d-scene">
-              <div class="macbook-3d-model" id="macbookModel">
+              
+              <!-- Virtual Floating Display (Blooms when lid is closed) -->
+              <div class="virtual-display-hud" id="virtualDisplayHud">
+                <div class="vd-header">
+                  <div class="vd-title-group">
+                    <span class="vd-pulse-dot"></span>
+                    <span class="vd-title" data-i18n="vd_title">Sill • iPad Pro Stream (120 Hz)</span>
+                  </div>
+                  <span class="vd-badge" data-i18n="vd_badge">60 FPS Activo</span>
+                </div>
+
+                <div class="vd-terminal">
+                  <div class="vd-term-line"><span class="term-prompt">$</span> <span class="term-cmd">claude code --autonomous</span></div>
+                  <div class="vd-term-line term-dim">● Antigravity en segundo plano... <span class="term-highlight">GPU 96%</span></div>
+                  <div class="vd-term-line term-success">✓ Servidor activo en localhost:3000. Cero suspensión.</div>
+                </div>
+
+                <div class="vd-tasks-grid">
+                  <div class="vd-task-item">
+                    <img src="assets/logos/sill.svg" alt="Sill" class="vd-app-icon" width="18" height="18">
+                    <div class="vd-task-info">
+                      <span class="vd-task-name">Sill Remote</span>
+                      <span class="vd-task-sub" data-i18n="vd_sill_status">Streaming activo a 120 Hz</span>
+                    </div>
+                  </div>
+                  <div class="vd-task-item">
+                    <img src="assets/logos/ollama.svg" alt="Ollama" class="vd-app-icon" width="18" height="18">
+                    <div class="vd-task-info">
+                      <span class="vd-task-name">Ollama • Llama 3.3</span>
+                      <span class="vd-task-sub" data-i18n="vd_ollama_status">Generando a 48 tok/s</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="vd-footer">
+                  <span data-i18n="vd_footer_screen">Pantalla física: 0% brillo</span>
+                  <span data-i18n="vd_footer_shh">Audio: Protegido (AirPods)</span>
+                  <span data-i18n="vd_footer_usb">Wi-Fi D0: Conectado</span>
+                </div>
+              </div>
+
+              <!-- Complete 3D MacBook Rig (Base tilted in perspective + Lid hinged at rear) -->
+              <div class="macbook-base" id="macbookModel">
+                <div class="speaker-grille left"></div>
+                <div class="speaker-grille right"></div>
                 
-                <!-- Rotating Lid Assembly (Front Screen + Back Aluminum Shell) -->
-                <div class="macbook-lid-assembly" id="macbookLidAssembly">
+                <div class="keyboard-deck">
+                  <div class="keyboard-row f-keys">
+                    <span class="key esc">esc</span>
+                    <span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span>
+                    <span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span>
+                    <span class="key"></span><span class="key"></span><span class="key"></span>
+                    <span class="key touch-id"></span>
+                  </div>
+                  <div class="keyboard-row numbers">
+                    <span class="key">~</span><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span><span class="key">6</span><span class="key">7</span><span class="key">8</span><span class="key">9</span><span class="key">0</span><span class="key">-</span><span class="key">+</span><span class="key del">del</span>
+                  </div>
+                  <div class="keyboard-row letters-1">
+                    <span class="key tab">tab</span><span class="key">Q</span><span class="key">W</span><span class="key">E</span><span class="key">R</span><span class="key">T</span><span class="key">Y</span><span class="key">U</span><span class="key">I</span><span class="key">O</span><span class="key">P</span><span class="key">[</span><span class="key">]</span><span class="key">\</span>
+                  </div>
+                  <div class="keyboard-row letters-2">
+                    <span class="key caps">caps</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><span class="key">F</span><span class="key">G</span><span class="key">H</span><span class="key">J</span><span class="key">K</span><span class="key">L</span><span class="key">;</span><span class="key">'</span><span class="key ret">ret</span>
+                  </div>
+                  <div class="keyboard-row bottom-row">
+                    <span class="key fn">fn</span><span class="key">ctrl</span><span class="key">opt</span><span class="key cmd">cmd</span><span class="key space"></span><span class="key cmd">cmd</span><span class="key opt">opt</span><span class="key arrows">◄▼►</span>
+                  </div>
+                </div>
+
+                <div class="trackpad"></div>
+                <div class="thumb-scoop"></div>
+
+                <!-- Side USB-C Status Ports -->
+                <div class="usb-port active" id="portLeft">
+                  <span class="port-led"></span>
+                  <span>USB 5V</span>
+                </div>
+                <div class="usb-port active" id="portRight">
+                  <span>TB4</span>
+                  <span class="port-led"></span>
+                </div>
+
+                <!-- Hinged Upper Lid Assembly -->
+                <div class="macbook-lid" id="macbookLidAssembly">
                   
-                  <!-- Front Face: Screen, Glass, Menu Bar & HUD -->
-                  <div class="macbook-lid-front">
+                  <!-- Back Face: Space Gray Anodized Aluminum with Laser Apple Logo (Visible when closed) -->
+                  <div class="lid-shell-back">
+                    <svg class="lid-apple-logo" viewBox="0 0 170 170">
+                      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
+                    </svg>
+                  </div>
+
+                  <!-- Inside Face: Screen, Menu Bar & HUD Popover (Visible when open) -->
+                  <div class="lid-screen-inside">
                     <div class="macbook-camera-notch">
                       <div class="macbook-camera-lens"></div>
                     </div>
 
-                    <!-- macOS Menu Bar -->
                     <div class="macbook-menubar">
                       <div class="menubar-left">
                         <svg class="apple-logo" viewBox="0 0 170 170">
@@ -218,7 +263,6 @@
                       </div>
                     </div>
 
-                    <!-- Screen Canvas & Vector Awake! Popover -->
                     <div class="macbook-screen-canvas" id="macbookScreenCanvas">
                       <div class="screen-sleep-overlay" id="screenSleepOverlay"></div>
                       
@@ -284,55 +328,6 @@
                       </div>
 
                     </div>
-                  </div>
-
-                  <!-- Back Face: Space Gray Anodized Aluminum with Laser Apple Logo -->
-                  <div class="macbook-lid-back">
-                    <svg class="lid-apple-logo" viewBox="0 0 170 170">
-                      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
-                    </svg>
-                  </div>
-
-                </div>
-
-                <!-- Full MacBook Lower Unibody Case (Top Case + Keyboard + Trackpad + Ports) -->
-                <div class="macbook-lower-unibody">
-                  <div class="speaker-grille left"></div>
-                  <div class="speaker-grille right"></div>
-                  
-                  <div class="keyboard-deck">
-                    <div class="keyboard-row f-keys">
-                      <span class="key esc">esc</span>
-                      <span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span>
-                      <span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span>
-                      <span class="key"></span><span class="key"></span><span class="key"></span>
-                      <span class="key touch-id"></span>
-                    </div>
-                    <div class="keyboard-row numbers">
-                      <span class="key">~</span><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span><span class="key">6</span><span class="key">7</span><span class="key">8</span><span class="key">9</span><span class="key">0</span><span class="key">-</span><span class="key">+</span><span class="key del">del</span>
-                    </div>
-                    <div class="keyboard-row letters-1">
-                      <span class="key tab">tab</span><span class="key">Q</span><span class="key">W</span><span class="key">E</span><span class="key">R</span><span class="key">T</span><span class="key">Y</span><span class="key">U</span><span class="key">I</span><span class="key">O</span><span class="key">P</span><span class="key">[</span><span class="key">]</span><span class="key">\</span>
-                    </div>
-                    <div class="keyboard-row letters-2">
-                      <span class="key caps">caps</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><span class="key">F</span><span class="key">G</span><span class="key">H</span><span class="key">J</span><span class="key">K</span><span class="key">L</span><span class="key">;</span><span class="key">'</span><span class="key ret">ret</span>
-                    </div>
-                    <div class="keyboard-row bottom-row">
-                      <span class="key fn">fn</span><span class="key">ctrl</span><span class="key">opt</span><span class="key cmd">cmd</span><span class="key space"></span><span class="key cmd">cmd</span><span class="key opt">opt</span><span class="key arrows">◄▼►</span>
-                    </div>
-                  </div>
-
-                  <div class="trackpad"></div>
-                  <div class="thumb-scoop"></div>
-
-                  <!-- Side USB-C Status Ports -->
-                  <div class="usb-port active" id="portLeft">
-                    <span class="port-led"></span>
-                    <span>USB 5V</span>
-                  </div>
-                  <div class="usb-port active" id="portRight">
-                    <span>TB4</span>
-                    <span class="port-led"></span>
                   </div>
                 </div>
 
@@ -400,7 +395,7 @@
         <div class="ecosystem-dual-column">
           
           <!-- Column 1: Background AI Agents & Compute -->
-          <div class="ecosystem-group-card">
+          <div class="ecosystem-group-card t-panel-slide t-spring-card">
             <div class="group-header">
               <div class="group-title-lockup">
                 <div class="group-icon-badge">
@@ -463,7 +458,7 @@
           </div>
 
           <!-- Column 2: Remote Desktop & Control -->
-          <div class="ecosystem-group-card">
+          <div class="ecosystem-group-card t-panel-slide t-spring-card">
             <div class="group-header">
               <div class="group-title-lockup">
                 <div class="group-icon-badge">
@@ -540,7 +535,7 @@
 
         <div class="duel-grid">
           <!-- The Trap -->
-          <div class="duel-card">
+          <div class="duel-card t-panel-slide t-spring-card">
             <div class="duel-header">
               <div class="duel-title-lockup">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="duel-bullet" style="color: var(--accent-red);"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -582,7 +577,7 @@
           </div>
 
           <!-- The Awake Protocol -->
-          <div class="duel-card awake-card">
+          <div class="duel-card awake-card t-panel-slide t-spring-card">
             <div class="duel-header">
               <div class="duel-title-lockup">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="duel-bullet" style="color: var(--accent-green);"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -637,7 +632,7 @@
 
         <div class="bento-grid">
           <!-- Bento 1: Shh Audio -->
-          <div class="bento-card bento-span-8">
+          <div class="bento-card bento-span-8 t-panel-slide t-spring-card">
             <div>
               <div class="bento-icon-badge">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
@@ -657,7 +652,7 @@
           </div>
 
           <!-- Bento 2: Remote Desktop -->
-          <div class="bento-card bento-span-4">
+          <div class="bento-card bento-span-4 t-panel-slide t-spring-card">
             <div>
               <div class="bento-icon-badge">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
@@ -673,7 +668,7 @@
           </div>
 
           <!-- Bento 3: Sudoers -->
-          <div class="bento-card bento-span-6">
+          <div class="bento-card bento-span-6 t-panel-slide t-spring-card">
             <div>
               <div class="bento-icon-badge">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -692,7 +687,7 @@
           </div>
 
           <!-- Bento 4: Swift nativo -->
-          <div class="bento-card bento-span-6">
+          <div class="bento-card bento-span-6 t-panel-slide t-spring-card">
             <div>
               <div class="bento-icon-badge">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
@@ -725,7 +720,7 @@
 
         <div class="pipeline-grid">
           <!-- Step 1 -->
-          <div class="pipeline-card">
+          <div class="pipeline-card t-panel-slide t-spring-card">
             <span class="pipeline-step-badge">STEP 01</span>
             <h3 class="pipeline-card-title" data-i18n="pipe_step1_title">1. IOKit Magnetic Sensor</h3>
             <p class="pipeline-card-desc" data-i18n="pipe_step1_desc">
@@ -737,7 +732,7 @@
           </div>
 
           <!-- Step 2 -->
-          <div class="pipeline-card">
+          <div class="pipeline-card t-panel-slide t-spring-card">
             <span class="pipeline-step-badge">STEP 02</span>
             <h3 class="pipeline-card-title" data-i18n="pipe_step2_title">2. Scoped pmset Assertion</h3>
             <p class="pipeline-card-desc" data-i18n="pipe_step2_desc">
@@ -749,7 +744,7 @@
           </div>
 
           <!-- Step 3 -->
-          <div class="pipeline-card">
+          <div class="pipeline-card t-panel-slide t-spring-card">
             <span class="pipeline-step-badge">STEP 03</span>
             <h3 class="pipeline-card-title" data-i18n="pipe_step3_title">3. Display & Audio Hooks</h3>
             <p class="pipeline-card-desc" data-i18n="pipe_step3_desc">
@@ -764,7 +759,7 @@
     </section>
 
     <!-- COMPARISON TABLE -->
-    <section class="matrix-section">
+    <section class="matrix-section" id="comparison">
       <div class="container">
         <div class="section-label" data-i18n="matrix_badge">Benchmark</div>
         <h2 class="section-title" data-i18n="matrix_title">Awake! vs. Traditional Utilities</h2>
@@ -772,7 +767,7 @@
           Why standard caffeinate scripts and older utilities fall short on modern macOS.
         </p>
 
-        <div class="matrix-table-card">
+        <div class="matrix-table-card t-panel-slide">
           <table class="matrix-table">
             <thead>
               <tr>
@@ -808,16 +803,16 @@
                 <td><span class="cell-pill bad">No</span></td>
               </tr>
               <tr>
-                <td data-i18n="row_5">Daily password prompts</td>
-                <td class="col-awake"><span class="cell-pill good">✓ 0 Prompts (Silent)</span></td>
-                <td><span class="cell-pill warn">Prompts on state change</span></td>
-                <td><span class="cell-pill warn">Manual sudo required</span></td>
+                <td data-i18n="row_5">Permisos de Administrador</td>
+                <td class="col-awake"><span class="cell-pill good">✓ Solo al instalar</span></td>
+                <td><span class="cell-pill warn">Helper kext / scripts</span></td>
+                <td><span class="cell-pill warn">sudo manual siempre</span></td>
               </tr>
               <tr>
-                <td data-i18n="row_6">Memory footprint</td>
-                <td class="col-awake"><span class="cell-pill good">~15 MB RAM</span></td>
-                <td><span>~70–120 MB RAM</span></td>
-                <td><span>~1 MB (CLI only)</span></td>
+                <td data-i18n="row_6">Rendimiento en Reposo</td>
+                <td class="col-awake"><span class="cell-pill good">✓ 0% CPU</span></td>
+                <td><span>Procesos en segundo plano</span></td>
+                <td><span>Terminal bloqueada</span></td>
               </tr>
               <tr>
                 <td data-i18n="row_7">License & Telemetry</td>
@@ -834,7 +829,7 @@
     <!-- CREATOR & TIP JAR (ALEX LOUDER) -->
     <section class="creator-section" id="creator">
       <div class="container">
-        <div class="creator-card">
+        <div class="creator-card t-panel-slide t-spring-card">
           
           <div class="creator-info">
             <div class="creator-profile-header">
