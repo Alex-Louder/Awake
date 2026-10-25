@@ -100,9 +100,7 @@ Las herramientas clásicas de "caffeinate" no resuelven esto: mantienen la CPU a
 
 ### Opción 2: Instalación rápida por Terminal (One-liner)
 ```bash
-git clone https://github.com/alexlouder/Awake.git
-cd Awake
-./install.sh
+git clone https://github.com/alexlouder/Awake.git && cd Awake && ./install.sh
 ```
 
 ### Opción 3: Compilar desde código fuente
@@ -228,11 +226,9 @@ Standard "caffeinate" tools cannot prevent Clamshell sleep without dummy HDMI do
 2. Open the disk image and drag **Awake!** into your **Applications** folder.
 3. Open Awake! and click **"Configure Permission (1 Click)"** in the onboarding window.
 
-### Option 2: Quick Terminal Install
+### Option 2: Quick Terminal Install (One-liner)
 ```bash
-git clone https://github.com/alexlouder/Awake.git
-cd Awake
-./install.sh
+git clone https://github.com/alexlouder/Awake.git && cd Awake && ./install.sh
 ```
 
 ### Option 3: Build from Source

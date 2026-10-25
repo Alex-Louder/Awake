@@ -13,6 +13,11 @@ let package = Package(
         .executableTarget(
             name: "Awake",
             path: "Sources/Awake"
+        ),
+        .testTarget(
+            name: "AwakeTests",
+            dependencies: ["Awake"],
+            path: "Tests/AwakeTests"
         )
     ]
 )

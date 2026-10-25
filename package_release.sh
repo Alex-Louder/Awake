@@ -22,27 +22,34 @@ echo "=========================================================="
 echo " Packaging $APP_NAME v$VERSION for Release"
 echo "=========================================================="
 
-# 1. Build release app bundle
-echo "==> [1/5] Building $APP_NAME Release bundle..."
+# 1. Run unit tests
+echo "==> [1/6] Running test suite..."
+swift test
+
+# 2. Build release app bundle
+echo "==> [2/6] Building $APP_NAME Release bundle..."
 "$DIR/build.sh"
 
-# 2. Prepare Release Directory
-echo "==> [2/5] Preparing output directory..."
+# 3. Prepare Release Directory
+echo "==> [3/6] Preparing output directory..."
 mkdir -p "$RELEASE_DIR"
 
-# 3. Ensure DMG background exists
-echo "==> [3/5] Checking DMG background artwork..."
+# 4. Ensure DMG background exists
+echo "==> [4/6] Checking DMG background artwork..."
 if [ ! -f "$DIR/Resources/dmg_background.png" ]; then
     echo "    Generating Retina DMG background..."
     swift "$DIR/Resources/make_dmg_bg.swift" "$DIR/Resources/dmg_background.png"
 fi
 
-# 4. Create DMG
+# 5. Create DMG
 DMG_OUT="$RELEASE_DIR/Awake-v$VERSION.dmg"
-echo "==> [4/5] Creating disk image (DMG)..."
+echo "==> [5/6] Creating disk image (DMG)..."
 
 STAGING_DIR="$(mktemp -d /tmp/awake_pkg_staging.XXXXXX)"
+trap 'rm -rf "$STAGING_DIR"' EXIT INT TERM
+chmod 755 "$STAGING_DIR"
 cp -R "$APP_BUNDLE" "$STAGING_DIR/"
+chmod -R u=rwX,go=rX "$STAGING_DIR"
 
 if command -v create-dmg >/dev/null 2>&1; then
     echo "    Using create-dmg with custom Finder layout..."
@@ -68,10 +75,11 @@ else
 fi
 
 rm -rf "$STAGING_DIR"
+trap - EXIT INT TERM
 
-# 5. Create ZIP for GitHub Releases
+# 6. Create ZIP for GitHub Releases
 ZIP_OUT="$RELEASE_DIR/Awake-v$VERSION.zip"
-echo "==> [5/5] Creating GitHub Release ZIP..."
+echo "==> [6/6] Creating GitHub Release ZIP..."
 rm -f "$ZIP_OUT"
 ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$ZIP_OUT"
 

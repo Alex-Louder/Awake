@@ -12,6 +12,7 @@ fi
 
 echo "==> Instalando en /Applications..."
 killall Awake 2>/dev/null || true
+sleep 0.5
 
 rm -rf "/Applications/Awake!.app"
 cp -R "$DIR/Awake!.app" "/Applications/Awake!.app"
