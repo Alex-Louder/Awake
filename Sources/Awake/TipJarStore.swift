@@ -107,7 +107,7 @@ final class TipJarStore: ObservableObject {
     }
     
     func openKofiDonation() {
-        let kofiBase = UserDefaults.standard.string(forKey: "awake.kofiUrl") ?? "https://ko-fi.com/playlouder"
+        let kofiBase = UserDefaults.standard.string(forKey: "awake.kofiUrl") ?? "https://ko-fi.com/alexlouder"
         if let url = URL(string: kofiBase) {
             NSWorkspace.shared.open(url)
             self.purchaseSuccess = true
@@ -115,7 +115,7 @@ final class TipJarStore: ObservableObject {
     }
     
     func openWebDonation(amount: Int? = nil) {
-        let base = UserDefaults.standard.string(forKey: "awake.donationUrl") ?? "https://ko-fi.com/playlouder"
+        let base = UserDefaults.standard.string(forKey: "awake.donationUrl") ?? "https://ko-fi.com/alexlouder"
         if let url = URL(string: base) {
             NSWorkspace.shared.open(url)
             self.purchaseSuccess = true
