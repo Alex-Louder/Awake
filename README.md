@@ -8,20 +8,20 @@
 
 *Keep your Mac fully awake when the lid is closed without external monitors, with complete USB protection, active background services, and smart auto-mute.*
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge&logo=apple)](https://github.com/alexlouder/Awake/releases)
-[![macOS](https://img.shields.io/badge/macOS-14%2B%20Sonoma%20%7C%2015%20Sequoia-purple.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
-[![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20%26%20Intel-success.svg?style=for-the-badge)](https://github.com/alexlouder/Awake)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge&logo=apple)](https://github.com/Alex-Louder/Awake/releases)
+[![macOS](https://img.shields.io/badge/macOS-14%2B%20Sonoma%20%7C%2015%20Sequoia%20%7C%2027%20Golden%20Gate-purple.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
+[![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20%26%20Intel-success.svg?style=for-the-badge)](https://github.com/Alex-Louder/Awake)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![Ko-fi Sponsor](https://img.shields.io/badge/Sponsor-Ko--fi%20alexlouder-FF5E5B.svg?style=for-the-badge&logo=kofi&logoColor=white)](https://ko-fi.com/alexlouder)
 
-[🇪🇸 Leer en Español](#-español) • [🇺🇸 Read in English](#-english)
+[🇲🇽 Leer en Español](#-español) • [🇺🇸 Read in English](#-english)
 
 </div>
 
 ---
 
 <a name="-español"></a>
-# 🇪🇸 Español
+# 🇲🇽 Español
 
 ## 💡 El Problema que Resuelve Awake!
 
@@ -51,7 +51,7 @@ Las herramientas clásicas de "caffeinate" no resuelven esto: mantienen la CPU a
 | **Escritorio Remoto (Sills, VNC) sin pantalla negra** | ✅ **Garantizado** | ❌ Pantalla negra frecuente | ❌ Pantalla negra |
 | **Silencio Inteligente al cerrar (Shh!)** | ✅ **Nativo (MediaRemote + CoreAudio)** | ❌ No | ❌ No |
 | **Solicitudes de contraseña (Prompts)** | ✅ **0 Prompts (100% silencioso)** | ⚠️ Pide contraseña al cambiar | ⚠️ Requiere `sudo` manual |
-| **Interfaz de Usuario** | ✅ **Liquid Glass Dark HUD (macOS Sonoma/Sequoia)** | ⚠️ Menú de texto tradicional | ❌ Solo línea de comandos |
+| **Interfaz de Usuario** | ✅ **Liquid Glass Dark HUD (macOS Sonoma / Sequoia / Golden Gate)** | ⚠️ Menú de texto tradicional | ❌ Solo línea de comandos |
 | **Consumo de Memoria** | ✅ **~15 MB RAM** | ~70–120 MB RAM | ~1 MB (CLI) |
 | **Código Abierto & Cero Telemetría** | ✅ **100% Open Source** | ❌ Código Cerrado | ✅ Nativo de macOS |
 
@@ -94,19 +94,19 @@ Las herramientas clásicas de "caffeinate" no resuelven esto: mantienen la CPU a
 ## 🚀 Instalación
 
 ### Opción 1: Descarga directa DMG (Recomendado)
-1. Descarga el instalador oficial [Awake-v1.0.0.dmg](https://github.com/alexlouder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
+1. Descarga el instalador oficial [Awake-v1.0.0.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
 2. Abre la imagen de disco y arrastra **Awake!** a tu carpeta de **Aplicaciones**.
 3. Al abrirla por primera vez, haz clic en **"Configurar Permiso (1 Clic)"** para activar la autorización sin contraseña.
 
 ### Opción 2: Instalación rápida por Terminal (One-liner)
 ```bash
-git clone https://github.com/alexlouder/Awake.git && cd Awake && ./install.sh
+git clone https://github.com/Alex-Louder/Awake.git && cd Awake && ./install.sh
 ```
 
 ### Opción 3: Compilar desde código fuente
 ```bash
 # Requiere Xcode Command Line Tools o Swift 5.9+
-git clone https://github.com/alexlouder/Awake.git
+git clone https://github.com/Alex-Louder/Awake.git
 cd Awake
 ./package_release.sh
 ```
@@ -179,7 +179,7 @@ Standard "caffeinate" tools cannot prevent Clamshell sleep without dummy HDMI do
 | **Remote Desktop (Sills, VNC) without black screen** | ✅ **Guaranteed** | ❌ Frequent black screen | ❌ Black screen |
 | **Smart Mute on Lid Close (Shh!)** | ✅ **Native (MediaRemote + CoreAudio)** | ❌ No | ❌ No |
 | **Password Prompts during use** | ✅ **0 Prompts (Completely silent)** | ⚠️ Prompts on state changes | ⚠️ Requires manual `sudo` |
-| **User Interface** | ✅ **Liquid Glass Dark HUD (macOS Sonoma/Sequoia)** | ⚠️ Traditional text menu | ❌ Command-line only |
+| **User Interface** | ✅ **Liquid Glass Dark HUD (macOS Sonoma / Sequoia / Golden Gate)** | ⚠️ Traditional text menu | ❌ Command-line only |
 | **Memory Footprint** | ✅ **~15 MB RAM** | ~70–120 MB RAM | ~1 MB (CLI) |
 | **Open Source & Zero Telemetry** | ✅ **100% Open Source** | ❌ Proprietary / Closed | ✅ Native macOS CLI |
 
@@ -222,19 +222,19 @@ Standard "caffeinate" tools cannot prevent Clamshell sleep without dummy HDMI do
 ## 🚀 Installation
 
 ### Option 1: Direct DMG Download (Recommended)
-1. Download the latest release: [Awake-v1.0.0.dmg](https://github.com/alexlouder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
+1. Download the latest release: [Awake-v1.0.0.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
 2. Open the disk image and drag **Awake!** into your **Applications** folder.
 3. Open Awake! and click **"Configure Permission (1 Click)"** in the onboarding window.
 
 ### Option 2: Quick Terminal Install (One-liner)
 ```bash
-git clone https://github.com/alexlouder/Awake.git && cd Awake && ./install.sh
+git clone https://github.com/Alex-Louder/Awake.git && cd Awake && ./install.sh
 ```
 
 ### Option 3: Build from Source
 ```bash
 # Requires Xcode Command Line Tools or Swift 5.9+
-git clone https://github.com/alexlouder/Awake.git
+git clone https://github.com/Alex-Louder/Awake.git
 cd Awake
 ./package_release.sh
 ```
@@ -276,4 +276,4 @@ Direct support is available on **[ko-fi.com/alexlouder](https://ko-fi.com/alexlo
 
 ## 📄 License
 
-Awake! is licensed under the [MIT License](LICENSE). Copyright © 2026 Alejandro Jiménez ([@alexlouder](https://github.com/alexlouder)).
+Awake! is licensed under the [MIT License](LICENSE). Copyright © 2026 Alejandro Jiménez ([@Alex-Louder](https://github.com/Alex-Louder)).

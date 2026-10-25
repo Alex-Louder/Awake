@@ -6,7 +6,7 @@
 
 ## 1. Resumen del Proyecto
 
-**Awake!** es una aplicación nativa para macOS (macOS 14 Sonoma y macOS 15 Sequoia en Apple Silicon e Intel) diseñada para mantener la computadora completamente operativa cuando se baja la pantalla de la MacBook, sin necesidad de conectar pantallas externas ni adaptadores dummy HDMI.
+**Awake!** es una aplicación nativa para macOS (macOS 14 Sonoma, 15 Sequoia y 27 Golden Gate en Apple Silicon e Intel) diseñada para mantener la computadora completamente operativa cuando se baja la pantalla de la MacBook, sin necesidad de conectar pantallas externas ni adaptadores dummy HDMI.
 
 ### Objetivos Clave Cumplidos
 1. **Mantener todo activo**: El procesador, las descargas, servidores locales (Docker, Node, Python, bases de datos) y dispositivos USB (hubs, discos externos, interfaces de audio) nunca se suspenden al cerrar la tapa.
