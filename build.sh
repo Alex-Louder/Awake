@@ -58,6 +58,10 @@ if [ -f "$DIR/Resources/AppIcon_1024.png" ]; then
     cp "$DIR/Resources/AppIcon_1024.png" "$APP_DIR/Contents/Resources/AppIcon_1024.png"
 fi
 
+if [ -f "$DIR/Resources/Memoji.png" ]; then
+    cp "$DIR/Resources/Memoji.png" "$APP_DIR/Contents/Resources/Memoji.png"
+fi
+
 if [ -f "$DIR/Resources/AwakeTips.storekit" ]; then
     cp "$DIR/Resources/AwakeTips.storekit" "$APP_DIR/Contents/Resources/AwakeTips.storekit"
 fi

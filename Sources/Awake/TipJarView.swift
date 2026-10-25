@@ -206,35 +206,14 @@ struct TipJarView: View {
     
     private var footer: some View {
         HStack {
-            Button(action: { store.openKofiDonation() }) {
-                HStack(spacing: 5) {
-                    Image(systemName: "cup.and.saucer.fill")
-                        .foregroundColor(Color(red: 1.0, green: 0.38, blue: 0.38))
-                    Text(loc.kofiDonationBtn)
-                }
-                .font(.system(size: 10.5, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
-                .background(
-                    Capsule()
-                        .fill(Color(red: 1.0, green: 0.38, blue: 0.38).opacity(0.18))
-                        .overlay(
-                            Capsule()
-                                .stroke(Color(red: 1.0, green: 0.38, blue: 0.38).opacity(0.4), lineWidth: 0.8)
-                        )
-                )
-            }
-            .buttonStyle(.plain)
-            
             Spacer()
             
             Button(action: onDismiss) {
                 Text(loc.closeButton)
                     .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(.white.opacity(0.85))
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 5)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 6)
                     .background(
                         Capsule()
                             .fill(Color.white.opacity(0.12))

@@ -130,24 +130,23 @@ struct OnboardingView: View {
     
     private var appIconView: some View {
         Group {
-            if let path = Bundle.main.path(forResource: "AppIcon_1024", ofType: "png"),
+            if let path = Bundle.main.path(forResource: "Memoji", ofType: "png"),
                let nsImg = NSImage(contentsOfFile: path) {
                 Image(nsImage: nsImg)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 42, height: 42)
-                    .cornerRadius(9)
-            } else if let resourcePath = Bundle.main.resourcePath {
-                let directPath = (resourcePath as NSString).appendingPathComponent("AppIcon_1024.png")
-                if let nsImg = NSImage(contentsOfFile: directPath) {
-                    Image(nsImage: nsImg)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 42, height: 42)
-                        .cornerRadius(9)
-                } else {
-                    MacBookAIconView(size: 38)
-                }
+                    .frame(width: 48, height: 48)
+            } else if let resourcePath = Bundle.main.resourcePath,
+                      let nsImg = NSImage(contentsOfFile: (resourcePath as NSString).appendingPathComponent("Memoji.png")) {
+                Image(nsImage: nsImg)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 48, height: 48)
+            } else if let fallbackImg = NSImage(contentsOfFile: "/Users/playlouder/.gemini/antigravity/scratch/ClamAwake/Resources/Memoji.png") {
+                Image(nsImage: fallbackImg)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 48, height: 48)
             } else {
                 MacBookAIconView(size: 38)
             }
