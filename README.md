@@ -86,8 +86,8 @@ Las herramientas clásicas de "caffeinate" no resuelven esto: mantienen la CPU a
   Monitorea el sensor magnético del lid (`AppleACPIPlatformExpert` / `IOPMrootDomain`) en tiempo real con cero sobrecarga en la CPU.
 - **Onboarding Nativo & Selector Bilingüe:**
   Configuración en un clic. Interfaz con selector dinámico de idioma (Español / Inglés) que actualiza todos los textos en caliente.
-- **Diseño Anti-AI-Slop:**
-  Diseño artesanal siguiendo las pautas de accesibilidad y estilo de Apple: paneles flotantes con esquinas continuas (`cornerRadius: 18`), `NSVisualEffectView` con material `.hudWindow` y biseles refractivos especulares.
+- **Diseño Nativo y Minimalista:**
+  Panel flotante integrado en la barra de menú con estética nativa de macOS (Dark HUD), esquinas redondeadas y consumo ultraligero de recursos (~15 MB RAM).
 
 ---
 
@@ -142,7 +142,7 @@ Puedes apoyar directamente a través de **[ko-fi.com/alexlouder](https://ko-fi.c
 | :--- | :---: | :---: |
 | ☕ **Gracias por tu apoyo** | **$1 USD** | [Apoyar con $1 en Ko-fi](https://ko-fi.com/alexlouder?amount=1) |
 | ⚡ **¡Muchas gracias!** | **$3 USD** | [Apoyar con $3 en Ko-fi](https://ko-fi.com/alexlouder?amount=3) |
-| 🚀 **Patrocinador Oficial de Awake!** | **$5 USD** | [Apoyar con $5 en Ko-fi](https://ko-fi.com/alexlouder?amount=5) |
+| 🚀 **¡Muchísimas gracias!** | **$5 USD** | [Apoyar con $5 en Ko-fi](https://ko-fi.com/alexlouder?amount=5) |
 
 ---
 
@@ -214,8 +214,8 @@ Standard "caffeinate" tools cannot prevent Clamshell sleep without dummy HDMI do
   Directly registers with `AppleACPIPlatformExpert` / `IOPMrootDomain` to track physical clamshell state changes with 0% idle CPU overhead.
 - **Native Onboarding & Instant Language Switching:**
   Streamlined 1-click authorization. On-the-fly language toggle between English and Spanish that dynamically updates the entire UI.
-- **Anti-AI-Slop Clean Design:**
-  Handcrafted Apple design aesthetics: floating HUD window, continuous squircle corners (`cornerRadius: 18`), translucent `NSVisualEffectView`, and subtle specular rim highlights.
+- **Native, Minimal Design:**
+  Floating menu bar panel matching macOS aesthetics (Dark HUD), smooth rounded corners, and minimal resource usage (~15 MB RAM).
 
 ---
 
@@ -270,10 +270,10 @@ Direct support is available on **[ko-fi.com/alexlouder](https://ko-fi.com/alexlo
 | :--- | :---: | :---: |
 | ☕ **Thanks for your support** | **$1 USD** | [Support with $1 on Ko-fi](https://ko-fi.com/alexlouder?amount=1) |
 | ⚡ **Thank you so much!** | **$3 USD** | [Support with $3 on Ko-fi](https://ko-fi.com/alexlouder?amount=3) |
-| 🚀 **Awake! Official Sponsor** | **$5 USD** | [Support with $5 on Ko-fi](https://ko-fi.com/alexlouder?amount=5) |
+| 🚀 **Thank you very much!** | **$5 USD** | [Support with $5 on Ko-fi](https://ko-fi.com/alexlouder?amount=5) |
 
 ---
 
 ## 📄 License
 
-Awake! is licensed under the [MIT License](LICENSE). Copyright © 2026 Alejandro Jiménez ([@Alex-Louder](https://github.com/Alex-Louder)).
+Awake! is licensed under the [MIT License](LICENSE). Copyright © 2026 Alex Louder ([@Alex-Louder](https://github.com/Alex-Louder)).

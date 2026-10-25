@@ -1,98 +1,40 @@
-# Awake! v1.0.0 — Manual y Especificación de Release
+# Awake! v1.0.0 ⚡
 
-> **Awake!**: Mantén despierta tu Mac con la tapa cerrada sin pantallas externas, con protección total de USB, servicios en segundo plano y silencio automático.
+¡Bienvenido a la primera versión oficial de **Awake!** para macOS!
 
----
-
-## 1. Resumen del Proyecto
-
-**Awake!** es una aplicación nativa para macOS (macOS 14 Sonoma, 15 Sequoia y 27 Golden Gate en Apple Silicon e Intel) diseñada para mantener la computadora completamente operativa cuando se baja la pantalla de la MacBook, sin necesidad de conectar pantallas externas ni adaptadores dummy HDMI.
-
-### Objetivos Clave Cumplidos
-1. **Mantener todo activo**: El procesador, las descargas, servidores locales (Docker, Node, Python, bases de datos) y dispositivos USB (hubs, discos externos, interfaces de audio) nunca se suspenden al cerrar la tapa.
-2. **Acceso remoto sin pantallas negras**: Aplicaciones como **Sills**, **VNC**, **TeamViewer** o **AnyDesk** pueden conectarse y ver la pantalla con total normalidad con la MacBook cerrada. La pantalla física se atenúa a brillo cero a nivel de hardware mediante `DisplayServicesSetBrightness`, pero el framebuffer de `WindowServer` y la GPU permanecen activos.
-3. **Silenciar al cerrar (Shh!)**: Al cerrar la tapa, la música o videos se pausan inmediatamente y el sonido se silencia tanto en altavoces internos como en **AirPods, audífonos o altavoces externos**.
-4. **Cero solicitudes de contraseña**: Tras la autorización inicial (1 clic en el onboarding o script de instalación), Awake! activa y desactiva el modo sin pedir contraseñas ni autenticaciones molestas.
-5. **Selector de Idioma Dinámico (ES / EN)**: Selector integrado en el Onboarding y en el menú desplegable que traduce toda la interfaz al instante.
-6. **Sistema de Donaciones / Tip Jar ($1, $3, $5)**: Sistema idéntico a CaffeinateBar con soporte nativo de StoreKit 2 y fallback a donaciones web (PayPal/Tarjeta):
-   - **$1**: *Gracias por tu apoyo*
-   - **$3**: *¡Muchas gracias!*
-   - **$5**: *¡Muchísimas gracias!*
-7. **Icono Oficial Personalizado**: Squircle oscuro con la MacBook (`A!`) y el Memoji del desarrollador recortado limpiamente sin el aro degradado en la esquina inferior izquierda.
-8. **Diseño Dark HUD Liquid Glass**: Interfaz inspirada directamente en el Centro de Control de macOS, con cápsulas simétricas de esquinas continuas (`cornerRadius: 18`), efecto translúcido HUD y reflejos de borde specular highlight. Cumple estrictamente con los estándares **Anti-AI-Slop UI/UX**.
+Awake! es una utilidad ligera para la barra de menú diseñada para mantener tu MacBook despierta cuando cierras la tapa, sin necesidad de conectar monitores externos ni adaptadores dummy HDMI.
 
 ---
 
-## 2. Los Dos Controles Principales
+### 🚀 Novedades de la Versión 1.0.0
 
-| Control | Subtítulo (ES) | Subtítulo (EN) | Función Principal |
-| :--- | :--- | :--- | :--- |
-| **Awake!** | *Mantén despierta tu mac* | *Keep your Mac awake* | Impide que el sistema entre en reposo al cerrar la tapa. Conserva el suministro eléctrico en los puertos USB y previene la interrupción de procesos y sesiones remotas. |
-| **Shh!** | *Silenciar al cerrar* | *Mute on lid close* | Pausa automáticamente la música o videos en reproducción y silencia el sonido en AirPods, audífonos o altavoces al bajar la pantalla. |
-
-Adicionalmente, el panel incluye un indicador de estado en tiempo real:
-- **Tapa / Lid**: `Abierta` / `Open` (punto verde) o `Cerrada` / `Closed` (punto naranja).
-- **USB**: `Activo` / `Active` (con icono de rayo cuando Awake! está activo) o `Normal`.
+- **Funcionamiento con la Tapa Cerrada**: Tus descargas, renderizados, servidores locales (Docker, Node, Python) y conexiones remotas (Sills, VNC, RustDesk) siguen funcionando sin interrupción.
+- **Protección de Puertos USB**: Los discos duros externos, hubs e interfaces de audio mantienen el suministro de energía continuo al cerrar la tapa.
+- **Silenciar al Cerrar (Shh!)**: Pausa automáticamente tu música o videos y silencia el audio (altavoces internos, AirPods o audífonos) en cuanto bajas la pantalla. Al volver a abrirla, restaura el volumen previo.
+- **Interruptor de Encendido Rápido**: Activa o desactiva el inicio automático al encender tu Mac directamente desde el menú.
+- **Selector de Idioma al Vuelo**: Cambia entre Español y English al instante desde la barra de menú o durante la bienvenida.
+- **100% Código Abierto y Privado**: Sin telemetría, sin rastreadores y con un consumo mínimo (~15 MB de RAM).
 
 ---
 
-## 3. Sistema de Donaciones (Tip Jar)
+### 📦 Instalación
 
-Inspirado en el sistema de CaffeinateBar, Awake! ofrece 3 niveles de contribución:
+#### Opción 1: Imagen de Disco (DMG)
+1. Descarga el archivo **`Awake-v1.0.0.dmg`** que aparece abajo en Assets.
+2. Abre el DMG y arrastra **Awake!** a tu carpeta de **Aplicaciones**.
+3. Al abrirla por primera vez, haz clic en **"Configurar Permiso"** para habilitar el modo sin contraseña.
 
-- **$1**: **Gracias por tu apoyo** (*Thanks for your support*) — *Impulsa el desarrollo continuo*
-- **$3**: **¡Muchas gracias!** (*Thank you so much!*) — *Un gran gesto de agradecimiento*
-- **$5**: **¡Muchísimas gracias!** (*Thank you very much!*) — *Patrocinador oficial de Awake!*
-
-### Integración Técnica
-1. **StoreKit 2**: Mapeado con productos consumibles (`com.playlouder.Awake.tip.1`, `com.playlouder.Awake.tip.3`, `com.playlouder.Awake.tip.5`). Incluye archivo de configuración local `AwakeTips.storekit`.
-2. **Ko-fi Deep-Linking Individual**: Cada botón redirige directamente a la opción correspondiente en [ko-fi.com/alexlouder](https://ko-fi.com/alexlouder):
-   - **$1**: `https://ko-fi.com/alexlouder?amount=1`
-   - **$3**: `https://ko-fi.com/alexlouder?amount=3`
-   - **$5**: `https://ko-fi.com/alexlouder?amount=5`
-   - Panel ultra-limpio sin botones redundantes en el pie de página.
-3. **Identidad Visual**:
-   - **Icono Oficial de la App**: `Awake-Hardware` (MacBook con wallpaper y tipografía Awake! en dock y Finder).
-   - **Icono de la Guía / Onboarding**: Tu Memoji 3D limpio, recortado en alta resolución, sin fondo y sin aro degradado.
-
----
-
-## 4. Arquitectura Técnica
-
-```
-Sources/Awake/
-├── AppDelegate.swift           # Ciclo de vida, status item en barra de menú y ventanas flotantes
-├── AppViewModel.swift          # Estado reactivo (@Published) que orquesta los subsistemas
-├── LocalizationManager.swift   # Motor centralizado de traducción en vivo (ES / EN)
-├── PowerManager.swift          # Control de pmset disablesleep e IOKit power assertions
-├── LidDetector.swift           # Sensor de tapa física mediante IOKit IOPMrootDomain
-├── BrightnessController.swift  # Atenuación física de pantalla sin apagar WindowServer
-├── AudioManager.swift          # Pausa de MediaRemote y enrutamiento CoreAudio de interfaces USB
-├── MenuView.swift              # Interfaz Dark HUD Liquid Glass estilo Centro de Control
-├── OnboardingView.swift        # Ventana de bienvenida, selector de idioma y permisos
-├── TipJarStore.swift           # Gestor de StoreKit 2 y enlaces de pago
-├── TipJarView.swift            # Panel visual de donaciones ($1, $5, $10)
-└── main.swift                  # Punto de entrada de la aplicación NSApplication
-
-Resources/
-├── AppIcon.icns                # Icono macOS compilado con Memoji en esquina inferior izquierda
-├── AppIcon_1024.png            # Master PNG de alta resolución 1024x1024
-├── Memoji.png                  # Sprite aislado del Memoji sin aro degradado
-└── AwakeTips.storekit          # Configuración de compras dentro de la app para Xcode
-```
-
----
-
-## 5. Compilación e Instalación
-
-### Instalación Rápida
+#### Opción 2: Instalación rápida por Terminal
 ```bash
-./install.sh
+git clone https://github.com/Alex-Louder/Awake.git && cd Awake && ./install.sh
 ```
 
-El script:
-1. Compila la aplicación en modo Release (`swift build -c release`).
-2. Empaqueta el bundle `Awake!.app` con sus recursos (`AppIcon.icns`, `AppIcon_1024.png`, `AwakeTips.storekit`).
-3. Firma localmente con `codesign`.
-4. Configura la regla NOPASSWD en `/etc/sudoers.d/awake` para el usuario actual.
-5. Instala en `/Applications/Awake!.app` y la ejecuta.
+---
+
+### ☕ Apoya el Proyecto
+
+Si Awake! te resulta útil para tu flujo de trabajo o tus servidores, puedes invitarme un café o apoyar el desarrollo en **[ko-fi.com/alexlouder](https://ko-fi.com/alexlouder)**.
+
+---
+
+**Desarrollado por Alex Louder ([@Alex-Louder](https://github.com/Alex-Louder)).**
