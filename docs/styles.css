@@ -6,39 +6,39 @@
 /* --- Custom Properties & Design Tokens --- */
 :root {
   /* Obsidian Studio Palette (Zero AI purple/indigo gradients) */
-  --bg-canvas: #060608;
-  --bg-surface-1: #0d0d12;
-  --bg-surface-2: #14141c;
+  --bg-canvas: #050508;
+  --bg-surface-1: #0a0a0f;
+  --bg-surface-2: #12121a;
   --bg-surface-3: #1a1a24;
-  --bg-surface-glass: rgba(18, 18, 26, 0.72);
-  --bg-surface-hover: rgba(255, 255, 255, 0.04);
+  --bg-surface-glass: rgba(14, 14, 20, 0.78);
+  --bg-surface-hover: rgba(255, 255, 255, 0.05);
 
   /* Borders & Separation */
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.16);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
   --border-focus: rgba(10, 132, 255, 0.5);
-  --border-glass: rgba(255, 255, 255, 0.1);
+  --border-glass: rgba(255, 255, 255, 0.12);
 
   /* Typography Colors */
   --text-primary: #f5f5f7;
-  --text-secondary: #8e8e93;
-  --text-tertiary: #545458;
+  --text-secondary: #98989d;
+  --text-tertiary: #5e5e64;
   --text-inverse: #000000;
 
   /* Functional Accents */
   --accent-blue: #0a84ff;
   --accent-blue-hover: #0071e3;
-  --accent-blue-glow: rgba(10, 132, 255, 0.25);
+  --accent-blue-glow: rgba(10, 132, 255, 0.35);
   
   --accent-green: #30d158;
-  --accent-green-dim: rgba(48, 209, 88, 0.15);
-  --accent-green-glow: rgba(48, 209, 88, 0.35);
+  --accent-green-dim: rgba(48, 209, 88, 0.14);
+  --accent-green-glow: rgba(48, 209, 88, 0.4);
 
   --accent-orange: #ff9f0a;
-  --accent-orange-dim: rgba(255, 159, 10, 0.15);
+  --accent-orange-dim: rgba(255, 159, 10, 0.14);
 
   --accent-red: #ff453a;
-  --accent-red-dim: rgba(255, 69, 58, 0.15);
+  --accent-red-dim: rgba(255, 69, 58, 0.14);
 
   /* Typography Scale */
   --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Geist", -apple-system, sans-serif;
@@ -50,13 +50,13 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 22px;
-  --radius-2xl: 30px;
+  --radius-2xl: 32px;
   --radius-full: 9999px;
 
   /* Elevation Shadows */
-  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-elevated: 0 20px 60px rgba(0, 0, 0, 0.7);
-  --shadow-hud: 0 24px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 24px 70px rgba(0, 0, 0, 0.8);
+  --shadow-hud: 0 30px 80px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
   /* Motion & Physics */
   --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
@@ -66,27 +66,27 @@
   --duration-slow: 600ms;
 
   /* Layout Constraints */
-  --container-max: 1180px;
-  --container-narrow: 840px;
+  --container-max: 1200px;
+  --container-narrow: 860px;
 }
 
 /* Light Theme Variables */
 [data-theme="light"] {
-  --bg-canvas: #fbfbfd;
+  --bg-canvas: #f8f8fa;
   --bg-surface-1: #ffffff;
-  --bg-surface-2: #f2f2f7;
-  --bg-surface-3: #e5e5ea;
-  --bg-surface-glass: rgba(255, 255, 255, 0.8);
-  --bg-surface-hover: rgba(0, 0, 0, 0.03);
+  --bg-surface-2: #f0f0f5;
+  --bg-surface-3: #e4e4eb;
+  --bg-surface-glass: rgba(255, 255, 255, 0.84);
+  --bg-surface-hover: rgba(0, 0, 0, 0.04);
 
   --border-subtle: rgba(0, 0, 0, 0.08);
   --border-hover: rgba(0, 0, 0, 0.18);
   --border-focus: rgba(0, 113, 227, 0.5);
-  --border-glass: rgba(255, 255, 255, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.7);
 
   --text-primary: #1d1d1f;
   --text-secondary: #6e6e73;
-  --text-tertiary: #aeaeb2;
+  --text-tertiary: #a1a1a6;
   --text-inverse: #ffffff;
 
   --accent-blue: #0071e3;
@@ -122,17 +122,16 @@ body {
   line-height: 1.5;
 }
 
-/* Subtle Ambient Spotlight (Mesh Glow - Not AI purple blob) */
-.ambient-glow {
-  position: absolute;
-  top: -120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 900px;
-  height: 550px;
-  background: radial-gradient(ellipse at 50% 30%, rgba(255, 255, 255, 0.05) 0%, rgba(10, 132, 255, 0.03) 45%, transparent 70%);
+/* Dynamic Interactive Particle & Glow Canvas */
+#ambientCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 0;
+  opacity: 0.6;
 }
 
 /* Accessible Skip Link */
@@ -227,7 +226,7 @@ body {
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 6px;
+  gap: 4px;
 }
 
 .nav-link {
@@ -250,8 +249,7 @@ body {
   gap: 8px;
 }
 
-/* Button & Controls */
-.btn-lang, .btn-theme {
+.btn-lang {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-subtle);
   color: var(--text-primary);
@@ -266,7 +264,7 @@ body {
   border-radius: var(--radius-full);
   transition: all var(--duration-quick) var(--ease-spring);
 }
-.btn-lang:hover, .btn-theme:hover {
+.btn-lang:hover {
   background: rgba(255, 255, 255, 0.1);
   border-color: var(--border-hover);
 }
@@ -289,7 +287,6 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Primary Button (Apple Pill / Squircle) */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -314,14 +311,6 @@ body {
   transform: scale(0.98);
 }
 
-.btn-primary-blue {
-  background: var(--accent-blue);
-  color: #ffffff;
-}
-.btn-primary-blue:hover {
-  background: var(--accent-blue-hover);
-}
-
 .btn-secondary {
   display: inline-flex;
   align-items: center;
@@ -341,28 +330,6 @@ body {
 .btn-secondary:hover {
   background: var(--bg-surface-3);
   border-color: var(--border-hover);
-}
-
-/* Mobile Nav Toggle */
-.nav-mobile-toggle {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 32px;
-  height: 32px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  color: var(--text-primary);
-}
-.hamburger-line {
-  width: 18px;
-  height: 2px;
-  background-color: currentColor;
-  border-radius: 1px;
-  transition: all var(--duration-norm) var(--ease-smooth);
 }
 
 /* --- HERO SECTION --- */
@@ -453,7 +420,6 @@ body {
   padding: 12px 26px;
   font-size: 15px;
 }
-
 .hero-cta-group .btn-secondary {
   padding: 12px 22px;
   font-size: 15px;
@@ -537,60 +503,157 @@ body {
   color: var(--accent-green);
 }
 
-/* --- HERO INTERACTIVE MACBOOK & HUD SIMULATOR --- */
+/* ==========================================================================
+   INTERACTIVE 3D MACBOOK CLAMSHELL SIMULATION
+   Real 3D Perspective + Physically Accurate Folding Hinge + Ports & HUD
+   ========================================================================== */
+
 .hero-stage {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* Vector MacBook Chassis */
-.macbook-chassis {
   width: 100%;
-  max-width: 520px;
-  background: linear-gradient(180deg, #1f1f28 0%, #111116 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 0, 0, 0.9);
-  padding: 12px;
-  position: relative;
-  transition: transform var(--duration-norm) var(--ease-smooth);
 }
 
-.macbook-screen {
+.macbook-3d-scene {
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  width: 100%;
+  max-width: 530px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.macbook-3d-model {
+  width: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--duration-slow) var(--ease-smooth);
+}
+
+/* The Rotating Lid Assembly */
+.macbook-lid-assembly {
+  width: 100%;
+  height: 350px;
+  position: relative;
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--lid-rotate, 0deg));
+  transition: transform var(--duration-norm) var(--ease-smooth);
+  z-index: 2;
+}
+
+/* Front Face: Screen, Glass, Menu Bar & HUD */
+.macbook-lid-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: #09090c;
-  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 18px 18px 4px 4px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
-  position: relative;
+  transition: opacity 300ms ease;
+  z-index: 3;
+}
+
+/* Camera Notch */
+.macbook-camera-notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 110px;
+  height: 14px;
+  background: #000000;
+  border-radius: 0 0 10px 10px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.macbook-camera-lens {
+  width: 6px;
+  height: 6px;
+  background: #111116;
+  border: 1px solid #22222b;
+  border-radius: 50%;
+}
+
+/* Back Face: Matte Anodized Aluminum Shell with Laser Apple Logo */
+.macbook-lid-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #2b2b36 0%, #17171f 50%, #0d0d13 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px 18px 4px 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 300ms ease, transform 300ms ease;
+  z-index: 2;
+}
+
+/* Seamless 3D Clamshell Lid-Closed State */
+.macbook-3d-model.is-closed .macbook-lid-front {
+  opacity: 0;
+  pointer-events: none;
+}
+.macbook-3d-model.is-closed .macbook-lid-back {
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.lid-apple-logo {
+  width: 58px;
+  height: 58px;
+  fill: rgba(255, 255, 255, 0.88);
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.4));
+  transition: all var(--duration-norm) ease;
 }
 
 /* Simulated macOS Menu Bar */
 .macbook-menubar {
   height: 28px;
-  background: rgba(22, 22, 30, 0.85);
+  background: rgba(20, 20, 28, 0.9);
   backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 11.5px;
+  color: rgba(255, 255, 255, 0.9);
   user-select: none;
+  z-index: 5;
 }
 
 .menubar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .apple-logo {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   fill: currentColor;
 }
 .menubar-title {
@@ -598,23 +661,23 @@ body {
 }
 .menubar-item {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 11.5px;
+  font-size: 11px;
 }
 
 .menubar-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 .menubar-awake-pill {
   display: flex;
   align-items: center;
   gap: 5px;
   background: rgba(255, 255, 255, 0.12);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
   font-weight: 600;
-  font-size: 11px;
+  font-size: 10.5px;
   color: #ffffff;
   cursor: pointer;
   transition: all var(--duration-quick) var(--ease-spring);
@@ -624,35 +687,54 @@ body {
   box-shadow: 0 0 10px var(--accent-blue-glow);
 }
 
-/* Desktop Canvas & Popover Container */
-.macbook-desktop {
-  min-height: 380px;
-  padding: 20px;
-  background: radial-gradient(circle at 50% 30%, #151520 0%, #08080c 100%);
+/* Screen Canvas & Desktop Wallpaper */
+.macbook-screen-canvas {
+  flex: 1;
+  background: radial-gradient(circle at 50% 35%, #181824 0%, #09090e 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 16px;
   position: relative;
+  overflow: hidden;
   transition: background var(--duration-norm) ease;
 }
-.macbook-desktop.lid-closed {
-  background: #020203;
+
+/* Power-Save Dimming Overlay */
+.screen-sleep-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-norm) ease;
+  z-index: 8;
+}
+.screen-sleep-overlay.dimmed {
+  opacity: 0.85; /* Screen is 0 brightness, HUD glows faintly */
+}
+.screen-sleep-overlay.dark-sleep {
+  opacity: 0.98; /* True power off when Awake! is disabled */
 }
 
-/* The Native Liquid Glass HUD Popover (Rendered in Vector CSS) */
+/* Native Vector HUD Popover */
 .awake-hud-card {
-  width: 290px;
-  background: rgba(26, 26, 36, 0.82);
+  width: 275px;
+  background: rgba(22, 22, 32, 0.84);
   backdrop-filter: blur(36px) saturate(190%);
   -webkit-backdrop-filter: blur(36px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-hud);
-  padding: 16px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  position: relative;
+  z-index: 9;
   transition: transform var(--duration-norm) var(--ease-spring), opacity var(--duration-norm) ease;
 }
 
@@ -660,7 +742,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 2px;
 }
 .hud-title-lockup {
   display: flex;
@@ -668,13 +749,13 @@ body {
   gap: 8px;
 }
 .hud-icon {
-  width: 20px;
-  height: 20px;
-  border-radius: 5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
 }
 .hud-app-name {
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   letter-spacing: -0.02em;
 }
 
@@ -684,8 +765,8 @@ body {
   gap: 6px;
 }
 .hud-power-btn {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
@@ -704,12 +785,12 @@ body {
 }
 .hud-lang-toggle {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 3px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
   cursor: pointer;
   transition: all var(--duration-quick) ease;
@@ -721,10 +802,10 @@ body {
 
 /* Control Capsules (Awake & Shh) */
 .hud-capsule {
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.38);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
+  padding: 10px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -733,8 +814,8 @@ body {
   transition: all var(--duration-quick) var(--ease-spring);
 }
 .hud-capsule:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 .hud-capsule.active {
   background: rgba(10, 132, 255, 0.16);
@@ -747,19 +828,18 @@ body {
 }
 .capsule-label {
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 .capsule-sub {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-secondary);
 }
 
-/* Physical Switch */
 .hud-switch {
-  width: 40px;
-  height: 22px;
+  width: 36px;
+  height: 20px;
   background: rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-full);
   position: relative;
@@ -771,8 +851,8 @@ body {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   background: #ffffff;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -782,7 +862,7 @@ body {
   background: var(--accent-blue);
 }
 .hud-capsule.active .hud-switch::after {
-  transform: translateX(18px);
+  transform: translateX(16px);
 }
 
 /* Audio Waveform Meter */
@@ -790,8 +870,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 4px 6px;
-  font-size: 11px;
+  padding: 2px 4px;
+  font-size: 10.5px;
   font-family: var(--font-mono);
   color: var(--text-secondary);
 }
@@ -799,7 +879,7 @@ body {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 14px;
+  height: 12px;
 }
 .waveform-bar {
   width: 3px;
@@ -820,23 +900,23 @@ body {
 
 @keyframes wave-bounce {
   0%, 100% { height: 3px; }
-  50% { height: 14px; }
+  50% { height: 12px; }
 }
 
-/* Real-Time Hardware Readout Footer */
+/* Hardware Status Strip */
 .hud-status-strip {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 6px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--text-secondary);
 }
 .hud-status-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 .indicator-circle {
   width: 6px;
@@ -848,28 +928,108 @@ body {
   background: var(--accent-orange);
 }
 
-/* Interactive Lid Angle Slider */
+/* MacBook Base Assembly (Keyboard Deck + Glowing USB-C Ports) */
+.macbook-base-assembly {
+  width: 100%;
+  height: 28px;
+  background: linear-gradient(180deg, #242430 0%, #15151e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+}
+
+.keyboard-center-recess {
+  width: 120px;
+  height: 6px;
+  background: #000000;
+  border-radius: 0 0 6px 6px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.usb-port {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  transition: all var(--duration-quick) ease;
+}
+.port-led {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+  transition: all var(--duration-norm) ease;
+}
+.usb-port.active .port-led {
+  background: var(--accent-green);
+  box-shadow: 0 0 10px var(--accent-green);
+}
+.usb-port.sleep-risk .port-led {
+  background: var(--accent-red);
+  box-shadow: 0 0 8px var(--accent-red);
+}
+
+/* Control Deck (Auto-Demo Button + Angle Slider + Telemetry Pills) */
 .simulator-controls {
   width: 100%;
-  max-width: 520px;
-  margin-top: 16px;
+  max-width: 530px;
+  margin-top: 20px;
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 12px 18px;
+  border-radius: var(--radius-xl);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.sim-control-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
-.sim-slider-label {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
+
+.btn-auto-demo {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all var(--duration-quick) var(--ease-spring);
+}
+.btn-auto-demo:hover {
+  background: var(--accent-blue);
+  color: #ffffff;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 12px var(--accent-blue-glow);
+}
+
+.sim-slider-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  gap: 12px;
+  flex: 1;
 }
 .lid-slider {
   flex: 1;
@@ -881,9 +1041,42 @@ body {
   font-size: 12px;
   font-weight: 600;
   color: var(--accent-green);
-  min-width: 90px;
+  min-width: 95px;
   text-align: right;
 }
+
+/* Real-Time Holographic Telemetry Badges */
+.sim-telemetry-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.telemetry-pill {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.telemetry-pill-title {
+  color: var(--text-tertiary);
+  font-size: 10px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+.telemetry-pill-val {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.telemetry-pill-val.green { color: var(--accent-green); }
+.telemetry-pill-val.orange { color: var(--accent-orange); }
+.telemetry-pill-val.red { color: var(--accent-red); }
 
 /* --- TAGLINE REVEAL (APPLE KEYNOTE MOMENT - B11) --- */
 .tagline-section {
@@ -913,15 +1106,16 @@ body {
 .tagline-text {
   font-size: clamp(2rem, 3.8vw, 3.4rem);
   font-weight: 600;
-  line-height: 1.18;
+  line-height: 1.25;
   letter-spacing: -0.03em;
   color: var(--text-primary);
   text-wrap: balance;
 }
 
-/* Word-by-word reveal transitions */
+/* Word-by-word reveal transitions with GUARANTEED spacing */
 .tagline-word {
   display: inline-block;
+  margin-right: 0.28em;
   opacity: 0.22;
   transform: translateY(4px);
   transition: opacity 400ms var(--ease-smooth), transform 400ms var(--ease-smooth);
@@ -931,9 +1125,14 @@ body {
   transform: translateY(0);
 }
 
-/* --- THE CLAMSHELL TRAP (PROBLEM VS AWAKE PROTOCOL) --- */
-.comparison-story-section {
+/* ==========================================================================
+   ECOSYSTEM SHOWCASE: BACKGROUND AI AGENTS & REMOTE DESKTOP
+   Claude, Antigravity, Codex, Ollama, Docker, Sills, RustDesk, AnyDesk, TeamViewer
+   ========================================================================== */
+
+.ecosystem-section {
   padding: 110px 0;
+  position: relative;
 }
 
 .section-label {
@@ -966,9 +1165,139 @@ body {
 .section-sub {
   font-size: 1.1rem;
   color: var(--text-secondary);
-  max-width: 580px;
+  max-width: 620px;
   margin-bottom: 48px;
   text-wrap: pretty;
+}
+
+.ecosystem-dual-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.ecosystem-group-card {
+  background: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-subtle);
+  transition: border-color var(--duration-quick) ease;
+}
+.ecosystem-group-card:hover {
+  border-color: var(--border-hover);
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.group-title-lockup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.group-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-blue);
+}
+.group-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.group-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--accent-green-dim);
+  color: var(--accent-green);
+}
+
+.group-desc {
+  font-size: 14.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.app-items-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.app-chip {
+  background: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all var(--duration-quick) var(--ease-spring);
+}
+.app-chip:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-surface-3);
+  transform: translateY(-2px);
+}
+
+.app-chip-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.app-chip-info {
+  display: flex;
+  flex-direction: column;
+}
+.app-chip-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.app-chip-role {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Brand Custom Icon Colors */
+.icon-claude { background: #d97706; color: #ffffff; }
+.icon-antigravity { background: #2563eb; color: #ffffff; }
+.icon-codex { background: #10b981; color: #ffffff; }
+.icon-docker { background: #0284c7; color: #ffffff; }
+.icon-sills { background: #4f46e5; color: #ffffff; }
+.icon-rustdesk { background: #ea580c; color: #ffffff; }
+.icon-anydesk { background: #dc2626; color: #ffffff; }
+.icon-teamviewer { background: #0284c7; color: #ffffff; }
+
+/* --- THE CLAMSHELL TRAP (PROBLEM VS AWAKE PROTOCOL) --- */
+.duel-section {
+  padding: 100px 0;
+  border-top: 1px solid var(--border-subtle);
 }
 
 .duel-grid {
@@ -1046,12 +1375,8 @@ body {
   margin-top: -1px;
   flex-shrink: 0;
 }
-.duel-item.bad .duel-bullet {
-  color: var(--accent-red);
-}
-.duel-item.good .duel-bullet {
-  color: var(--accent-green);
-}
+.duel-item.bad .duel-bullet { color: var(--accent-red); }
+.duel-item.good .duel-bullet { color: var(--accent-green); }
 
 .duel-item-text strong {
   color: var(--text-primary);
@@ -1061,7 +1386,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* --- INTERACTIVE BENTO SHOWCASE --- */
+/* --- BENTO CAPABILITIES --- */
 .bento-section {
   padding: 100px 0;
   background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
@@ -1124,7 +1449,6 @@ body {
   text-wrap: pretty;
 }
 
-/* Bento Visual Demos */
 .bento-demo-box {
   background: var(--bg-surface-2);
   border: 1px solid var(--border-subtle);
@@ -1158,7 +1482,7 @@ body {
   color: var(--text-secondary);
 }
 
-/* --- HARDWARE PIPELINE (HOW IT WORKS) --- */
+/* --- HARDWARE PIPELINE --- */
 .pipeline-section {
   padding: 100px 0;
   border-top: 1px solid var(--border-subtle);
@@ -1270,18 +1594,9 @@ body {
   padding: 3px 8px;
   border-radius: var(--radius-full);
 }
-.cell-pill.good {
-  background: var(--accent-green-dim);
-  color: var(--accent-green);
-}
-.cell-pill.warn {
-  background: var(--accent-orange-dim);
-  color: var(--accent-orange);
-}
-.cell-pill.bad {
-  background: var(--accent-red-dim);
-  color: var(--accent-red);
-}
+.cell-pill.good { background: var(--accent-green-dim); color: var(--accent-green); }
+.cell-pill.warn { background: var(--accent-orange-dim); color: var(--accent-orange); }
+.cell-pill.bad { background: var(--accent-red-dim); color: var(--accent-red); }
 
 /* --- CREATOR & TIP JAR --- */
 .creator-section {
@@ -1342,7 +1657,6 @@ body {
   margin-bottom: 28px;
 }
 
-/* Clean Tip Jar Buttons (No Emojis per Anti-AI-Slop) */
 .tip-options-row {
   display: flex;
   flex-wrap: wrap;
@@ -1378,7 +1692,7 @@ body {
   background: #e04b48;
 }
 
-/* Interactive Tip Jar Visualizer */
+/* Interactive Tip Jar Selector */
 .creator-interactive-jar {
   background: var(--bg-surface-2);
   border: 1px solid var(--border-subtle);
@@ -1624,6 +1938,9 @@ body {
   .hero-meta-stats {
     justify-content: center;
   }
+  .ecosystem-dual-column {
+    grid-template-columns: 1fr;
+  }
   .duel-grid {
     grid-template-columns: 1fr;
   }
@@ -1642,18 +1959,15 @@ body {
   .nav-links {
     display: none;
   }
-  .nav-mobile-toggle {
-    display: flex;
-  }
   .hero-section {
     padding-top: 110px;
   }
-  .macbook-chassis {
-    padding: 8px;
+  .app-items-grid {
+    grid-template-columns: 1fr;
   }
   .awake-hud-card {
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
   }
 }
 

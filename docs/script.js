@@ -12,6 +12,7 @@
     en: {
       page_title: "Awake! — Lid Down. Work Goes On.",
       nav_overview: "Overview",
+      nav_ecosystem: "Ecosystem",
       nav_comparison: "Comparison",
       nav_architecture: "Architecture",
       nav_creator: "Creator",
@@ -20,7 +21,7 @@
 
       hero_badge: "macOS 14+ Sonoma • 15 Sequoia • 27 Golden Gate",
       hero_title: "Lid down.<br>Work goes on.",
-      hero_desc: "Your Mac sleeps when you say so, not when the hinge clicks. Keep downloads active, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.",
+      hero_desc: "Your Mac sleeps when you say so, not when the hinge clicks. Keep background AI agents running, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.",
       hero_cta_dmg: "Download Awake! v1.0.0",
       hero_cta_github: "GitHub Repository",
 
@@ -36,9 +37,30 @@
       hud_usb_unprotected: "USB: Sleep Risk",
 
       sim_slider_title: "Simulate Lid Angle:",
+      demo_btn_close: "Auto Demo: Close Lid",
+      demo_btn_open: "Auto Demo: Open Lid",
+      demo_btn_running: "Simulating...",
 
       tagline_eyebrow: "The Clamshell Problem Solved",
       tagline_text: "Engineered for developers, creators, and remote teams who refuse to let a closed hinge interrupt a single server, render, or download.",
+
+      eco_badge: "Ecosystem",
+      eco_title: "Engineered for Background AI & Remote Workflows",
+      eco_sub: "Awake! was designed specifically for developers running long compute tasks and creators accessing their Mac from anywhere.",
+      eco_ai_title: "Background AI Agents & Compute",
+      eco_ai_badge: "Never Interrupted",
+      eco_ai_desc: "Multi-hour coding agents, LLM inference, local model fine-tuning, and overnight batch builds continue at 100% Apple Silicon speed with your screen closed.",
+      app_claude_role: "Autonomous Coding",
+      app_agy_role: "Agentic Pair Programmer",
+      app_codex_role: "Terminal & Build Pipelines",
+      app_ollama_role: "Local LLMs (Llama, DeepSeek)",
+      eco_remote_title: "Remote Access & Control",
+      eco_remote_badge: "Zero Black Screens",
+      eco_remote_desc: "Your physical screen backlight drops to zero to save energy, while the macOS WindowServer GPU framebuffer stays active at 60 FPS. Connect anytime from any device.",
+      app_sills_role: "Mobile iOS to Mac Stream",
+      app_rustdesk_role: "Open Source Remote P2P",
+      app_anydesk_role: "Ultra-Low Latency Access",
+      app_tv_role: "Headless Desktop Control",
 
       duel_badge: "Architecture",
       duel_title: "The Clamshell Trap vs. The Awake! Protocol",
@@ -133,6 +155,7 @@
     es: {
       page_title: "Awake! — Bajas la tapa. Nada se detiene.",
       nav_overview: "Inicio",
+      nav_ecosystem: "Ecosistema",
       nav_comparison: "Comparativa",
       nav_architecture: "Arquitectura",
       nav_creator: "Creador",
@@ -141,7 +164,7 @@
 
       hero_badge: "macOS 14+ Sonoma • 15 Sequoia • 27 Golden Gate",
       hero_title: "Bajas la tapa.<br>Nada se detiene.",
-      hero_desc: "Tu Mac duerme cuando tú lo decides, no cuando la bisagra se cierra. Mantén descargas activas, discos NVMe conectados y escritorio remoto funcionando sin adaptadores dummy. Con silencio inteligente al cerrar la pantalla.",
+      hero_desc: "Tu Mac duerme cuando tú lo decides, no cuando la bisagra se cierra. Mantén agentes de IA en segundo plano, discos NVMe conectados y escritorio remoto funcionando sin adaptadores dummy. Con silencio inteligente al cerrar la pantalla.",
       hero_cta_dmg: "Descargar Awake! v1.0.0",
       hero_cta_github: "Repositorio en GitHub",
 
@@ -157,9 +180,30 @@
       hud_usb_unprotected: "USB: En Riesgo",
 
       sim_slider_title: "Simular Ángulo de la Tapa:",
+      demo_btn_close: "Auto Demo: Cerrar Tapa",
+      demo_btn_open: "Auto Demo: Abrir Tapa",
+      demo_btn_running: "Simulando...",
 
       tagline_eyebrow: "El Problema de Clamshell Resuelto",
       tagline_text: "Diseñada para desarrolladores, creadores y profesionales remotos que se niegan a que una bisagra cerrada interrumpa un solo servidor, render o descarga.",
+
+      eco_badge: "Ecosistema",
+      eco_title: "Diseñado para Agentes de IA y Escritorio Remoto",
+      eco_sub: "Awake! fue creada específicamente para desarrolladores con tareas de cómputo extensas y profesionales que acceden a su Mac a distancia.",
+      eco_ai_title: "Agentes de IA y Cómputo en Segundo Plano",
+      eco_ai_badge: "Nunca se Interrumpen",
+      eco_ai_desc: "Agentes de programación autónomos de varias horas, inferencia de LLMs, afinación de modelos y compilaciones nocturnas continúan al 100% de velocidad Apple Silicon con la pantalla cerrada.",
+      app_claude_role: "Programación Autónoma",
+      app_agy_role: "Programador Pair en Terminal",
+      app_codex_role: "Pipelines y Terminal LLMs",
+      app_ollama_role: "LLMs Locales (Llama, DeepSeek)",
+      eco_remote_title: "Acceso Remoto y Control",
+      eco_remote_badge: "Cero Pantallas Negras",
+      eco_remote_desc: "El brillo de tu pantalla física baja a cero para ahorrar batería, mientras el framebuffer GPU de WindowServer sigue activo a 60 FPS. Conéctate cuando quieras desde cualquier equipo.",
+      app_sills_role: "Streaming iOS a Mac",
+      app_rustdesk_role: "P2P Remoto Código Abierto",
+      app_anydesk_role: "Acceso de Ultra Baja Latencia",
+      app_tv_role: "Control de Escritorio Headless",
 
       duel_badge: "Arquitectura",
       duel_title: "La Trampa de Clamshell vs. El Protocolo Awake!",
@@ -270,10 +314,10 @@
       }
     });
 
-    // Update Lang Buttons
+    // Update Lang Nav Buttons
     const langDisplay = document.getElementById('langDisplay');
     if (langDisplay) {
-      langDisplay.innerHTML = lang === 'en' ? '<strong>EN</strong> / ES' : 'EN / <strong>ES</strong>';
+      langDisplay.innerHTML = lang === 'en' ? '<strong>EN</strong> / 🇲🇽 ES' : '🇺🇸 EN / <strong>🇲🇽 ES</strong>';
     }
 
     const simLangToggle = document.getElementById('simLangToggle');
@@ -283,14 +327,14 @@
 
     document.title = dict.page_title || "Awake!";
 
-    // Rebuild Tagline reveal words
+    // Rebuild Tagline reveal words with guaranteed spacing
     buildTaglineReveal();
 
-    // Refresh simulation texts
+    // Refresh simulation texts and auto demo button state
     updateSimulatorState();
   }
 
-  // --- Apple Keynote Tagline Reveal (Word-by-word scroll trigger) ---
+  // --- Apple Keynote Tagline Reveal (Word-by-word scroll trigger with explicit text spaces) ---
   function buildTaglineReveal() {
     const box = document.getElementById('taglineBox');
     if (!box) return;
@@ -303,8 +347,10 @@
     words.forEach((word) => {
       const span = document.createElement('span');
       span.className = 'tagline-word';
-      span.textContent = word + ' ';
+      span.textContent = word;
       box.appendChild(span);
+      // Guarantee explicit space text node to avoid browser layout word concatenation
+      box.appendChild(document.createTextNode(' '));
     });
   }
 
@@ -315,11 +361,10 @@
     const rect = box.getBoundingClientRect();
     const windowHeight = window.innerHeight;
 
-    // Trigger reveal when section enters viewport
-    if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+    if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
       const spans = box.querySelectorAll('.tagline-word');
-      const progress = Math.min(1, Math.max(0, (windowHeight * 0.75 - rect.top) / (rect.height + 100)));
-      const wordsToReveal = Math.floor(progress * spans.length * 1.5);
+      const progress = Math.min(1, Math.max(0, (windowHeight * 0.78 - rect.top) / (rect.height + 120)));
+      const wordsToReveal = Math.floor(progress * spans.length * 1.4);
 
       spans.forEach((span, idx) => {
         if (idx <= wordsToReveal) {
@@ -331,33 +376,178 @@
     }
   }
 
+  // --- Dynamic Interactive Ambient Background Particle Canvas ---
+  function initAmbientCanvas() {
+    const canvas = document.getElementById('ambientCanvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    let mouse = { x: -1000, y: -1000, active: false };
+    const particles = [];
+    const particleCount = Math.min(55, Math.floor((width * height) / 22000));
+
+    function createParticle() {
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: Math.random() * 1.5 + 0.8,
+        alpha: Math.random() * 0.35 + 0.15
+      };
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(createParticle());
+    }
+
+    function onResize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', onResize, { passive: true });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.active = false;
+    });
+
+    let animationFrameId = null;
+
+    function renderCanvas() {
+      if (document.hidden) {
+        animationFrameId = requestAnimationFrame(renderCanvas);
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+      const particleColor = isDark ? '255, 255, 255' : '20, 20, 30';
+      const lineColor = isDark ? '10, 132, 255' : '10, 132, 255';
+
+      // Update & Draw particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        // Mouse gentle repulsion
+        if (mouse.active) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            const force = (140 - dist) / 140;
+            p.x -= (dx / dist) * force * 1.2;
+            p.y -= (dy / dist) * force * 1.2;
+          }
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${particleColor}, ${p.alpha})`;
+        ctx.fill();
+
+        // Connect nearby particles
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 115) {
+            const lineAlpha = (1 - dist / 115) * 0.12;
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(${lineColor}, ${lineAlpha})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(renderCanvas);
+    }
+
+    renderCanvas();
+  }
+
   // --- Interactive MacBook & Awake! HUD Simulator Engine ---
   let isAwakeActive = true;
   let isShhActive = true;
   let isLaunchAtLogin = true;
-  let lidAngle = 135; // degrees
+  let lidAngle = 135; // degrees: 135 = fully open, 0 = fully closed
+  let isAutoDemoRunning = false;
 
   function updateSimulatorState() {
     const dict = i18n[currentLang] || i18n.en;
-    const desktop = document.getElementById('macbookDesktop');
+    const lidAssembly = document.getElementById('macbookLidAssembly');
+    const screenOverlay = document.getElementById('screenSleepOverlay');
+    const hudCard = document.getElementById('hudCard');
     const menuBarIcon = document.getElementById('menuBarIcon');
     const lidDot = document.getElementById('simLidDot');
     const lidText = document.getElementById('simLidStatusText');
     const usbText = document.getElementById('simUsbStatusText');
+    const portLeft = document.getElementById('portLeft');
+    const portRight = document.getElementById('portRight');
     const waveformRow = document.getElementById('simWaveformRow');
     const audioLabel = waveformRow ? waveformRow.querySelector('span') : null;
+    const lidSlider = document.getElementById('lidAngleSlider');
     const lidReadout = document.getElementById('lidReadout');
-    const hudCard = document.getElementById('hudCard');
+    const autoDemoBtn = document.getElementById('autoDemoBtn');
+    const autoDemoText = document.getElementById('autoDemoText');
+
+    // Telemetry Elements
+    const telCpu = document.getElementById('telCpu');
+    const telUsb = document.getElementById('telUsb');
+    const telRemote = document.getElementById('telRemote');
 
     const isLidClosed = lidAngle <= 25;
+    const macbookModel = document.getElementById('macbookModel');
+    if (macbookModel) {
+      macbookModel.classList.toggle('is-closed', isLidClosed);
+    }
 
-    // Readout text
+    // 1. Physically apply 3D Lid Folding Transform
+    // Maps 135deg (open) -> rotateX(0deg), and 0deg (closed) -> rotateX(-72deg)
+    if (lidAssembly) {
+      const rotX = -72 * (1 - lidAngle / 135);
+      lidAssembly.style.setProperty('--lid-rotate', `${rotX.toFixed(2)}deg`);
+    }
+
+    // 2. Synchronize Slider & Readout text
+    if (lidSlider && parseInt(lidSlider.value, 10) !== lidAngle) {
+      lidSlider.value = lidAngle;
+    }
+
     if (lidReadout) {
-      lidReadout.textContent = `${lidAngle}° (${isLidClosed ? (currentLang === 'es' ? 'Cerrada' : 'Closed') : (currentLang === 'es' ? 'Abierta' : 'Open')})`;
+      const stateLabel = isLidClosed 
+        ? (currentLang === 'es' ? 'Cerrada' : 'Closed') 
+        : (currentLang === 'es' ? 'Abierta' : 'Open');
+      lidReadout.textContent = `${lidAngle}° (${stateLabel})`;
       lidReadout.style.color = isLidClosed ? 'var(--accent-orange)' : 'var(--accent-green)';
     }
 
-    // Lid Indicator Dot & Text
+    // 3. Auto Demo Button Text
+    if (autoDemoText && !isAutoDemoRunning) {
+      autoDemoText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
+    }
+
+    // 4. Lid Status Pill & Dot
     if (lidDot && lidText) {
       if (isLidClosed) {
         lidDot.className = 'indicator-circle orange';
@@ -368,7 +558,7 @@
       }
     }
 
-    // USB & Sleep State
+    // 5. USB Bus Power, Hardware LEDs & Ports
     if (usbText) {
       if (isAwakeActive) {
         usbText.textContent = dict.hud_usb_active;
@@ -379,37 +569,44 @@
       }
     }
 
-    // Screen brightness & Clamshell behavior
-    if (desktop && hudCard) {
+    if (portLeft && portRight) {
+      if (isAwakeActive) {
+        portLeft.className = 'usb-port active';
+        portRight.className = 'usb-port active';
+      } else {
+        const cls = isLidClosed ? 'usb-port sleep-risk' : 'usb-port active';
+        portLeft.className = cls;
+        portRight.className = cls;
+      }
+    }
+
+    // 6. Screen Sleep Overlay & HUD Visibility
+    if (screenOverlay && hudCard) {
       if (isLidClosed) {
         if (isAwakeActive) {
-          // Display backlight goes to 0 (power saving), but Awake HUD remains transparently visible
-          desktop.classList.add('lid-closed');
-          hudCard.style.opacity = '0.9';
+          // Display backlight goes to 0 (power saving), but WindowServer & HUD stay active
+          screenOverlay.className = 'screen-sleep-overlay dimmed';
+          hudCard.style.opacity = '0.88';
           hudCard.style.transform = 'scale(0.97)';
         } else {
-          // Mac goes to sleep completely
-          desktop.classList.add('lid-closed');
-          hudCard.style.opacity = '0.15';
+          // Without Awake!: macOS enters sleep mode, cutting all processes
+          screenOverlay.className = 'screen-sleep-overlay dark-sleep';
+          hudCard.style.opacity = '0.12';
           hudCard.style.transform = 'scale(0.92)';
         }
       } else {
-        desktop.classList.remove('lid-closed');
+        screenOverlay.className = 'screen-sleep-overlay';
         hudCard.style.opacity = '1';
         hudCard.style.transform = 'scale(1)';
       }
     }
 
-    // Menu Bar Icon State
+    // 7. Menu Bar Icon State
     if (menuBarIcon) {
-      if (isAwakeActive) {
-        menuBarIcon.classList.add('active');
-      } else {
-        menuBarIcon.classList.remove('active');
-      }
+      menuBarIcon.classList.toggle('active', isAwakeActive);
     }
 
-    // Shh Audio & Waveform state
+    // 8. Shh! Smart Audio & Waveform Meter
     if (waveformRow && audioLabel) {
       if (isShhActive && isLidClosed) {
         waveformRow.classList.add('muted');
@@ -419,6 +616,135 @@
         audioLabel.textContent = dict.hud_audio_label;
       }
     }
+
+    // 9. Real-Time Hardware Telemetry Badges
+    if (telCpu) {
+      if (isAwakeActive) {
+        telCpu.textContent = currentLang === 'es' ? '100% Sin Freno' : '100% Unthrottled';
+        telCpu.className = 'telemetry-pill-val green';
+      } else {
+        if (isLidClosed) {
+          telCpu.textContent = currentLang === 'es' ? '0% Suspendido (Sleep)' : '0% Frozen (Sleep)';
+          telCpu.className = 'telemetry-pill-val red';
+        } else {
+          telCpu.textContent = currentLang === 'es' ? '100% Activo' : '100% Active';
+          telCpu.className = 'telemetry-pill-val green';
+        }
+      }
+    }
+
+    if (telUsb) {
+      if (isAwakeActive) {
+        telUsb.textContent = currentLang === 'es' ? '5V DC Continuo' : '5V DC Continuous';
+        telUsb.className = 'telemetry-pill-val green';
+      } else {
+        if (isLidClosed) {
+          telUsb.textContent = currentLang === 'es' ? '0V Cortado (Sleep)' : '0V Cutoff (Sleep)';
+          telUsb.className = 'telemetry-pill-val red';
+        } else {
+          telUsb.textContent = currentLang === 'es' ? '5V DC Activo' : '5V DC Active';
+          telUsb.className = 'telemetry-pill-val green';
+        }
+      }
+    }
+
+    if (telRemote) {
+      if (isAwakeActive) {
+        telRemote.textContent = currentLang === 'es' ? '60 FPS Transmitiendo' : '60 FPS Streaming';
+        telRemote.className = 'telemetry-pill-val green';
+      } else {
+        if (isLidClosed) {
+          telRemote.textContent = currentLang === 'es' ? 'Pantalla Negra (0 FPS)' : 'Black Screen (0 FPS)';
+          telRemote.className = 'telemetry-pill-val red';
+        } else {
+          telRemote.textContent = currentLang === 'es' ? '60 FPS Local' : '60 FPS Local';
+          telRemote.className = 'telemetry-pill-val green';
+        }
+      }
+    }
+  }
+
+  // --- Smooth Clamshell Animation Engine ---
+  function animateLid(targetAngle, durationMs, onComplete) {
+    const startAngle = lidAngle;
+    const distance = targetAngle - startAngle;
+    if (Math.abs(distance) < 1) {
+      if (onComplete) onComplete();
+      return;
+    }
+
+    const startTime = performance.now();
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function step(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(1, elapsed / durationMs);
+      const eased = easeInOutCubic(progress);
+
+      lidAngle = Math.round(startAngle + distance * eased);
+      updateSimulatorState();
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        lidAngle = targetAngle;
+        updateSimulatorState();
+        if (onComplete) onComplete();
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  function runAutoDemo() {
+    if (isAutoDemoRunning) return;
+    isAutoDemoRunning = true;
+
+    const dict = i18n[currentLang] || i18n.en;
+    const autoDemoText = document.getElementById('autoDemoText');
+    if (autoDemoText) autoDemoText.textContent = dict.demo_btn_running;
+
+    const shouldClose = lidAngle > 30;
+    const targetAngle = shouldClose ? 0 : 135;
+
+    animateLid(targetAngle, 1300, () => {
+      isAutoDemoRunning = false;
+      updateSimulatorState();
+      showToast(
+        shouldClose
+          ? (currentLang === 'es' 
+              ? 'Tapa cerrada: Discos NVMe, IA en background y streaming 60 FPS siguen activos' 
+              : 'Lid shut: NVMe drives, background AI, and 60 FPS streaming stay alive')
+          : (currentLang === 'es' 
+              ? 'Tapa abierta: Volumen de audio restaurado y display activo' 
+              : 'Lid opened: Audio volume restored and display illuminated')
+      );
+    });
+  }
+
+  // --- Dynamic 3D Perspective Tilt on Mouse Movement ---
+  function init3DTilt() {
+    const scene = document.querySelector('.macbook-3d-scene');
+    const model = document.getElementById('macbookModel');
+    if (!scene || !model) return;
+
+    scene.addEventListener('mousemove', (e) => {
+      const rect = scene.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+
+      const tiltY = (x / (rect.width / 2)) * 8; // subtle tilt left-right
+      const tiltX = -(y / (rect.height / 2)) * 6; // subtle tilt up-down
+
+      model.style.transform = `rotateY(${tiltY.toFixed(2)}deg) rotateX(${tiltX.toFixed(2)}deg)`;
+    });
+
+    scene.addEventListener('mouseleave', () => {
+      model.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
   }
 
   function initSimulator() {
@@ -428,6 +754,7 @@
     const simLangToggle = document.getElementById('simLangToggle');
     const lidSlider = document.getElementById('lidAngleSlider');
     const menuBarIcon = document.getElementById('menuBarIcon');
+    const autoDemoBtn = document.getElementById('autoDemoBtn');
 
     // Awake mode toggle
     if (awakeCapsule) {
@@ -473,13 +800,22 @@
       });
     }
 
-    // Lid angle slider
+    // Lid angle slider manual control
     if (lidSlider) {
       lidSlider.addEventListener('input', (e) => {
         lidAngle = parseInt(e.target.value, 10);
         updateSimulatorState();
       });
     }
+
+    // Auto-Demo Button
+    if (autoDemoBtn) {
+      autoDemoBtn.addEventListener('click', () => {
+        runAutoDemo();
+      });
+    }
+
+    init3DTilt();
   }
 
   // --- Terminal Command Copying & Toast ---
@@ -493,7 +829,7 @@
 
     setTimeout(() => {
       toast.classList.remove('show');
-    }, 2400);
+    }, 2800);
   }
 
   function initCopyHandler() {
@@ -507,7 +843,6 @@
           await navigator.clipboard.writeText(text);
           showToast(currentLang === 'es' ? "Comando copiado al portapapeles" : "Command copied to clipboard");
         } catch (err) {
-          // Fallback
           const ta = document.createElement('textarea');
           ta.value = text;
           document.body.appendChild(ta);
@@ -544,7 +879,6 @@
       if (btn) {
         btn.addEventListener('click', () => {
           const isOpen = item.classList.contains('open');
-          // Close others
           items.forEach((other) => other.classList.remove('open'));
           if (!isOpen) item.classList.add('open');
         });
@@ -554,7 +888,7 @@
 
   // --- Global Initialization ---
   document.addEventListener('DOMContentLoaded', () => {
-    // Detect Browser Language or default to English
+    // Detect Browser Language or default to Spanish as prioritized by user
     const userPrefersEs = navigator.language && navigator.language.startsWith('es');
     setLanguage(userPrefersEs ? 'es' : 'en');
 
@@ -567,6 +901,7 @@
     }
 
     initTheme();
+    initAmbientCanvas();
     initSimulator();
     initCopyHandler();
     initFaq();

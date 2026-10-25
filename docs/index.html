@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Awake! — Lid Down. Work Goes On.</title>
-  <meta name="description" content="Lightweight native macOS utility. Keep downloads active, USB drives mounted, and remote desktop alive when your MacBook lid is closed. With smart auto-mute.">
+  <meta name="description" content="Lightweight native macOS utility. Keep AI agents running, USB drives mounted, and remote desktop alive when your MacBook lid is closed. With smart auto-mute.">
   <meta name="author" content="Alex Louder">
 
   <!-- Open Graph / Social Meta -->
@@ -29,8 +29,8 @@
 </head>
 <body>
 
-  <!-- Ambient Cinematic Spotlight -->
-  <div class="ambient-glow" aria-hidden="true"></div>
+  <!-- Dynamic Interactive Particle Canvas -->
+  <canvas id="ambientCanvas"></canvas>
 
   <!-- Accessible Skip Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -46,6 +46,7 @@
 
       <ul class="nav-links">
         <li><a href="#overview" class="nav-link" data-i18n="nav_overview">Overview</a></li>
+        <li><a href="#ecosystem" class="nav-link" data-i18n="nav_ecosystem">Ecosystem</a></li>
         <li><a href="#duel" class="nav-link" data-i18n="nav_comparison">Comparison</a></li>
         <li><a href="#architecture" class="nav-link" data-i18n="nav_architecture">Architecture</a></li>
         <li><a href="#creator" class="nav-link" data-i18n="nav_creator">Creator</a></li>
@@ -88,7 +89,7 @@
 
   <main id="main-content">
 
-    <!-- HERO SECTION: EDITORIAL COPY + VECTOR HARDWARE SIMULATOR -->
+    <!-- HERO SECTION: EDITORIAL COPY + 3D MACBOOK HARDWARE SIMULATOR -->
     <section class="hero-section" id="overview">
       <div class="container">
         <div class="hero-grid">
@@ -105,7 +106,7 @@
             </h1>
 
             <p class="hero-desc" data-i18n="hero_desc">
-              Your Mac sleeps when you say so, not when the hinge clicks. Keep downloads active, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.
+              Your Mac sleeps when you say so, not when the hinge clicks. Keep background AI agents running, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.
             </p>
 
             <div class="hero-cta-group">
@@ -155,113 +156,163 @@
             </div>
           </div>
 
-          <!-- Vector MacBook Stage (Crisp 4K Vector CSS Component) -->
+          <!-- Photorealistic 3D MacBook Simulation Stage -->
           <div class="hero-stage">
-            <div class="macbook-chassis" id="macbookChassis">
-              <div class="macbook-screen" id="macbookScreen">
+            <div class="macbook-3d-scene">
+              <div class="macbook-3d-model" id="macbookModel">
                 
-                <!-- macOS Menu Bar -->
-                <div class="macbook-menubar">
-                  <div class="menubar-left">
-                    <svg class="apple-logo" viewBox="0 0 170 170">
+                <!-- Rotating Lid Assembly (Front Screen + Back Aluminum Shell) -->
+                <div class="macbook-lid-assembly" id="macbookLidAssembly">
+                  
+                  <!-- Front Face: Screen, Glass, Menu Bar & HUD -->
+                  <div class="macbook-lid-front">
+                    <div class="macbook-camera-notch">
+                      <div class="macbook-camera-lens"></div>
+                    </div>
+
+                    <!-- macOS Menu Bar -->
+                    <div class="macbook-menubar">
+                      <div class="menubar-left">
+                        <svg class="apple-logo" viewBox="0 0 170 170">
+                          <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
+                        </svg>
+                        <span class="menubar-title">Awake!</span>
+                        <span class="menubar-item">File</span>
+                        <span class="menubar-item">Edit</span>
+                      </div>
+                      <div class="menubar-right">
+                        <div class="menubar-awake-pill active" id="menuBarIcon">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                          </svg>
+                          <span>Awake!</span>
+                        </div>
+                        <span>100%</span>
+                        <span>9:41 AM</span>
+                      </div>
+                    </div>
+
+                    <!-- Screen Canvas & Vector Awake! Popover -->
+                    <div class="macbook-screen-canvas" id="macbookScreenCanvas">
+                      <div class="screen-sleep-overlay" id="screenSleepOverlay"></div>
+                      
+                      <!-- Native Vector HUD Card -->
+                      <div class="awake-hud-card" id="hudCard">
+                        <div class="hud-header">
+                          <div class="hud-title-lockup">
+                            <img src="screenshots/app_icon.png" alt="Awake! Icon" class="hud-icon" width="18" height="18">
+                            <span class="hud-app-name">Awake!</span>
+                          </div>
+                          <div class="hud-actions">
+                            <button type="button" class="hud-power-btn active" id="simPowerBtn" title="Launch at Login (Active)">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                                <line x1="12" y1="2" x2="12" y2="12"></line>
+                              </svg>
+                            </button>
+                            <button type="button" class="hud-lang-toggle" id="simLangToggle">[ ES | EN ]</button>
+                          </div>
+                        </div>
+
+                        <!-- Awake Capsule -->
+                        <div class="hud-capsule active" id="simAwakeCapsule">
+                          <div class="capsule-info">
+                            <span class="capsule-label" data-i18n="capsule_awake_label">Awake!</span>
+                            <span class="capsule-sub" data-i18n="capsule_awake_sub">Keep your Mac awake</span>
+                          </div>
+                          <div class="hud-switch"></div>
+                        </div>
+
+                        <!-- Shh Capsule -->
+                        <div class="hud-capsule active" id="simShhCapsule">
+                          <div class="capsule-info">
+                            <span class="capsule-label" data-i18n="capsule_shh_label">Shh!</span>
+                            <span class="capsule-sub" data-i18n="capsule_shh_sub">Mute on lid close</span>
+                          </div>
+                          <div class="hud-switch"></div>
+                        </div>
+
+                        <!-- Waveform Audio -->
+                        <div class="hud-waveform-row" id="simWaveformRow">
+                          <span data-i18n="hud_audio_label">NowPlaying: Active</span>
+                          <div class="waveform-bars">
+                            <span class="waveform-bar"></span>
+                            <span class="waveform-bar"></span>
+                            <span class="waveform-bar"></span>
+                            <span class="waveform-bar"></span>
+                            <span class="waveform-bar"></span>
+                          </div>
+                        </div>
+
+                        <!-- Status Strip -->
+                        <div class="hud-status-strip">
+                          <div class="hud-status-item">
+                            <span class="indicator-circle" id="simLidDot"></span>
+                            <span id="simLidStatusText" data-i18n="hud_lid_open">Lid: Open (135°)</span>
+                          </div>
+                          <div class="hud-status-item">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                            <span id="simUsbStatusText" data-i18n="hud_usb_active">USB: Active (5V)</span>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <!-- Back Face: Space Gray Anodized Aluminum with Laser Apple Logo -->
+                  <div class="macbook-lid-back">
+                    <svg class="lid-apple-logo" viewBox="0 0 170 170">
                       <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
                     </svg>
-                    <span class="menubar-title">Awake!</span>
-                    <span class="menubar-item">File</span>
-                    <span class="menubar-item">Edit</span>
-                    <span class="menubar-item">View</span>
-                  </div>
-                  <div class="menubar-right">
-                    <div class="menubar-awake-pill active" id="menuBarIcon">
-                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                      </svg>
-                      <span>Awake!</span>
-                    </div>
-                    <span>100%</span>
-                    <span>Tue 9:41 AM</span>
-                  </div>
-                </div>
-
-                <!-- Desktop Wallpaper Area -->
-                <div class="macbook-desktop" id="macbookDesktop">
-                  
-                  <!-- The Awake! HUD (Native Vector Rendering) -->
-                  <div class="awake-hud-card" id="hudCard">
-                    
-                    <!-- Header -->
-                    <div class="hud-header">
-                      <div class="hud-title-lockup">
-                        <img src="screenshots/app_icon.png" alt="Awake! Icon" class="hud-icon" width="20" height="20">
-                        <span class="hud-app-name">Awake!</span>
-                      </div>
-                      <div class="hud-actions">
-                        <button type="button" class="hud-power-btn active" id="simPowerBtn" title="Launch at Login (Active)">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-                            <line x1="12" y1="2" x2="12" y2="12"></line>
-                          </svg>
-                        </button>
-                        <button type="button" class="hud-lang-toggle" id="simLangToggle">[ ES | EN ]</button>
-                      </div>
-                    </div>
-
-                    <!-- Awake Mode Toggle Capsule -->
-                    <div class="hud-capsule active" id="simAwakeCapsule">
-                      <div class="capsule-info">
-                        <span class="capsule-label" data-i18n="capsule_awake_label">Awake!</span>
-                        <span class="capsule-sub" data-i18n="capsule_awake_sub">Keep your Mac awake</span>
-                      </div>
-                      <div class="hud-switch"></div>
-                    </div>
-
-                    <!-- Shh! Toggle Capsule -->
-                    <div class="hud-capsule active" id="simShhCapsule">
-                      <div class="capsule-info">
-                        <span class="capsule-label" data-i18n="capsule_shh_label">Shh!</span>
-                        <span class="capsule-sub" data-i18n="capsule_shh_sub">Mute on lid close</span>
-                      </div>
-                      <div class="hud-switch"></div>
-                    </div>
-
-                    <!-- Audio Waveform Monitor -->
-                    <div class="hud-waveform-row" id="simWaveformRow">
-                      <span data-i18n="hud_audio_label">NowPlaying: Active</span>
-                      <div class="waveform-bars">
-                        <span class="waveform-bar"></span>
-                        <span class="waveform-bar"></span>
-                        <span class="waveform-bar"></span>
-                        <span class="waveform-bar"></span>
-                        <span class="waveform-bar"></span>
-                      </div>
-                    </div>
-
-                    <!-- Hardware Status Strip -->
-                    <div class="hud-status-strip">
-                      <div class="hud-status-item">
-                        <span class="indicator-circle" id="simLidDot"></span>
-                        <span id="simLidStatusText" data-i18n="hud_lid_open">Lid: Open</span>
-                      </div>
-                      <div class="hud-status-item">
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                        <span id="simUsbStatusText" data-i18n="hud_usb_active">USB: Active (5V)</span>
-                      </div>
-                    </div>
-
                   </div>
 
                 </div>
+
+                <!-- MacBook Base Assembly (Keyboard + Side USB-C Ports) -->
+                <div class="macbook-base-assembly">
+                  <div class="keyboard-center-recess"></div>
+                  <div class="usb-port active" id="portLeft">
+                    <span class="port-led"></span>
+                    <span>USB 5V</span>
+                  </div>
+                  <div class="usb-port active" id="portRight">
+                    <span>TB4</span>
+                    <span class="port-led"></span>
+                  </div>
+                </div>
+
               </div>
             </div>
 
-            <!-- Interactive Clamshell Angle Controller -->
+            <!-- Interactive 3D Control Deck -->
             <div class="simulator-controls">
-              <span class="sim-slider-label">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                <span data-i18n="sim_slider_title">Simulate Lid Angle:</span>
-              </span>
-              <input type="range" min="0" max="135" value="135" class="lid-slider" id="lidAngleSlider" aria-label="Simulate lid angle">
-              <span class="sim-lid-readout" id="lidReadout">135° (Open)</span>
+              <div class="sim-control-top">
+                <button type="button" class="btn-auto-demo" id="autoDemoBtn">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                  <span id="autoDemoText">Auto Demo: Close Lid</span>
+                </button>
+                <div class="sim-slider-row">
+                  <input type="range" min="0" max="135" value="135" class="lid-slider" id="lidAngleSlider" aria-label="Simulate lid angle">
+                  <span class="sim-lid-readout" id="lidReadout">135° (Open)</span>
+                </div>
+              </div>
+
+              <!-- Live Telemetry Badges -->
+              <div class="sim-telemetry-strip">
+                <div class="telemetry-pill">
+                  <span class="telemetry-pill-title">CPU / GPU</span>
+                  <span class="telemetry-pill-val green" id="telCpu">100% Unthrottled</span>
+                </div>
+                <div class="telemetry-pill">
+                  <span class="telemetry-pill-title">USB Bus Power</span>
+                  <span class="telemetry-pill-val green" id="telUsb">5V DC Continuous</span>
+                </div>
+                <div class="telemetry-pill">
+                  <span class="telemetry-pill-title">Remote Display</span>
+                  <span class="telemetry-pill-val green" id="telRemote">60 FPS Streaming</span>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -270,21 +321,162 @@
       </div>
     </section>
 
-    <!-- MANDATORY TAGLINE REVEAL (APPLE KEYNOTE B11) -->
+    <!-- MANDATORY TAGLINE REVEAL (APPLE KEYNOTE B11 WITH GUARANTEED SPACING) -->
     <section class="tagline-section">
       <div class="container">
         <div class="tagline-container">
           <div class="tagline-eyebrow" data-i18n="tagline_eyebrow">The Clamshell Problem Solved</div>
           <p class="tagline-text" id="taglineBox">
-            <!-- Injected word-by-word with scroll trigger -->
+            <!-- Words dynamically injected with spacing by script.js -->
             Engineered for developers, creators, and remote teams who refuse to let a closed hinge interrupt a single server, render, or download.
           </p>
         </div>
       </div>
     </section>
 
+    <!-- ECOSYSTEM SHOWCASE: BACKGROUND AI AGENTS & REMOTE DESKTOP WORKFLOWS -->
+    <section class="ecosystem-section" id="ecosystem">
+      <div class="container">
+        <div class="section-label" data-i18n="eco_badge">Ecosystem</div>
+        <h2 class="section-title" data-i18n="eco_title">Engineered for Background AI & Remote Workflows</h2>
+        <p class="section-sub" data-i18n="eco_sub">
+          Awake! was designed specifically for developers running long compute tasks and creators accessing their Mac from anywhere.
+        </p>
+
+        <div class="ecosystem-dual-column">
+          
+          <!-- Column 1: Background AI Agents & Compute -->
+          <div class="ecosystem-group-card">
+            <div class="group-header">
+              <div class="group-title-lockup">
+                <div class="group-icon-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10c0 4.42-2.87 8.17-6.84 9.5-.5.08-.66-.23-.66-.5v-1.69c0-.5-.18-.94-.5-1.28 2.22-.25 4.56-1.11 4.56-4.93 0-1.09-.39-1.98-1.03-2.68.1-.25.45-1.27-.1-2.64 0 0-.84-.27-2.75 1.02A9.58 9.58 0 0 0 12 6.8c-.85 0-1.7.11-2.5.33-1.91-1.29-2.75-1.02-2.75-1.02-.55 1.37-.2 2.39-.1 2.64-.64.7-1.03 1.6-1.03 2.68 0 3.84 2.34 4.68 4.57 4.93-.4.36-.5.98-.5 1.69V21c0 .27-.16.59-.67.5C4.87 20.17 2 16.42 2 12A10 10 0 0 1 12 2z"></path></svg>
+                </div>
+                <h3 class="group-title" data-i18n="eco_ai_title">Background AI Agents & Compute</h3>
+              </div>
+              <span class="group-badge" data-i18n="eco_ai_badge">Never Interrupted</span>
+            </div>
+
+            <p class="group-desc" data-i18n="eco_ai_desc">
+              Multi-hour coding agents, LLM inference, local model fine-tuning, and overnight batch builds continue at 100% Apple Silicon speed with your screen closed.
+            </p>
+
+            <div class="app-items-grid">
+              <!-- Claude -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-claude">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15 9L22 12L15 15L12 22L9 15L2 12L9 9L12 2Z"/></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">Claude Code</span>
+                  <span class="app-chip-role" data-i18n="app_claude_role">Autonomous Coding</span>
+                </div>
+              </div>
+
+              <!-- Antigravity -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-antigravity">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"></circle><path d="M12 3a9 9 0 0 1 9 9"></path><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">Antigravity</span>
+                  <span class="app-chip-role" data-i18n="app_agy_role">Agentic Pair Programmer</span>
+                </div>
+              </div>
+
+              <!-- Codex / Terminal LLMs -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-codex">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">Codex & Cursor</span>
+                  <span class="app-chip-role" data-i18n="app_codex_role">Terminal & Build Pipelines</span>
+                </div>
+              </div>
+
+              <!-- Ollama & Docker -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-docker">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="7" width="20" height="14" rx="2"></rect><path d="M16 3v4"></path><path d="M8 3v4"></path></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">Ollama & Docker</span>
+                  <span class="app-chip-role" data-i18n="app_ollama_role">Local LLMs (Llama, DeepSeek)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Remote Desktop & Control -->
+          <div class="ecosystem-group-card">
+            <div class="group-header">
+              <div class="group-title-lockup">
+                <div class="group-icon-badge">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <h3 class="group-title" data-i18n="eco_remote_title">Remote Access & Control</h3>
+              </div>
+              <span class="group-badge" data-i18n="eco_remote_badge">Zero Black Screens</span>
+            </div>
+
+            <p class="group-desc" data-i18n="eco_remote_desc">
+              Your physical screen backlight drops to zero to save energy, while the macOS WindowServer GPU framebuffer stays active at 60 FPS. Connect anytime from any device.
+            </p>
+
+            <div class="app-items-grid">
+              <!-- Sills -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-sills">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">Sills</span>
+                  <span class="app-chip-role" data-i18n="app_sills_role">Mobile iOS to Mac Stream</span>
+                </div>
+              </div>
+
+              <!-- RustDesk -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-rustdesk">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">RustDesk</span>
+                  <span class="app-chip-role" data-i18n="app_rustdesk_role">Open Source Remote P2P</span>
+                </div>
+              </div>
+
+              <!-- AnyDesk -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-anydesk">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 12 12 22 22 12 12 2"></polygon></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">AnyDesk</span>
+                  <span class="app-chip-role" data-i18n="app_anydesk_role">Ultra-Low Latency Access</span>
+                </div>
+              </div>
+
+              <!-- TeamViewer / VNC -->
+              <div class="app-chip">
+                <div class="app-chip-icon icon-teamviewer">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 8 8 12 12 16"></polyline><polyline points="16 12 12 16 16 20"></polyline></svg>
+                </div>
+                <div class="app-chip-info">
+                  <span class="app-chip-name">TeamViewer & VNC</span>
+                  <span class="app-chip-role" data-i18n="app_tv_role">Headless Desktop Control</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
     <!-- THE CLAMSHELL TRAP: PROBLEM VS AWAKE PROTOCOL -->
-    <section class="comparison-story-section" id="duel">
+    <section class="duel-section" id="duel">
       <div class="container">
         <div class="section-label" data-i18n="duel_badge">Architecture</div>
         <h2 class="section-title" data-i18n="duel_title">The Clamshell Trap vs. The Awake! Protocol</h2>
@@ -414,7 +606,7 @@
           <div class="bento-card bento-span-4">
             <div>
               <div class="bento-icon-badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
               </div>
               <h3 class="bento-card-title" data-i18n="bento_remote_title">No Dummy Plugs Needed</h3>
               <p class="bento-card-desc" data-i18n="bento_remote_desc">
