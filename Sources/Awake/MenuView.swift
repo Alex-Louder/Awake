@@ -32,6 +32,7 @@ struct MenuView: View {
                     viewModel.toggleMuteOnLidClose()
                 }
             }
+            .frame(maxWidth: .infinity)
             
             // 3. Diagnostics Status Capsule
             diagnosticsCapsule
@@ -44,7 +45,7 @@ struct MenuView: View {
             footerSection
         }
         .padding(10)
-        .frame(width: 255)
+        .frame(width: 265)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
         .preferredColorScheme(.dark)
     }
@@ -109,7 +110,7 @@ struct MenuView: View {
                         .foregroundColor(isOn ? Color(red: 0.0, green: 0.48, blue: 1.0) : Color.white.opacity(0.8))
                 }
                 
-                // Text
+                // Text - expansive leading frame
                 VStack(alignment: .leading, spacing: 1) {
                     Text(title)
                         .font(.system(size: 12.5, weight: .bold))
@@ -117,13 +118,11 @@ struct MenuView: View {
                         .lineLimit(1)
                     
                     Text(subtitle)
-                        .font(.system(size: 10.5, weight: .medium))
+                        .font(.system(size: 10, weight: .medium))
                         .foregroundColor(.white.opacity(0.7))
                         .lineLimit(1)
-                        .fixedSize(horizontal: true, vertical: false)
                 }
-                
-                Spacer(minLength: 4)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 
                 // Toggle Switch or Progress Spinner
                 if isBusy {
@@ -142,9 +141,11 @@ struct MenuView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
+            .frame(maxWidth: .infinity, minHeight: 46)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
                 .fill(Color(white: 0.20).opacity(0.42))
@@ -218,6 +219,7 @@ struct MenuView: View {
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
+        .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .fill(Color(white: 0.15).opacity(0.35))

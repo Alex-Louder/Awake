@@ -18,7 +18,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // Setup Control Center Liquid Glass Popover
         popover = NSPopover()
         popover.appearance = NSAppearance(named: .vibrantDark)
-        popover.contentSize = NSSize(width: 255, height: 195)
+        popover.contentSize = NSSize(width: 265, height: 195)
         popover.behavior = .transient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuView(viewModel: viewModel))
