@@ -46,7 +46,7 @@ Inspirado en el sistema de CaffeinateBar, Awake! ofrece 3 niveles de contribuci�
 
 ### Integración Técnica
 1. **StoreKit 2**: Mapeado con productos consumibles (`com.playlouder.Awake.tip.1`, `com.playlouder.Awake.tip.3`, `com.playlouder.Awake.tip.5`). Incluye archivo de configuración local `AwakeTips.storekit`.
-2. **Fallback Web**: Si la aplicación se ejecuta fuera de la Mac App Store, los botones y el enlace directo redirigen automáticamente a la URL de donación (`https://paypal.me/playlouder/1USD`, `/3USD`, `/5USD`).
+2. **Ko-fi Direct Support**: Enlace oficial conectado a [ko-fi.com/alexlouder](https://ko-fi.com/alexlouder) con 0% de comisión de plataforma y opciones configuradas de $1, $3 y $5. Si la aplicación se ejecuta fuera de la Mac App Store, los botones y el enlace directo redirigen inmediatamente a la página de donación.
 
 ---
 
