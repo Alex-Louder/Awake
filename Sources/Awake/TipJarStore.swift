@@ -4,17 +4,17 @@ import SwiftUI
 import Combine
 
 enum TipTier: String, CaseIterable, Identifiable {
-    case small = "com.playlouder.Awake.tip.small"
-    case medium = "com.playlouder.Awake.tip.medium"
-    case large = "com.playlouder.Awake.tip.large"
+    case small = "com.playlouder.Awake.tip.1"
+    case medium = "com.playlouder.Awake.tip.3"
+    case large = "com.playlouder.Awake.tip.5"
     
     var id: String { rawValue }
     
     var amountUSD: Int {
         switch self {
         case .small: return 1
-        case .medium: return 5
-        case .large: return 10
+        case .medium: return 3
+        case .large: return 5
         }
     }
     
@@ -62,7 +62,7 @@ final class TipJarStore: ObservableObject {
             let productIDs = TipTier.allCases.map(\.rawValue)
             self.products = try await Product.products(for: productIDs)
         } catch {
-            // Products might not be configured on StoreKit yet if testing locally
+            // StoreKit might fail in local non-AppStore environments
             self.products = []
         }
     }
@@ -71,7 +71,7 @@ final class TipJarStore: ObservableObject {
         isPurchasing = true
         errorMessage = nil
         
-        // 1. Try StoreKit 2 if product is available
+        // 1. Native StoreKit 2 Purchase
         if let product = products.first(where: { $0.id == tier.rawValue }) {
             do {
                 let result = try await product.purchase()
@@ -101,7 +101,7 @@ final class TipJarStore: ObservableObject {
             return
         }
         
-        // 2. Web fallback if outside Mac App Store
+        // 2. Fallback when running outside Mac App Store
         isPurchasing = false
         openWebDonation(amount: tier.amountUSD)
     }

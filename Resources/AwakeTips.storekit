@@ -10,58 +10,58 @@
       "internalID" : "001",
       "localizations" : [
         {
-          "description" : "Un café para apoyar a Awake!",
-          "displayName" : "Un Café ($1)",
+          "description" : "Impulsa el desarrollo continuo",
+          "displayName" : "Gracias por tu apoyo",
           "locale" : "es"
         },
         {
-          "description" : "A coffee to support Awake!",
-          "displayName" : "A Coffee ($1)",
+          "description" : "Fuels everyday development",
+          "displayName" : "Thanks for your support",
           "locale" : "en"
         }
       ],
-      "productID" : "com.playlouder.Awake.tip.small",
-      "referenceName" : "Tip Small ($1)",
+      "productID" : "com.playlouder.Awake.tip.1",
+      "referenceName" : "Tip $1 (Gracias por tu apoyo)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "002",
+      "localizations" : [
+        {
+          "description" : "Un gran gesto de agradecimiento",
+          "displayName" : "¡Muchas gracias!",
+          "locale" : "es"
+        },
+        {
+          "description" : "A great token of appreciation",
+          "displayName" : "Thank you so much!",
+          "locale" : "en"
+        }
+      ],
+      "productID" : "com.playlouder.Awake.tip.3",
+      "referenceName" : "Tip $3 (¡Muchas gracias!)",
       "type" : "Consumable"
     },
     {
       "displayPrice" : "4.99",
       "familyShareable" : false,
-      "internalID" : "002",
-      "localizations" : [
-        {
-          "description" : "Super café para apoyar al desarrollador",
-          "displayName" : "Super Café ($5)",
-          "locale" : "es"
-        },
-        {
-          "description" : "Super coffee to support the developer",
-          "displayName" : "Super Coffee ($5)",
-          "locale" : "en"
-        }
-      ],
-      "productID" : "com.playlouder.Awake.tip.medium",
-      "referenceName" : "Tip Medium ($5)",
-      "type" : "Consumable"
-    },
-    {
-      "displayPrice" : "9.99",
-      "familyShareable" : false,
       "internalID" : "003",
       "localizations" : [
         {
-          "description" : "Mega apoyo para el desarrollo de Awake!",
-          "displayName" : "Mega Apoyo ($10)",
+          "description" : "Patrocinador oficial de Awake!",
+          "displayName" : "¡Muchísimas gracias!",
           "locale" : "es"
         },
         {
-          "description" : "Mega support for Awake! development",
-          "displayName" : "Mega Support ($10)",
+          "description" : "Official Awake! champion",
+          "displayName" : "Thank you very much!",
           "locale" : "en"
         }
       ],
-      "productID" : "com.playlouder.Awake.tip.large",
-      "referenceName" : "Tip Large ($10)",
+      "productID" : "com.playlouder.Awake.tip.5",
+      "referenceName" : "Tip $5 (¡Muchísimas gracias!)",
       "type" : "Consumable"
     }
   ],

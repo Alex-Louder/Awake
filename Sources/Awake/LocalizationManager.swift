@@ -51,7 +51,7 @@ final class LocalizationManager: ObservableObject {
     
     var shhTitle: String { "Shh!" }
     var shhSubtitle: String {
-        currentLanguage == .spanish ? "Silencio al cerrar" : "Silence on lid close"
+        currentLanguage == .spanish ? "Silenciar al cerrar" : "Mute on lid close"
     }
     
     var statusActive: String {
@@ -143,7 +143,7 @@ final class LocalizationManager: ObservableObject {
             : "Awake! lives discreetly in your top menu bar."
     }
     
-    // MARK: - Tip Jar / Support Strings
+    // MARK: - Tip Jar / Support Strings ($1, $3, $5)
     
     var supportSheetTitle: String {
         currentLanguage == .spanish ? "Apoyar Awake!" : "Support Awake!"
@@ -156,13 +156,24 @@ final class LocalizationManager: ObservableObject {
     }
     
     var tip1Title: String {
-        currentLanguage == .spanish ? "Un Café ($1)" : "A Coffee ($1)"
+        currentLanguage == .spanish ? "Gracias por tu apoyo" : "Thanks for your support"
     }
+    var tip1Subtitle: String {
+        currentLanguage == .spanish ? "Impulsa el desarrollo continuo" : "Fuels everyday development"
+    }
+    
+    var tip3Title: String {
+        currentLanguage == .spanish ? "¡Muchas gracias!" : "Thank you so much!"
+    }
+    var tip3Subtitle: String {
+        currentLanguage == .spanish ? "Un gran gesto de agradecimiento" : "A great token of appreciation"
+    }
+    
     var tip5Title: String {
-        currentLanguage == .spanish ? "Super Café ($5)" : "Super Coffee ($5)"
+        currentLanguage == .spanish ? "¡Muchísimas gracias!" : "Thank you very much!"
     }
-    var tip10Title: String {
-        currentLanguage == .spanish ? "Mega Apoyo ($10)" : "Mega Support ($10)"
+    var tip5Subtitle: String {
+        currentLanguage == .spanish ? "Patrocinador oficial de Awake!" : "Official Awake! champion"
     }
     
     var thankYouMessage: String {

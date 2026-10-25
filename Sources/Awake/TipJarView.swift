@@ -13,7 +13,7 @@ struct TipJarView: View {
                 .padding(.top, 22)
                 .padding(.horizontal, 22)
             
-            // Tiers
+            // Tiers ($1, $3, $5)
             VStack(spacing: 10) {
                 ForEach(TipTier.allCases) { tier in
                     tierButton(tier: tier)
@@ -39,7 +39,7 @@ struct TipJarView: View {
                 .padding(.horizontal, 22)
                 .padding(.bottom, 20)
         }
-        .frame(width: 360, height: 430)
+        .frame(width: 370, height: 430)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
         .preferredColorScheme(.dark)
     }
@@ -92,7 +92,7 @@ struct TipJarView: View {
                         .foregroundColor(tier.color)
                 }
                 
-                VStack(alignment: .leading, spacing: 1) {
+                VStack(alignment: .leading, spacing: 2) {
                     Text(titleForTier(tier))
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(.white)
@@ -144,17 +144,17 @@ struct TipJarView: View {
     
     private func titleForTier(_ tier: TipTier) -> String {
         switch tier {
-        case .small: return loc.currentLanguage == .spanish ? "Un Café" : "A Coffee"
-        case .medium: return loc.currentLanguage == .spanish ? "Super Café" : "Super Coffee"
-        case .large: return loc.currentLanguage == .spanish ? "Mega Apoyo" : "Mega Support"
+        case .small: return loc.tip1Title
+        case .medium: return loc.tip3Title
+        case .large: return loc.tip5Title
         }
     }
     
     private func subtitleForTier(_ tier: TipTier) -> String {
         switch tier {
-        case .small: return loc.currentLanguage == .spanish ? "Impulsa el desarrollo continuo" : "Fuels everyday development"
-        case .medium: return loc.currentLanguage == .spanish ? "Un gran gesto de agradecimiento" : "A great token of appreciation"
-        case .large: return loc.currentLanguage == .spanish ? "Patrocinador oficial de Awake!" : "Official Awake! champion"
+        case .small: return loc.tip1Subtitle
+        case .medium: return loc.tip3Subtitle
+        case .large: return loc.tip5Subtitle
         }
     }
     

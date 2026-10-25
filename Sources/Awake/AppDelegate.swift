@@ -40,9 +40,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             }
             .store(in: &cancellables)
             
-        // Check first-launch onboarding
+        // Listen to notifications for opening sheets
+        DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name("com.playlouder.Awake.openTipJar"), object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.showTipJarWindow()
+            }
+        }
+        DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name("com.playlouder.Awake.openOnboarding"), object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.showOnboardingWindow()
+            }
+        }
+        DistributedNotificationCenter.default().addObserver(forName: NSNotification.Name("com.playlouder.Awake.openPopover"), object: nil, queue: .main) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.handleStatusItemClick()
+            }
+        }
+            
+        // Check first-launch onboarding or command-line flags
         let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "awake.hasCompletedOnboarding")
-        if !hasCompletedOnboarding {
+        if CommandLine.arguments.contains("--tipjar") {
+            showTipJarWindow()
+        } else if !hasCompletedOnboarding {
             showOnboardingWindow()
         }
     }
