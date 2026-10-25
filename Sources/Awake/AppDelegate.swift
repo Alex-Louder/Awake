@@ -3,17 +3,22 @@ import SwiftUI
 import Combine
 
 @MainActor
-final class AppDelegate: NSObject, NSApplicationDelegate {
+final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
+    static private(set) var shared: AppDelegate?
+    
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
+    private var onboardingWindow: NSWindow?
     private var viewModel = AppViewModel()
     private var cancellables = Set<AnyCancellable>()
     
     func applicationDidFinishLaunching(_ notification: Notification) {
+        Self.shared = self
+        
         // Setup Control Center Liquid Glass Popover
         popover = NSPopover()
         popover.appearance = NSAppearance(named: .vibrantDark)
-        popover.contentSize = NSSize(width: 240, height: 185)
+        popover.contentSize = NSSize(width: 255, height: 195)
         popover.behavior = .transient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuView(viewModel: viewModel))
@@ -33,6 +38,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.updateStatusIcon(isActive: active)
             }
             .store(in: &cancellables)
+            
+        // Check first-launch onboarding
+        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "awake.hasCompletedOnboarding")
+        if !hasCompletedOnboarding {
+            showOnboardingWindow()
+        }
     }
     
     @objc private func handleStatusItemClick() {
@@ -45,6 +56,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             viewModel.refreshSystemState()
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             popover.contentViewController?.view.window?.makeKey()
+        }
+    }
+    
+    func showOnboardingWindow() {
+        if let window = onboardingWindow {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+        
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 390, height: 500),
+            styleMask: [.titled, .closable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        window.isReleasedWhenClosed = false
+        window.delegate = self
+        window.title = "Bienvenido a Awake!"
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.isMovableByWindowBackground = true
+        window.backgroundColor = .clear
+        window.isOpaque = false
+        window.hasShadow = true
+        window.level = .floating
+        window.center()
+        
+        let onboardingView = OnboardingView { [weak self] in
+            UserDefaults.standard.set(true, forKey: "awake.hasCompletedOnboarding")
+            self?.onboardingWindow?.close()
+            self?.onboardingWindow = nil
+        }
+        
+        window.contentViewController = NSHostingController(rootView: onboardingView)
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        self.onboardingWindow = window
+    }
+    
+    // MARK: - NSWindowDelegate
+    
+    func windowWillClose(_ notification: Notification) {
+        if let closingWindow = notification.object as? NSWindow, closingWindow === onboardingWindow {
+            onboardingWindow = nil
         }
     }
     

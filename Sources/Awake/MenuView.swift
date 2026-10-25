@@ -10,10 +10,10 @@ struct MenuView: View {
             
             // 2. Control Center Liquid Glass Capsules
             VStack(spacing: 7) {
-                // Capsule 1: Mantener Activa
+                // Capsule 1: Awake!
                 controlCapsule(
-                    title: "Mantener activa",
-                    subtitle: "Nunca se duerme",
+                    title: "Awake!",
+                    subtitle: "Mantén despierta tu mac",
                     systemImage: "bolt.shield.fill",
                     isOn: viewModel.isKeepAwakeEnabled,
                     isBusy: viewModel.isBusy
@@ -21,10 +21,10 @@ struct MenuView: View {
                     viewModel.toggleKeepAwake()
                 }
                 
-                // Capsule 2: Silenciar Sonido
+                // Capsule 2: Shh!
                 controlCapsule(
-                    title: "Silenciar sonido",
-                    subtitle: "Muta al cerrar",
+                    title: "Shh!",
+                    subtitle: "Silencio al cerrar",
                     systemImage: "speaker.slash.fill",
                     isOn: viewModel.isMuteOnLidCloseEnabled,
                     isBusy: false
@@ -44,7 +44,7 @@ struct MenuView: View {
             footerSection
         }
         .padding(10)
-        .frame(width: 240)
+        .frame(width: 255)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
         .preferredColorScheme(.dark)
     }
@@ -109,16 +109,18 @@ struct MenuView: View {
                         .foregroundColor(isOn ? Color(red: 0.0, green: 0.48, blue: 1.0) : Color.white.opacity(0.8))
                 }
                 
-                // Text (Max 3 words, ultra concise)
+                // Text
                 VStack(alignment: .leading, spacing: 1) {
                     Text(title)
                         .font(.system(size: 12.5, weight: .bold))
                         .foregroundColor(.white)
+                        .lineLimit(1)
                     
                     Text(subtitle)
                         .font(.system(size: 10.5, weight: .medium))
                         .foregroundColor(.white.opacity(0.7))
                         .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                 }
                 
                 Spacer(minLength: 4)
@@ -173,6 +175,8 @@ struct MenuView: View {
                 Text("Tapa:")
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(.white.opacity(0.7))
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
                 
                 Circle()
                     .fill(viewModel.isLidClosed ? Color.orange : Color(red: 0.2, green: 0.85, blue: 0.55))
@@ -181,9 +185,11 @@ struct MenuView: View {
                 Text(viewModel.isLidClosed ? "Cerrada" : "Abierta")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(.white)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
             }
             
-            Spacer()
+            Spacer(minLength: 12)
             
             // USB
             HStack(spacing: 4) {
@@ -194,6 +200,8 @@ struct MenuView: View {
                 Text("USB:")
                     .font(.system(size: 10, weight: .medium))
                     .foregroundColor(.white.opacity(0.7))
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
                 
                 if viewModel.isKeepAwakeEnabled {
                     Image(systemName: "bolt.fill")
@@ -204,6 +212,8 @@ struct MenuView: View {
                 Text(viewModel.isKeepAwakeEnabled ? "Activo" : "Normal")
                     .font(.system(size: 10, weight: .semibold))
                     .foregroundColor(.white)
+                    .lineLimit(1)
+                    .fixedSize(horizontal: true, vertical: false)
             }
         }
         .padding(.horizontal, 10)
@@ -243,12 +253,29 @@ struct MenuView: View {
     // MARK: - Footer
     
     private var footerSection: some View {
-        HStack {
-            Text("v2.3")
+        HStack(spacing: 6) {
+            Text("v1.0")
                 .font(.system(size: 9))
                 .foregroundColor(.white.opacity(0.4))
             
             Spacer()
+            
+            Button("Guía") {
+                AppDelegate.shared?.showOnboardingWindow()
+            }
+            .buttonStyle(.plain)
+            .font(.system(size: 9.5, weight: .medium))
+            .foregroundColor(.white.opacity(0.7))
+            .padding(.horizontal, 7)
+            .padding(.vertical, 3)
+            .background(
+                Capsule()
+                    .fill(Color.white.opacity(0.08))
+                    .overlay(
+                        Capsule()
+                            .stroke(Color.white.opacity(0.15), lineWidth: 0.5)
+                    )
+            )
             
             Button("Salir") {
                 PowerManager.shared.restoreOnQuit()

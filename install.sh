@@ -4,9 +4,10 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 "$DIR/build.sh"
 
+CURRENT_USER="$(whoami)"
 echo "==> Verificando permisos NOPASSWD para pmset..."
 if [ ! -f "/etc/sudoers.d/awake" ]; then
-    osascript -e 'do shell script "echo \"playlouder ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *\" > /etc/sudoers.d/awake && chmod 0440 /etc/sudoers.d/awake" with administrator privileges'
+    osascript -e "do shell script \"echo '$CURRENT_USER ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *' > /etc/sudoers.d/awake && chmod 0440 /etc/sudoers.d/awake\" with administrator privileges"
 fi
 
 echo "==> Instalando en /Applications..."

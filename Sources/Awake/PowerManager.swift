@@ -154,6 +154,54 @@ final class PowerManager: @unchecked Sendable {
         }
     }
     
+    // MARK: - Passwordless sudo status & setup
+    
+    /// Checks whether passwordless pmset sudo is configured and functional
+    func isPasswordlessSudoConfigured() -> Bool {
+        let currentStatus = readSleepDisabledStatus() ? "1" : "0"
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
+        process.arguments = ["-n", "/usr/bin/pmset", "-a", "disablesleep", currentStatus]
+        process.standardOutput = FileHandle.nullDevice
+        process.standardError = FileHandle.nullDevice
+        do {
+            try process.run()
+            process.waitUntilExit()
+            return process.terminationStatus == 0
+        } catch {
+            return false
+        }
+    }
+    
+    /// Configures passwordless sudo for pmset disablesleep by asking administrator privileges once.
+    func setupPasswordlessSudo() async throws {
+        let userName = NSUserName()
+        let rule = "\(userName) ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *"
+        let script = "do shell script \"echo '\(rule)' > /etc/sudoers.d/awake && chmod 0440 /etc/sudoers.d/awake\" with administrator privileges"
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            DispatchQueue.global(qos: .userInitiated).async {
+                var errorDict: NSDictionary?
+                guard let appleScript = NSAppleScript(source: script) else {
+                    continuation.resume(throwing: PowerError.commandFailed("No se pudo inicializar AppleScript."))
+                    return
+                }
+                appleScript.executeAndReturnError(&errorDict)
+                if let error = errorDict {
+                    let errorNumber = error[NSAppleScript.errorNumber] as? Int ?? 0
+                    if errorNumber == -128 {
+                        continuation.resume(throwing: PowerError.authorizationCancelled)
+                    } else {
+                        let brief = error[NSAppleScript.errorBriefMessage] as? String ?? "Error desconocido"
+                        continuation.resume(throwing: PowerError.commandFailed(brief))
+                    }
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+    
     // MARK: - Clean exit restoration
     
     func restoreOnQuit() {
