@@ -46,7 +46,14 @@ Inspirado en el sistema de CaffeinateBar, Awake! ofrece 3 niveles de contribuci�
 
 ### Integración Técnica
 1. **StoreKit 2**: Mapeado con productos consumibles (`com.playlouder.Awake.tip.1`, `com.playlouder.Awake.tip.3`, `com.playlouder.Awake.tip.5`). Incluye archivo de configuración local `AwakeTips.storekit`.
-2. **Ko-fi Direct Support**: Enlace oficial conectado a [ko-fi.com/alexlouder](https://ko-fi.com/alexlouder) con 0% de comisión de plataforma y opciones configuradas de $1, $3 y $5. Si la aplicación se ejecuta fuera de la Mac App Store, los botones y el enlace directo redirigen inmediatamente a la página de donación.
+2. **Ko-fi Deep-Linking Individual**: Cada botón redirige directamente a la opción correspondiente en [ko-fi.com/alexlouder](https://ko-fi.com/alexlouder):
+   - **$1**: `https://ko-fi.com/alexlouder?amount=1`
+   - **$3**: `https://ko-fi.com/alexlouder?amount=3`
+   - **$5**: `https://ko-fi.com/alexlouder?amount=5`
+   - Panel ultra-limpio sin botones redundantes en el pie de página.
+3. **Identidad Visual**:
+   - **Icono Oficial de la App**: `Awake-Hardware` (MacBook con wallpaper y tipografía Awake! en dock y Finder).
+   - **Icono de la Guía / Onboarding**: Tu Memoji 3D limpio, recortado en alta resolución, sin fondo y sin aro degradado.
 
 ---
 
