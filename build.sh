@@ -48,8 +48,18 @@ cat << 'EOF' > "$APP_DIR/Contents/Info.plist"
 </plist>
 EOF
 
-if [ -f "/tmp/AwakeAppIcon.icns" ]; then
+if [ -f "$DIR/Resources/AppIcon.icns" ]; then
+    cp "$DIR/Resources/AppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
+elif [ -f "/tmp/AwakeAppIcon.icns" ]; then
     cp "/tmp/AwakeAppIcon.icns" "$APP_DIR/Contents/Resources/AppIcon.icns"
+fi
+
+if [ -f "$DIR/Resources/AppIcon_1024.png" ]; then
+    cp "$DIR/Resources/AppIcon_1024.png" "$APP_DIR/Contents/Resources/AppIcon_1024.png"
+fi
+
+if [ -f "$DIR/Resources/AwakeTips.storekit" ]; then
+    cp "$DIR/Resources/AwakeTips.storekit" "$APP_DIR/Contents/Resources/AwakeTips.storekit"
 fi
 
 echo "==> Firmando aplicación localmente..."

@@ -38,7 +38,10 @@ final class OnboardingViewModel: ObservableObject {
 
 struct OnboardingView: View {
     var onDismiss: () -> Void
+    var onOpenTipJar: (() -> Void)? = nil
+    
     @StateObject private var viewModel = OnboardingViewModel()
+    @ObservedObject private var loc = LocalizationManager.shared
     
     var body: some View {
         VStack(spacing: 0) {
@@ -52,20 +55,20 @@ struct OnboardingView: View {
                 featureCard(
                     icon: "bolt.shield.fill",
                     iconColor: Color(red: 0.0, green: 0.48, blue: 1.0),
-                    title: "Awake!",
-                    subtitle: "Mantén despierta tu mac",
-                    description: "Tu Mac no entra en reposo al cerrar la tapa. Mantiene activos procesador, descargas, discos USB y escritorios remotos (Sills, VNC) sin requerir pantallas externas."
+                    title: loc.awakeTitle,
+                    subtitle: loc.awakeSubtitle,
+                    description: loc.awakeFeatureDescription
                 )
                 
                 featureCard(
                     icon: "speaker.slash.fill",
                     iconColor: Color(red: 0.0, green: 0.48, blue: 1.0),
-                    title: "Shh!",
-                    subtitle: "Silencio al cerrar",
-                    description: "Pausa automáticamente la música o videos en reproducción y silencia tanto los altavoces internos como interfaces de audio USB (Scarlett, Focusrite, etc.)."
+                    title: loc.shhTitle,
+                    subtitle: loc.shhSubtitle,
+                    description: loc.shhFeatureDescription
                 )
             }
-            .padding(.top, 20)
+            .padding(.top, 18)
             .padding(.horizontal, 24)
             
             // System Permission Card
@@ -80,7 +83,7 @@ struct OnboardingView: View {
                 .padding(.horizontal, 24)
                 .padding(.bottom, 22)
         }
-        .frame(width: 390, height: 500)
+        .frame(width: 400, height: 520)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
         .preferredColorScheme(.dark)
     }
@@ -89,7 +92,7 @@ struct OnboardingView: View {
     
     private var header: some View {
         HStack(spacing: 14) {
-            MacBookAIconView(size: 38)
+            appIconView
             
             VStack(alignment: .leading, spacing: 2) {
                 HStack(spacing: 6) {
@@ -108,13 +111,81 @@ struct OnboardingView: View {
                         )
                 }
                 
-                Text("Tu Mac sigue funcionando con la tapa cerrada.")
-                    .font(.system(size: 12, weight: .regular))
+                Text(loc.onboardingTagline)
+                    .font(.system(size: 11.5, weight: .regular))
                     .foregroundColor(.white.opacity(0.7))
             }
             
             Spacer()
+            
+            // Language Toggle (ES / EN)
+            languageSelector
         }
+    }
+    
+    private var appIconView: some View {
+        Group {
+            if let path = Bundle.main.path(forResource: "AppIcon_1024", ofType: "png"),
+               let nsImg = NSImage(contentsOfFile: path) {
+                Image(nsImage: nsImg)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 42, height: 42)
+                    .cornerRadius(9)
+            } else if let resourcePath = Bundle.main.resourcePath {
+                let directPath = (resourcePath as NSString).appendingPathComponent("AppIcon_1024.png")
+                if let nsImg = NSImage(contentsOfFile: directPath) {
+                    Image(nsImage: nsImg)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 42, height: 42)
+                        .cornerRadius(9)
+                } else {
+                    MacBookAIconView(size: 38)
+                }
+            } else {
+                MacBookAIconView(size: 38)
+            }
+        }
+    }
+    
+    private var languageSelector: some View {
+        HStack(spacing: 2) {
+            Button(action: { loc.currentLanguage = .spanish }) {
+                Text("ES")
+                    .font(.system(size: 9.5, weight: .bold))
+                    .foregroundColor(loc.currentLanguage == .spanish ? .white : .white.opacity(0.45))
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(
+                        Capsule()
+                            .fill(loc.currentLanguage == .spanish ? Color(red: 0.0, green: 0.48, blue: 1.0) : Color.clear)
+                    )
+            }
+            .buttonStyle(.plain)
+            
+            Button(action: { loc.currentLanguage = .english }) {
+                Text("EN")
+                    .font(.system(size: 9.5, weight: .bold))
+                    .foregroundColor(loc.currentLanguage == .english ? .white : .white.opacity(0.45))
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 3)
+                    .background(
+                        Capsule()
+                            .fill(loc.currentLanguage == .english ? Color(red: 0.0, green: 0.48, blue: 1.0) : Color.clear)
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(2)
+        .background(
+            Capsule()
+                .fill(Color.white.opacity(0.12))
+                .overlay(
+                    Capsule()
+                        .stroke(Color.white.opacity(0.2), lineWidth: 0.5)
+                )
+        )
     }
     
     // MARK: - Feature Card
@@ -189,7 +260,7 @@ struct OnboardingView: View {
                     .font(.system(size: 13))
                     .foregroundColor(viewModel.isPermissionReady ? Color(red: 0.2, green: 0.85, blue: 0.55) : Color.orange)
                 
-                Text("Permiso de suspensión (pmset)")
+                Text(loc.permissionTitle)
                     .font(.system(size: 11.5, weight: .semibold))
                     .foregroundColor(.white)
                 
@@ -200,7 +271,7 @@ struct OnboardingView: View {
                         Circle()
                             .fill(Color(red: 0.2, green: 0.85, blue: 0.55))
                             .frame(width: 5, height: 5)
-                        Text("Configurado")
+                        Text(loc.permissionConfigured)
                             .font(.system(size: 10, weight: .medium))
                             .foregroundColor(Color(red: 0.2, green: 0.85, blue: 0.55))
                     }
@@ -217,7 +288,7 @@ struct OnboardingView: View {
                                 .scaleEffect(0.6)
                                 .frame(width: 50, height: 18)
                         } else {
-                            Text("Autorizar (1 clic)")
+                            Text(loc.permissionAuthorizeBtn)
                                 .font(.system(size: 10.5, weight: .semibold))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 8)
@@ -233,9 +304,7 @@ struct OnboardingView: View {
                 }
             }
             
-            Text(viewModel.isPermissionReady
-                 ? "El comando del sistema está listo. Awake! alternará el reposo sin pedir contraseñas."
-                 : "Para cambiar la suspensión al instante sin solicitar contraseñas cada vez, autoriza una sola vez.")
+            Text(viewModel.isPermissionReady ? loc.permissionReadyDesc : loc.permissionNotReadyDesc)
                 .font(.system(size: 10.5, weight: .regular))
                 .foregroundColor(.white.opacity(0.55))
                 .lineLimit(2)
@@ -264,7 +333,7 @@ struct OnboardingView: View {
             Button(action: onDismiss) {
                 HStack {
                     Spacer()
-                    Text("Empezar a usar Awake!")
+                    Text(loc.startButton)
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(.white)
                     Spacer()
@@ -277,9 +346,26 @@ struct OnboardingView: View {
             }
             .buttonStyle(.plain)
             
-            Text("Awake! vive discretamente en la barra de menú superior.")
-                .font(.system(size: 10, weight: .regular))
-                .foregroundColor(.white.opacity(0.45))
+            HStack {
+                Text(loc.menuBarHint)
+                    .font(.system(size: 10, weight: .regular))
+                    .foregroundColor(.white.opacity(0.45))
+                
+                Spacer()
+                
+                if let openTip = onOpenTipJar {
+                    Button(action: openTip) {
+                        HStack(spacing: 3) {
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(Color(red: 0.95, green: 0.35, blue: 0.45))
+                            Text(loc.supportButton)
+                        }
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white.opacity(0.6))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
         }
     }
 }

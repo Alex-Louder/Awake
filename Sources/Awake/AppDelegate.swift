@@ -9,6 +9,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var statusItem: NSStatusItem!
     private var popover: NSPopover!
     private var onboardingWindow: NSWindow?
+    private var tipJarWindow: NSWindow?
     private var viewModel = AppViewModel()
     private var cancellables = Set<AnyCancellable>()
     
@@ -18,7 +19,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // Setup Control Center Liquid Glass Popover
         popover = NSPopover()
         popover.appearance = NSAppearance(named: .vibrantDark)
-        popover.contentSize = NSSize(width: 265, height: 195)
+        popover.contentSize = NSSize(width: 270, height: 195)
         popover.behavior = .transient
         popover.animates = true
         popover.contentViewController = NSHostingController(rootView: MenuView(viewModel: viewModel))
@@ -67,7 +68,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
         
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 390, height: 500),
+            contentRect: NSRect(x: 0, y: 0, width: 400, height: 520),
             styleMask: [.titled, .closable, .fullSizeContentView],
             backing: .buffered,
             defer: false
@@ -84,11 +85,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         window.level = .floating
         window.center()
         
-        let onboardingView = OnboardingView { [weak self] in
-            UserDefaults.standard.set(true, forKey: "awake.hasCompletedOnboarding")
-            self?.onboardingWindow?.close()
-            self?.onboardingWindow = nil
-        }
+        let onboardingView = OnboardingView(
+            onDismiss: { [weak self] in
+                UserDefaults.standard.set(true, forKey: "awake.hasCompletedOnboarding")
+                self?.onboardingWindow?.close()
+                self?.onboardingWindow = nil
+            },
+            onOpenTipJar: { [weak self] in
+                self?.showTipJarWindow()
+            }
+        )
         
         window.contentViewController = NSHostingController(rootView: onboardingView)
         window.makeKeyAndOrderFront(nil)
@@ -96,11 +102,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         self.onboardingWindow = window
     }
     
+    func showTipJarWindow() {
+        if let window = tipJarWindow {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+        
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 360, height: 430),
+            styleMask: [.titled, .closable, .fullSizeContentView],
+            backing: .buffered,
+            defer: false
+        )
+        window.isReleasedWhenClosed = false
+        window.delegate = self
+        window.title = "Apoyar Awake!"
+        window.titlebarAppearsTransparent = true
+        window.titleVisibility = .hidden
+        window.isMovableByWindowBackground = true
+        window.backgroundColor = .clear
+        window.isOpaque = false
+        window.hasShadow = true
+        window.level = .floating
+        window.center()
+        
+        let tipJarView = TipJarView { [weak self] in
+            self?.tipJarWindow?.close()
+            self?.tipJarWindow = nil
+        }
+        
+        window.contentViewController = NSHostingController(rootView: tipJarView)
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        self.tipJarWindow = window
+    }
+    
     // MARK: - NSWindowDelegate
     
     func windowWillClose(_ notification: Notification) {
-        if let closingWindow = notification.object as? NSWindow, closingWindow === onboardingWindow {
-            onboardingWindow = nil
+        if let closingWindow = notification.object as? NSWindow {
+            if closingWindow === onboardingWindow {
+                onboardingWindow = nil
+            } else if closingWindow === tipJarWindow {
+                tipJarWindow = nil
+            }
         }
     }
     

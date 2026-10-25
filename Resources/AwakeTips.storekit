@@ -1,0 +1,81 @@
+{
+  "identifier" : "AwakeTipsConfig",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "001",
+      "localizations" : [
+        {
+          "description" : "Un café para apoyar a Awake!",
+          "displayName" : "Un Café ($1)",
+          "locale" : "es"
+        },
+        {
+          "description" : "A coffee to support Awake!",
+          "displayName" : "A Coffee ($1)",
+          "locale" : "en"
+        }
+      ],
+      "productID" : "com.playlouder.Awake.tip.small",
+      "referenceName" : "Tip Small ($1)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "002",
+      "localizations" : [
+        {
+          "description" : "Super café para apoyar al desarrollador",
+          "displayName" : "Super Café ($5)",
+          "locale" : "es"
+        },
+        {
+          "description" : "Super coffee to support the developer",
+          "displayName" : "Super Coffee ($5)",
+          "locale" : "en"
+        }
+      ],
+      "productID" : "com.playlouder.Awake.tip.medium",
+      "referenceName" : "Tip Medium ($5)",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "003",
+      "localizations" : [
+        {
+          "description" : "Mega apoyo para el desarrollo de Awake!",
+          "displayName" : "Mega Apoyo ($10)",
+          "locale" : "es"
+        },
+        {
+          "description" : "Mega support for Awake! development",
+          "displayName" : "Mega Support ($10)",
+          "locale" : "en"
+        }
+      ],
+      "productID" : "com.playlouder.Awake.tip.large",
+      "referenceName" : "Tip Large ($10)",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
