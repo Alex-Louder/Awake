@@ -180,8 +180,12 @@ final class LocalizationManager: ObservableObject {
         currentLanguage == .spanish ? "¡Muchísimas gracias por tu apoyo! ☕️" : "Thank you so much for your support! ☕️"
     }
     
+    var kofiDonationBtn: String {
+        currentLanguage == .spanish ? "Donar en Ko-fi (0% comisión)" : "Donate on Ko-fi (0% fee)"
+    }
+    
     var webDonationBtn: String {
-        currentLanguage == .spanish ? "Donar vía Web / PayPal" : "Donate via Web / PayPal"
+        currentLanguage == .spanish ? "Donar vía Web / Ko-fi" : "Donate via Web / Ko-fi"
     }
     
     var closeButton: String {

@@ -101,20 +101,22 @@ final class TipJarStore: ObservableObject {
             return
         }
         
-        // 2. Fallback when running outside Mac App Store
+        // 2. Direct Ko-fi fallback when running outside Mac App Store
         isPurchasing = false
-        openWebDonation(amount: tier.amountUSD)
+        openKofiDonation()
+    }
+    
+    func openKofiDonation() {
+        let kofiBase = UserDefaults.standard.string(forKey: "awake.kofiUrl") ?? "https://ko-fi.com/playlouder"
+        if let url = URL(string: kofiBase) {
+            NSWorkspace.shared.open(url)
+            self.purchaseSuccess = true
+        }
     }
     
     func openWebDonation(amount: Int? = nil) {
-        let base = UserDefaults.standard.string(forKey: "awake.donationUrl") ?? "https://paypal.me/playlouder"
-        let urlString: String
-        if let amount = amount {
-            urlString = "\(base)/\(amount)USD"
-        } else {
-            urlString = base
-        }
-        if let url = URL(string: urlString) {
+        let base = UserDefaults.standard.string(forKey: "awake.donationUrl") ?? "https://ko-fi.com/playlouder"
+        if let url = URL(string: base) {
             NSWorkspace.shared.open(url)
             self.purchaseSuccess = true
         }

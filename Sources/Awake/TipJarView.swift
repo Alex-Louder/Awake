@@ -201,13 +201,24 @@ struct TipJarView: View {
     
     private var footer: some View {
         HStack {
-            Button(action: { store.openWebDonation() }) {
-                HStack(spacing: 4) {
-                    Image(systemName: "safari")
-                    Text(loc.webDonationBtn)
+            Button(action: { store.openKofiDonation() }) {
+                HStack(spacing: 5) {
+                    Image(systemName: "cup.and.saucer.fill")
+                        .foregroundColor(Color(red: 1.0, green: 0.38, blue: 0.38))
+                    Text(loc.kofiDonationBtn)
                 }
-                .font(.system(size: 10.5, weight: .medium))
-                .foregroundColor(.white.opacity(0.7))
+                .font(.system(size: 10.5, weight: .semibold))
+                .foregroundColor(.white)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 5)
+                .background(
+                    Capsule()
+                        .fill(Color(red: 1.0, green: 0.38, blue: 0.38).opacity(0.18))
+                        .overlay(
+                            Capsule()
+                                .stroke(Color(red: 1.0, green: 0.38, blue: 0.38).opacity(0.4), lineWidth: 0.8)
+                        )
+                )
             }
             .buttonStyle(.plain)
             
