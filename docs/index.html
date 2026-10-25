@@ -3,95 +3,63 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Awake! — Native macOS Clamshell Sleep Prevention & Smart Mute</title>
-  <meta name="description" content="Keep your MacBook fully awake with the lid closed without external monitors or dummy plugs. Preserves USB bus power, prevents remote desktop black screens, and automatically mutes audio on lid close.">
-  <meta name="keywords" content="Awake, Clamshell mode, macOS sleep prevention, keep mac awake lid closed, Shh auto mute, Sills remote desktop black screen, pmset disablesleep, Apple Silicon M1 M2 M3 M4, open source mac utility">
+  <title>Awake! — Lid Down. Work Goes On.</title>
+  <meta name="description" content="Lightweight native macOS utility. Keep downloads active, USB drives mounted, and remote desktop alive when your MacBook lid is closed. With smart auto-mute.">
   <meta name="author" content="Alex Louder">
 
   <!-- Open Graph / Social Meta -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://alex-louder.github.io/Awake/">
-  <meta property="og:title" content="Awake! — Keep your Mac awake with the lid closed">
-  <meta property="og:description" content="Lightweight native macOS menu bar app for seamless clamshell operation, uninterrupted USB power, zero remote desktop black screens, and smart auto-mute.">
+  <meta property="og:title" content="Awake! — Lid Down. Work Goes On.">
+  <meta property="og:description" content="Keep your Mac running with the lid closed without external displays. Zero black screens, continuous USB bus power, and smart auto-mute.">
   <meta property="og:image" content="screenshots/app_icon.png">
 
   <!-- Twitter Meta -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Awake! — Native macOS Clamshell Sleep Prevention">
-  <meta name="twitter:description" content="Keep your MacBook running with the lid closed without external displays or dummy plugs.">
+  <meta name="twitter:title" content="Awake! — Native macOS Sleep Prevention">
+  <meta name="twitter:description" content="Lid down. Work goes on. Native macOS menu bar utility by Alex Louder.">
   <meta name="twitter:image" content="screenshots/app_icon.png">
 
-  <!-- Favicons & Touch Icons -->
+  <!-- Favicons -->
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
-  <!-- Typography Fallback (Geist from Google Fonts) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="styles.css">
-
-  <!-- Schema.org SoftwareApplication Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Awake!",
-    "operatingSystem": "macOS 14.0 or later (Sonoma, Sequoia)",
-    "applicationCategory": "UtilitiesApplication",
-    "softwareVersion": "1.0.0",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "author": {
-      "@type": "Person",
-      "name": "Alex Louder",
-      "url": "https://github.com/Alex-Louder"
-    },
-    "downloadUrl": "https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg"
-  }
-  </script>
 </head>
 <body>
+
+  <!-- Ambient Cinematic Spotlight -->
+  <div class="ambient-glow" aria-hidden="true"></div>
 
   <!-- Accessible Skip Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Apple-Style Floating Island Navbar (elayadesign B7) -->
-  <header class="nav-island-wrapper" id="navIslandWrapper">
+  <!-- Floating Island Header (Apple Dynamic Island Style) -->
+  <header class="nav-island-wrapper">
     <nav class="nav-island" aria-label="Main Navigation">
       <a href="#overview" class="brand-lockup">
-        <img src="screenshots/app_icon.png" alt="Awake! Icon" class="brand-icon" width="24" height="24">
+        <img src="screenshots/app_icon.png" alt="Awake! Icon" class="brand-icon" width="26" height="26">
         <span>Awake!</span>
         <span class="brand-tag">v1.0.0</span>
       </a>
 
       <ul class="nav-links">
         <li><a href="#overview" class="nav-link" data-i18n="nav_overview">Overview</a></li>
-        <li><a href="#problem-solution" class="nav-link" data-i18n="nav_features">Features</a></li>
-        <li><a href="#how-it-works" class="nav-link" data-i18n="nav_how_it_works">How It Works</a></li>
-        <li><a href="#comparison" class="nav-link" data-i18n="nav_compare">Comparison</a></li>
-        <li><a href="#security" class="nav-link" data-i18n="nav_security">Security</a></li>
+        <li><a href="#duel" class="nav-link" data-i18n="nav_comparison">Comparison</a></li>
+        <li><a href="#architecture" class="nav-link" data-i18n="nav_architecture">Architecture</a></li>
+        <li><a href="#creator" class="nav-link" data-i18n="nav_creator">Creator</a></li>
         <li><a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a></li>
       </ul>
 
       <div class="nav-actions">
-        <!-- Language Switcher (No Emojis per Anti-AI-Slop) -->
-        <button type="button" class="btn-lang" id="langToggleBtn" aria-label="Switch to Spanish">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          <span id="langLabelText"><strong>EN</strong> / ES</span>
+        <!-- Bilingual Switcher -->
+        <button type="button" class="btn-lang" id="langToggleBtn" aria-label="Cambiar idioma a Español">
+          <span id="langDisplay"><strong>EN</strong> / ES</span>
         </button>
 
-        <!-- Theme Toggle -->
-        <button type="button" class="btn-icon" id="themeToggleBtn" aria-label="Toggle Dark or Light Mode">
+        <!-- Theme Switcher -->
+        <button type="button" class="btn-icon" id="themeToggleBtn" aria-label="Toggle Dark / Light Mode">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"></circle>
             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -105,324 +73,305 @@
           </svg>
         </button>
 
-        <!-- Download DMG CTA (data-i18n strictly on text span to preserve SVG) -->
+        <!-- Download DMG CTA -->
         <a href="https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg" class="btn-primary">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span class="btn-text" data-i18n="nav_download_btn">Download DMG</span>
+          <span data-i18n="nav_download">Download DMG</span>
         </a>
-
-        <!-- Mobile Nav Toggle with Fluid Hamburger Morph -->
-        <button type="button" class="nav-mobile-toggle" id="mobileNavToggle" aria-expanded="false" aria-label="Toggle Mobile Navigation">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
       </div>
     </nav>
   </header>
 
-  <!-- Mobile Overlay Menu (B7 Staggered Mask Reveal) -->
-  <div class="mobile-overlay" id="mobileNavOverlay" aria-hidden="true">
-    <a href="#overview" class="nav-link" data-i18n="nav_overview">Overview</a>
-    <a href="#problem-solution" class="nav-link" data-i18n="nav_features">Features</a>
-    <a href="#how-it-works" class="nav-link" data-i18n="nav_how_it_works">How It Works</a>
-    <a href="#comparison" class="nav-link" data-i18n="nav_compare">Comparison</a>
-    <a href="#security" class="nav-link" data-i18n="nav_security">Security</a>
-    <a href="#faq" class="nav-link" data-i18n="nav_faq">FAQ</a>
-    <a href="https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg" class="btn-primary mobile-cta-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="7 10 12 15 17 10"></polyline>
-        <line x1="12" y1="15" x2="12" y2="3"></line>
-      </svg>
-      <span class="btn-text" data-i18n="nav_download_btn">Download DMG (v1.0.0)</span>
-    </a>
-  </div>
-
   <main id="main-content">
 
-    <!-- HERO SECTION (elayadesign B5 & Anti-AI-Slop Real Assets Split) -->
+    <!-- HERO SECTION: EDITORIAL COPY + VECTOR HARDWARE SIMULATOR -->
     <section class="hero-section" id="overview">
       <div class="container">
         <div class="hero-grid">
           
-          <!-- Hero Copy Left -->
-          <div class="hero-content reveal-on-scroll">
-            <div class="hero-pill-badge">
-              <span class="status-indicator-dot"></span>
-              <span data-i18n="hero_badge">macOS 14+ Sonoma • 15 Sequoia • Apple Silicon & Intel</span>
+          <!-- Editorial Copy Left -->
+          <div class="hero-content">
+            <div class="badge-tag">
+              <span class="status-dot"></span>
+              <span data-i18n="hero_badge">macOS 14+ Sonoma • 15 Sequoia • 27 Golden Gate</span>
             </div>
 
-            <h1 class="hero-heading" id="heroTitle">
-              Close the lid.<br>Your Mac stays awake.
+            <h1 class="hero-title" data-i18n="hero_title">
+              Lid down.<br>Work goes on.
             </h1>
 
-            <p class="hero-subheading" data-i18n="hero_desc">
-              The lightweight native menu bar utility that prevents clamshell sleep without external displays, maintains continuous USB bus power, eliminates remote desktop black screens, and mutes audio the moment you close the screen.
+            <p class="hero-desc" data-i18n="hero_desc">
+              Your Mac sleeps when you say so, not when the hinge clicks. Keep downloads active, NVMe drives mounted, and remote desktop alive without dummy dongles. With smart auto-mute the moment you shut the screen.
             </p>
 
-            <div class="hero-actions">
+            <div class="hero-cta-group">
               <a href="https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg" class="btn-primary">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                   <polyline points="7 10 12 15 17 10"></polyline>
                   <line x1="12" y1="15" x2="12" y2="3"></line>
                 </svg>
-                <span class="btn-text" data-i18n="hero_cta_download">Download Awake! v1.0.0</span>
+                <span data-i18n="hero_cta_dmg">Download Awake! v1.0.0</span>
               </a>
 
               <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="btn-secondary">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
                 </svg>
-                <span class="btn-text" data-i18n="hero_cta_secondary">View on GitHub</span>
+                <span data-i18n="hero_cta_github">GitHub Repository</span>
               </a>
             </div>
 
-            <!-- Terminal Install Box -->
-            <div class="hero-terminal-box">
-              <span class="term-prompt">$</span>
-              <code id="termInstallCmd">git clone https://github.com/Alex-Louder/Awake.git && cd Awake && ./install.sh</code>
-              <button type="button" class="terminal-copy-btn" data-copy-target="termInstallCmd" aria-label="Copy terminal install command">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Terminal One-Liner Box -->
+            <div class="terminal-bar">
+              <span class="terminal-prompt">$</span>
+              <code class="terminal-cmd" id="installCmd">git clone https://github.com/Alex-Louder/Awake.git && cd Awake && ./install.sh</code>
+              <button type="button" class="terminal-copy-btn" id="copyCmdBtn" aria-label="Copy terminal install command">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                 </svg>
-                <span class="btn-text">Copy</span>
+                <span>Copy</span>
               </button>
             </div>
 
-            <div class="hero-meta">
-              <div class="meta-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <span>Zero Telemetry</span>
-              </div>
-              <div class="meta-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                </svg>
-                <span>~15 MB RAM</span>
-              </div>
-              <div class="meta-item">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
+            <div class="hero-meta-stats">
+              <div class="meta-stat-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
                 <span>0 Daily Passwords</span>
               </div>
+              <div class="meta-stat-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>~15 MB RAM</span>
+              </div>
+              <div class="meta-stat-item">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>100% Open Source</span>
+              </div>
             </div>
           </div>
 
-          <!-- Hero Right: Authentic macOS Stage (Real Popover Screenshot + Live Controls) -->
-          <div class="hero-stage-card reveal-on-scroll">
-            <div class="sim-menu-bar">
-              <div class="sim-menu-left">
-                <svg class="sim-apple-icon" viewBox="0 0 170 170">
-                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
-                </svg>
-                <span class="sim-app-title">Awake!</span>
-                <span>File</span>
-                <span>Edit</span>
-                <span>View</span>
-                <span>Window</span>
-                <span>Help</span>
-              </div>
-              <div class="sim-menu-right">
-                <div class="sim-awake-menu-item active" id="simMenuBarIcon">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                  </svg>
-                  <span>Awake!</span>
+          <!-- Vector MacBook Stage (Crisp 4K Vector CSS Component) -->
+          <div class="hero-stage">
+            <div class="macbook-chassis" id="macbookChassis">
+              <div class="macbook-screen" id="macbookScreen">
+                
+                <!-- macOS Menu Bar -->
+                <div class="macbook-menubar">
+                  <div class="menubar-left">
+                    <svg class="apple-logo" viewBox="0 0 170 170">
+                      <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
+                    </svg>
+                    <span class="menubar-title">Awake!</span>
+                    <span class="menubar-item">File</span>
+                    <span class="menubar-item">Edit</span>
+                    <span class="menubar-item">View</span>
+                  </div>
+                  <div class="menubar-right">
+                    <div class="menubar-awake-pill active" id="menuBarIcon">
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                      </svg>
+                      <span>Awake!</span>
+                    </div>
+                    <span>100%</span>
+                    <span>Tue 9:41 AM</span>
+                  </div>
                 </div>
-                <span>94%</span>
-                <span>Tue 9:41 AM</span>
+
+                <!-- Desktop Wallpaper Area -->
+                <div class="macbook-desktop" id="macbookDesktop">
+                  
+                  <!-- The Awake! HUD (Native Vector Rendering) -->
+                  <div class="awake-hud-card" id="hudCard">
+                    
+                    <!-- Header -->
+                    <div class="hud-header">
+                      <div class="hud-title-lockup">
+                        <img src="screenshots/app_icon.png" alt="Awake! Icon" class="hud-icon" width="20" height="20">
+                        <span class="hud-app-name">Awake!</span>
+                      </div>
+                      <div class="hud-actions">
+                        <button type="button" class="hud-power-btn active" id="simPowerBtn" title="Launch at Login (Active)">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                            <line x1="12" y1="2" x2="12" y2="12"></line>
+                          </svg>
+                        </button>
+                        <button type="button" class="hud-lang-toggle" id="simLangToggle">[ ES | EN ]</button>
+                      </div>
+                    </div>
+
+                    <!-- Awake Mode Toggle Capsule -->
+                    <div class="hud-capsule active" id="simAwakeCapsule">
+                      <div class="capsule-info">
+                        <span class="capsule-label" data-i18n="capsule_awake_label">Awake!</span>
+                        <span class="capsule-sub" data-i18n="capsule_awake_sub">Keep your Mac awake</span>
+                      </div>
+                      <div class="hud-switch"></div>
+                    </div>
+
+                    <!-- Shh! Toggle Capsule -->
+                    <div class="hud-capsule active" id="simShhCapsule">
+                      <div class="capsule-info">
+                        <span class="capsule-label" data-i18n="capsule_shh_label">Shh!</span>
+                        <span class="capsule-sub" data-i18n="capsule_shh_sub">Mute on lid close</span>
+                      </div>
+                      <div class="hud-switch"></div>
+                    </div>
+
+                    <!-- Audio Waveform Monitor -->
+                    <div class="hud-waveform-row" id="simWaveformRow">
+                      <span data-i18n="hud_audio_label">NowPlaying: Active</span>
+                      <div class="waveform-bars">
+                        <span class="waveform-bar"></span>
+                        <span class="waveform-bar"></span>
+                        <span class="waveform-bar"></span>
+                        <span class="waveform-bar"></span>
+                        <span class="waveform-bar"></span>
+                      </div>
+                    </div>
+
+                    <!-- Hardware Status Strip -->
+                    <div class="hud-status-strip">
+                      <div class="hud-status-item">
+                        <span class="indicator-circle" id="simLidDot"></span>
+                        <span id="simLidStatusText" data-i18n="hud_lid_open">Lid: Open</span>
+                      </div>
+                      <div class="hud-status-item">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        <span id="simUsbStatusText" data-i18n="hud_usb_active">USB: Active (5V)</span>
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
               </div>
             </div>
 
-            <div class="hero-stage-body">
-              <!-- Real Native Popover Screenshot Asset -->
-              <div class="popover-view-wrapper">
-                <img id="heroPopoverImg" src="screenshots/popover_en.png" alt="Awake! Menu Bar Popover Screenshot" class="hero-screenshot-img" width="298" height="233">
-              </div>
-
-              <!-- Interactive Controls (Live Hardware Simulator) -->
-              <div class="hero-stage-controls">
-                <!-- Awake Mode Switch -->
-                <div class="control-row">
-                  <div class="control-info">
-                    <span class="control-label" data-i18n="sim_awake_label">Awake! Mode</span>
-                    <span class="control-desc" data-i18n="sim_awake_sub">Keep running with lid closed</span>
-                  </div>
-                  <label class="switch-control">
-                    <input type="checkbox" id="simAwakeToggle" checked>
-                    <span class="switch-slider"></span>
-                  </label>
-                </div>
-
-                <!-- Shh Mode Switch -->
-                <div class="control-row">
-                  <div class="control-info">
-                    <span class="control-label" data-i18n="sim_shh_label">Shh! Smart Mute</span>
-                    <span class="control-desc" data-i18n="sim_shh_sub">Pause media & mute on lid close</span>
-                  </div>
-                  <label class="switch-control">
-                    <input type="checkbox" id="simShhToggle" checked>
-                    <span class="switch-slider"></span>
-                  </label>
-                </div>
-
-                <!-- Audio Waveform Monitor -->
-                <div class="waveform-box">
-                  <span class="waveform-label">CoreAudio Hook: MediaRemote Active</span>
-                  <div class="waveform-visual muted" id="simWaveform">
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                    <span class="wave-bar"></span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Live Telemetry Readout Grid -->
-              <div class="telemetry-grid">
-                <div class="telemetry-item">
-                  <span class="telemetry-name">Clamshell State:</span>
-                  <span class="telemetry-value" id="simClamshellStatus">100% Active • Screen Off • GPU Online</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-name">USB Bus Power:</span>
-                  <span class="telemetry-value" id="simUsbStatus">Protected • Constant 5V/3A Bus Power</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-name">Remote Display:</span>
-                  <span class="telemetry-value" id="simRemoteStatus">Online • Sills / VNC / RustDesk Active</span>
-                </div>
-                <div class="telemetry-item">
-                  <span class="telemetry-name">Audio & Media:</span>
-                  <span class="telemetry-value warning" id="simAudioStatus">Armed • Media paused & CoreAudio muted</span>
-                </div>
-              </div>
-
+            <!-- Interactive Clamshell Angle Controller -->
+            <div class="simulator-controls">
+              <span class="sim-slider-label">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                <span data-i18n="sim_slider_title">Simulate Lid Angle:</span>
+              </span>
+              <input type="range" min="0" max="135" value="135" class="lid-slider" id="lidAngleSlider" aria-label="Simulate lid angle">
+              <span class="sim-lid-readout" id="lidReadout">135° (Open)</span>
             </div>
+
           </div>
 
         </div>
       </div>
     </section>
 
-    <!-- MANDATORY TAGLINE REVEAL SECTION (elayadesign B11) -->
-    <section class="tagline-reveal-section">
+    <!-- MANDATORY TAGLINE REVEAL (APPLE KEYNOTE B11) -->
+    <section class="tagline-section">
       <div class="container">
         <div class="tagline-container">
-          <div class="tagline-badge" data-i18n="tagline_badge">The Clamshell Problem Solved</div>
-          <p class="tagline-text" id="taglineRevealText">
-            <!-- Word-by-word spans injected and managed by script.js -->
-            Engineered for creators, developers, and remote workers who refuse to let a closed lid interrupt a single render, server, or download.
+          <div class="tagline-eyebrow" data-i18n="tagline_eyebrow">The Clamshell Problem Solved</div>
+          <p class="tagline-text" id="taglineBox">
+            <!-- Injected word-by-word with scroll trigger -->
+            Engineered for developers, creators, and remote teams who refuse to let a closed hinge interrupt a single server, render, or download.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- PROBLEM VS SOLUTION SECTION (A2 Page Structure) -->
-    <section class="problem-solution-section" id="problem-solution">
+    <!-- THE CLAMSHELL TRAP: PROBLEM VS AWAKE PROTOCOL -->
+    <section class="comparison-story-section" id="duel">
       <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="section-label" data-i18n="prob_badge">Why Traditional Tools Fail</div>
-          <h2 class="section-title" data-i18n="prob_title">What happens when you close your MacBook.</h2>
-          <p class="section-description" data-i18n="prob_desc">
-            Without an external monitor plugged in, macOS aggressively suspends hardware. Standard caffeinate commands keep CPU active but fail to prevent clamshell sleep.
-          </p>
-        </div>
+        <div class="section-label" data-i18n="duel_badge">Architecture</div>
+        <h2 class="section-title" data-i18n="duel_title">The Clamshell Trap vs. The Awake! Protocol</h2>
+        <p class="section-sub" data-i18n="duel_sub">
+          macOS assumes that closing your laptop means you have stopped working. Awake! gives you back total control.
+        </p>
 
-        <div class="comparison-columns">
-          <!-- Problem Card -->
-          <div class="problem-card reveal-on-scroll">
-            <div class="problem-header">
-              <span class="icon-tag-red">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </span>
-              <span data-i18n="prob_mac_title">Default macOS Clamshell Sleep</span>
+        <div class="duel-grid">
+          <!-- The Trap -->
+          <div class="duel-card">
+            <div class="duel-header">
+              <div class="duel-title-lockup">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="duel-bullet" style="color: var(--accent-red);"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <span data-i18n="trap_title">Default macOS Behavior</span>
+              </div>
+              <span class="duel-badge bad" data-i18n="trap_badge">Disruptive</span>
             </div>
-            <ul class="issue-list">
-              <li class="issue-item">
-                <span class="issue-bullet-red">•</span>
-                <div>
-                  <strong data-i18n="prob_mac_1_b">Terminates active background jobs:</strong>
-                  <span data-i18n="prob_mac_1_t"> Video renders, ML training, downloads, and Docker containers halt instantly.</span>
+
+            <ul class="duel-list">
+              <li class="duel-item bad">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="trap_1_b">Background tasks freeze:</strong>
+                  <span data-i18n="trap_1_t"> 4K video renders, Docker containers, database migrations, and large downloads halt immediately.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-red">•</span>
-                <div>
-                  <strong data-i18n="prob_mac_2_b">Cuts USB bus power:</strong>
-                  <span data-i18n="prob_mac_2_t"> External NVMe drives forcibly unmount, audio interfaces power off.</span>
+              <li class="duel-item bad">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="trap_2_b">USB bus power cut:</strong>
+                  <span data-i18n="trap_2_t"> External SSDs and audio interfaces abruptly disconnect, risking file corruption and audio glitches.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-red">•</span>
-                <div>
-                  <strong data-i18n="prob_mac_3_b">Black screen in Remote Desktop:</strong>
-                  <span data-i18n="prob_mac_3_t"> WindowServer shuts off display framebuffer; Sills, RustDesk, and VNC turn black.</span>
+              <li class="duel-item bad">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="trap_3_b">Remote Desktop black screens:</strong>
+                  <span data-i18n="trap_3_t"> WindowServer kills the display framebuffer. Remote sessions via Sills, VNC, and RustDesk go dark.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-red">•</span>
-                <div>
-                  <strong data-i18n="prob_mac_4_b">Embarrassing audio blunders:</strong>
-                  <span data-i18n="prob_mac_4_t"> Music or videos continue blaring loudly if you close the lid hurriedly in quiet spaces.</span>
+              <li class="duel-item bad">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="trap_4_b">Audio blares in public:</strong>
+                  <span data-i18n="trap_4_t"> Podcasts, music, or videos keep playing if you lower the lid quickly in quiet rooms.</span>
                 </div>
               </li>
             </ul>
           </div>
 
-          <!-- Solution Card -->
-          <div class="problem-card solution-variant reveal-on-scroll">
-            <div class="solution-header">
-              <span class="icon-tag-green">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </span>
-              <span data-i18n="sol_title">The Awake! Native Solution</span>
+          <!-- The Awake Protocol -->
+          <div class="duel-card awake-card">
+            <div class="duel-header">
+              <div class="duel-title-lockup">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="duel-bullet" style="color: var(--accent-green);"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span data-i18n="awake_protocol_title">The Awake! Protocol</span>
+              </div>
+              <span class="duel-badge good" data-i18n="awake_protocol_badge">Seamless</span>
             </div>
-            <ul class="issue-list">
-              <li class="issue-item">
-                <span class="issue-bullet-green">•</span>
-                <div>
-                  <strong data-i18n="sol_1_b">Zero Clamshell Sleep:</strong>
-                  <span data-i18n="sol_1_t"> Your MacBook stays fully awake with lid shut, running headless without external dongles.</span>
+
+            <ul class="duel-list">
+              <li class="duel-item good">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="awake_1_b">Uninterrupted compute:</strong>
+                  <span data-i18n="awake_1_t"> CPU and GPU continue operating at full capacity. Local servers and renders finish without stopping.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-green">•</span>
-                <div>
-                  <strong data-i18n="sol_2_b">Uninterrupted USB Bus Power:</strong>
-                  <span data-i18n="sol_2_t"> External SSDs, audio cards (Focusrite, Apollo), and hubs stay continuously powered.</span>
+              <li class="duel-item good">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="awake_2_b">Guaranteed USB bus power:</strong>
+                  <span data-i18n="awake_2_t"> External NVMe drives, USB hubs, and audio DACs (Focusrite, Apollo) stay continuously powered.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-green">•</span>
-                <div>
-                  <strong data-i18n="sol_3_b">Flawless Remote Desktop:</strong>
-                  <span data-i18n="sol_3_t"> Internal screen brightness drops to 0 while GPU framebuffer stays active at 60 FPS.</span>
+              <li class="duel-item good">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="awake_3_b">Crystal-clear Remote Desktop:</strong>
+                  <span data-i18n="awake_3_t"> Screen brightness drops to zero to save battery, but GPU framebuffer streams at 60 FPS.</span>
                 </div>
               </li>
-              <li class="issue-item">
-                <span class="issue-bullet-green">•</span>
-                <div>
-                  <strong data-i18n="sol_4_b">Shh! Intelligent Mute:</strong>
-                  <span data-i18n="sol_4_t"> Automatically pauses NowPlaying media and mutes system audio on close; restores on reopen.</span>
+              <li class="duel-item good">
+                <span class="duel-bullet">•</span>
+                <div class="duel-item-text">
+                  <strong data-i18n="awake_4_b">Shh! Auto-Mute Guardian:</strong>
+                  <span data-i18n="awake_4_t"> Instantly pauses playback and mutes speakers/AirPods on lid shut. Restores volume on open.</span>
                 </div>
               </li>
             </ul>
@@ -431,235 +380,201 @@
       </div>
     </section>
 
-    <!-- ASYMMETRIC CAPABILITIES BENTO GRID -->
-    <section class="capabilities-section">
+    <!-- ASYMMETRIC BENTO GRID -->
+    <section class="bento-section" id="architecture">
       <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="section-label" data-i18n="cap_badge">Native Architecture</div>
-          <h2 class="section-title" data-i18n="cap_title">Built with precision. Zero compromises.</h2>
-          <p class="section-description" data-i18n="cap_desc">
-            Written in pure Swift with zero external telemetry, no electron wrapper, and no background daemons running when idle.
-          </p>
-        </div>
+        <div class="section-label" data-i18n="bento_badge">Capabilities</div>
+        <h2 class="section-title" data-i18n="bento_title">Built for power users. Refined for everyone.</h2>
+        <p class="section-sub" data-i18n="bento_sub">
+          Engineered in pure native Swift. No Electron, no Chromium overhead, and no background daemons when idle.
+        </p>
 
         <div class="bento-grid">
-          <!-- Card 1: Shh! Smart Audio (Span 8) -->
-          <div class="bento-card bento-col-8 reveal-on-scroll">
-            <div class="bento-top">
+          <!-- Bento 1: Shh Audio -->
+          <div class="bento-card bento-span-8">
+            <div>
               <div class="bento-icon-badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <line x1="23" y1="9" x2="17" y2="15"></line>
-                  <line x1="17" y1="9" x2="23" y2="15"></line>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
               </div>
-              <h3 class="bento-title" data-i18n="bento_shh_title">Shh! Smart Media & Volume Guardian</h3>
-              <p class="bento-description" data-i18n="bento_shh_desc">
-                Detects lid angle through native IOKit hardware notifications. Instantly triggers MediaRemote pause and silences CoreAudio (internal speakers, AirPods, USB DACs). Your original volume level is seamlessly restored when you open your screen.
+              <h3 class="bento-card-title" data-i18n="bento_shh_title">Shh! Smart Audio & Media Curtain</h3>
+              <p class="bento-card-desc" data-i18n="bento_shh_desc">
+                Hooks directly into macOS CoreAudio and MediaRemote. Whether you listen via internal speakers, AirPods, or an external USB audio interface, closing the lid mutes sound instantly and pauses playback. It seamlessly restores your previous volume when you open the lid.
               </p>
             </div>
-            <div class="bento-visual">
-              <div class="bento-visual-header">
-                <span class="bento-tag-secondary">IOKit Clamshell Magnet</span>
-                <span class="bento-code-accent">MRMediaRemoteSendCommand(kMRPause)</span>
+            <div class="bento-demo-box">
+              <div class="demo-split-row">
+                <span class="demo-pill active">IOKit Clamshell Hook</span>
+                <span class="demo-pill mono">MRMediaRemoteSendCommand(kMRPause)</span>
               </div>
-              <div class="bento-visual-split">
-                <div class="bento-subbox">
-                  <span class="bento-sub-label">Status:</span> CoreAudio Muted (0.0 dB)
-                </div>
-                <div class="bento-subbox">
-                  <span class="bento-sub-label">Reopen:</span> Restores Previous Volume
-                </div>
-              </div>
+              <span style="color: var(--text-secondary); font-size: 11px;">Internal Speakers • AirPods Max • Focusrite / Apollo DACs</span>
             </div>
           </div>
 
-          <!-- Card 2: Remote Desktop (Span 4) -->
-          <div class="bento-card bento-col-4 reveal-on-scroll">
-            <div class="bento-top">
+          <!-- Bento 2: Remote Desktop -->
+          <div class="bento-card bento-span-4">
+            <div>
               <div class="bento-icon-badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
               </div>
-              <h3 class="bento-title" data-i18n="bento_remote_title">Zero Black Screen on Remote Access</h3>
-              <p class="bento-description" data-i18n="bento_remote_desc">
-                Unlike dummy HDMI plugs or hacky kexts, Awake! dims your backlight to 0 while maintaining the WindowServer framebuffer. Connect from anywhere via Sills, VNC, RustDesk, or AnyDesk without display failure.
+              <h3 class="bento-card-title" data-i18n="bento_remote_title">No Dummy Plugs Needed</h3>
+              <p class="bento-card-desc" data-i18n="bento_remote_desc">
+                Awake! dims your physical display backlight to 0 via DisplayServices while maintaining the WindowServer framebuffer. Connect remotely via Sills, VNC, RustDesk, or AnyDesk without black screen errors.
               </p>
             </div>
-            <div class="bento-visual">
-              <span class="bento-code-awake">
-                WindowServer: Framebuffer Active (60 Hz)
-              </span>
+            <div class="bento-demo-box">
+              <span class="demo-pill active">Framebuffer Active (60 Hz)</span>
             </div>
           </div>
 
-          <!-- Card 3: Zero Passwords (Span 6) -->
-          <div class="bento-card bento-col-6 reveal-on-scroll">
-            <div class="bento-top">
+          <!-- Bento 3: Sudoers -->
+          <div class="bento-card bento-span-6">
+            <div>
               <div class="bento-icon-badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
               </div>
-              <h3 class="bento-title" data-i18n="bento_sudo_title">Zero Password Prompts in Daily Use</h3>
-              <p class="bento-description" data-i18n="bento_sudo_desc">
-                One single strictly scoped sudoers rule for pmset. The app itself never runs as root and never pesters you with admin prompts.
+              <h3 class="bento-card-title" data-i18n="bento_security_title">Zero Daily Password Prompts</h3>
+              <p class="bento-card-desc" data-i18n="bento_security_desc">
+                Awake! executes with minimum privileges. It sets a single rule in <code>/etc/sudoers.d/awake</code> scoped strictly to <code>pmset -a disablesleep</code>. The app itself never runs as root.
               </p>
             </div>
-            <div class="bento-visual">
-              <code class="bento-code-primary">%admin ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *</code>
+            <div class="bento-demo-box">
+              <code>%admin ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *</code>
             </div>
           </div>
 
-          <!-- Card 4: Ultralight 15 MB RAM (Span 6) -->
-          <div class="bento-card bento-col-6 reveal-on-scroll">
-            <div class="bento-top">
+          <!-- Bento 4: 15 MB RAM -->
+          <div class="bento-card bento-span-6">
+            <div>
               <div class="bento-icon-badge">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                </svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
               </div>
-              <h3 class="bento-title" data-i18n="bento_footprint_title">~15 MB Memory • 0% Idle CPU</h3>
-              <p class="bento-description" data-i18n="bento_footprint_desc">
-                Native macOS menu bar footprint with zero background daemons. Leaves 99.9% of system memory free for your actual work.
+              <h3 class="bento-card-title" data-i18n="bento_ram_title">~15 MB RAM • 0.0% Idle CPU</h3>
+              <p class="bento-card-desc" data-i18n="bento_ram_desc">
+                No periodic polling loops. Awake! relies purely on IOKit kernel event interrupts, leaving your CPU, RAM, and battery completely free for actual compilation and creative work.
               </p>
             </div>
-            <div class="bento-visual">
-              <div class="bento-stat-row">
+            <div class="bento-demo-box">
+              <div class="demo-split-row">
                 <span>Activity Monitor: 15.2 MB</span>
-                <span class="stat-highlight">0.0% CPU Idle</span>
+                <span class="demo-pill active">0.0% CPU Idle</span>
               </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- HARDWARE PIPELINE SECTION -->
+    <section class="pipeline-section">
+      <div class="container">
+        <div class="section-label" data-i18n="pipe_badge">How It Operates</div>
+        <h2 class="section-title" data-i18n="pipe_title">The 3-Step Hardware Pipeline</h2>
+        <p class="section-sub" data-i18n="pipe_sub">
+          Transparent, clean Swift execution directly interfacing with macOS system frameworks.
+        </p>
+
+        <div class="pipeline-grid">
+          <!-- Step 1 -->
+          <div class="pipeline-card">
+            <span class="pipeline-step-badge">STEP 01</span>
+            <h3 class="pipeline-card-title" data-i18n="pipe_step1_title">1. IOKit Magnetic Sensor</h3>
+            <p class="pipeline-card-desc" data-i18n="pipe_step1_desc">
+              Listens for physical clamshell state changes directly through AppleACPIPlatformExpert and IOPMrootDomain.
+            </p>
+            <div class="pipeline-code">
+              <code>IOServiceAddInterestNotification(...)</code>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="pipeline-card">
+            <span class="pipeline-step-badge">STEP 02</span>
+            <h3 class="pipeline-card-title" data-i18n="pipe_step2_title">2. Scoped pmset Assertion</h3>
+            <p class="pipeline-card-desc" data-i18n="pipe_step2_desc">
+              Applies disablesleep 1 with zero password prompt, telling macOS power management to ignore the clamshell trigger.
+            </p>
+            <div class="pipeline-code">
+              <code>/usr/bin/pmset -a disablesleep 1</code>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="pipeline-card">
+            <span class="pipeline-step-badge">STEP 03</span>
+            <h3 class="pipeline-card-title" data-i18n="pipe_step3_title">3. Display & Audio Hooks</h3>
+            <p class="pipeline-card-desc" data-i18n="pipe_step3_desc">
+              Dims screen backlight to 0 while preserving WindowServer, pauses active media, and mutes audio output.
+            </p>
+            <div class="pipeline-code">
+              <code>DisplayServicesSetBrightness(0)</code>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ENGINEERING / HOW IT WORKS (With Real Onboarding Screenshot Asset) -->
-    <section class="how-it-works-section" id="how-it-works">
+    <!-- COMPARISON TABLE -->
+    <section class="matrix-section">
       <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="section-label" data-i18n="steps_badge">Engineering</div>
-          <h2 class="section-title" data-i18n="steps_title">How Awake! operates under the hood.</h2>
-          <p class="section-description" data-i18n="steps_desc">
-            Transparent, auditable Swift code leveraging native macOS kernel APIs without obsolete kernel extensions.
-          </p>
-        </div>
+        <div class="section-label" data-i18n="matrix_badge">Benchmark</div>
+        <h2 class="section-title" data-i18n="matrix_title">Awake! vs. Traditional Utilities</h2>
+        <p class="section-sub" data-i18n="matrix_sub">
+          Why standard caffeinate scripts and older utilities fall short on modern macOS.
+        </p>
 
-        <div class="how-grid-layout">
-          <!-- Concrete Pipeline Steps -->
-          <div class="steps-stack">
-            <!-- Step 1 -->
-            <div class="step-card reveal-on-scroll">
-              <span class="step-number">STEP 01</span>
-              <h3 class="step-title" data-i18n="step_1_title">1. IOKit Magnetic Sensor</h3>
-              <p class="step-desc" data-i18n="step_1_desc">
-                Subscribes to AppleACPIPlatformExpert and IOPMrootDomain clamshell notifications. Wakes event loops only when the lid physically moves.
-              </p>
-              <div class="step-code-snippet">
-                <code>IOServiceAddInterestNotification(...)</code>
-              </div>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="step-card reveal-on-scroll">
-              <span class="step-number">STEP 02</span>
-              <h3 class="step-title" data-i18n="step_2_title">2. Scoped pmset Assertion</h3>
-              <p class="step-desc" data-i18n="step_2_desc">
-                Executes pmset -a disablesleep 1 with a dedicated sudoers entry. Tells macOS power management to bypass clamshell suspension safely.
-              </p>
-              <div class="step-code-snippet">
-                <code>pmset -a disablesleep 1</code>
-              </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="step-card reveal-on-scroll">
-              <span class="step-number">STEP 03</span>
-              <h3 class="step-title" data-i18n="step_3_title">3. CoreAudio & Media Hooks</h3>
-              <p class="step-desc" data-i18n="step_3_desc">
-                Hooks into MRMediaRemoteSendCommand to pause active audio/video players, mutes audio outputs, and saves volume state to restore on lid open.
-              </p>
-              <div class="step-code-snippet">
-                <code>AudioObjectSetPropertyData(...)</code>
-              </div>
-            </div>
-          </div>
-
-          <!-- Real Onboarding Asset Display -->
-          <div class="how-asset-display reveal-on-scroll">
-            <img src="screenshots/guide_memoji.png" alt="Awake! 1-Click Guided Onboarding" class="onboarding-guide-img" width="380" height="494">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- REAL REPOSITORY COMPARISON MATRIX -->
-    <section class="comparison-section" id="comparison">
-      <div class="container">
-        <div class="section-header reveal-on-scroll">
-          <div class="section-label" data-i18n="comp_badge">Comparison</div>
-          <h2 class="section-title" data-i18n="comp_title">Engineered for modern workflows.</h2>
-          <p class="section-description" data-i18n="comp_desc">
-            See how Awake! compares to traditional caffeinate scripts and legacy menu bar utilities.
-          </p>
-        </div>
-
-        <div class="matrix-wrapper reveal-on-scroll">
-          <table class="comparison-table">
+        <div class="matrix-table-card">
+          <table class="matrix-table">
             <thead>
               <tr>
-                <th data-i18n="comp_th_feature">Feature</th>
-                <th class="highlight-col" data-i18n="comp_th_awake">Awake!</th>
-                <th data-i18n="comp_th_amp">Amphetamine</th>
-                <th data-i18n="comp_th_caff">macOS caffeinate</th>
+                <th data-i18n="th_feature">Feature</th>
+                <th class="col-awake" data-i18n="th_awake">Awake!</th>
+                <th data-i18n="th_amp">Amphetamine</th>
+                <th data-i18n="th_caff">caffeinate (CLI)</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td data-i18n="comp_r1">Clamshell sleep prevention without external display</td>
-                <td class="highlight-col"><span class="check-pill">✓ Native (pmset)</span></td>
-                <td><span class="warn-pill">Requires helper</span></td>
-                <td><span class="cross-pill">Not supported</span></td>
+                <td data-i18n="row_1">Lid closed without external monitor</td>
+                <td class="col-awake"><span class="cell-pill good">✓ Native pmset</span></td>
+                <td><span class="cell-pill warn">Requires helper kext</span></td>
+                <td><span class="cell-pill bad">Not supported</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r2">Maintains USB bus power on lid close</td>
-                <td class="highlight-col"><span class="check-pill">✓ 100% Protected</span></td>
-                <td><span class="warn-pill">Often drops bus power</span></td>
-                <td><span class="cross-pill">Suspended</span></td>
+                <td data-i18n="row_2">Continuous USB bus power</td>
+                <td class="col-awake"><span class="cell-pill good">✓ 100% Protected</span></td>
+                <td><span class="cell-pill warn">Often drops USB power</span></td>
+                <td><span class="cell-pill bad">Suspended</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r3">Remote Desktop (Sills, VNC) without black screen</td>
-                <td class="highlight-col"><span class="check-pill">✓ Guaranteed</span></td>
-                <td><span class="cross-pill">Frequent black screen</span></td>
-                <td><span class="cross-pill">Black screen</span></td>
+                <td data-i18n="row_3">Remote Desktop (Sills, VNC) without black screen</td>
+                <td class="col-awake"><span class="cell-pill good">✓ Guaranteed 60 FPS</span></td>
+                <td><span class="cell-pill bad">Frequent black screen</span></td>
+                <td><span class="cell-pill bad">Black screen</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r4">Smart Mute & Media Pause on close (Shh!)</td>
-                <td class="highlight-col"><span class="check-pill">✓ Native (CoreAudio)</span></td>
-                <td><span class="cross-pill">No</span></td>
-                <td><span class="cross-pill">No</span></td>
+                <td data-i18n="row_4">Smart Mute on lid close (Shh!)</td>
+                <td class="col-awake"><span class="cell-pill good">✓ Native CoreAudio</span></td>
+                <td><span class="cell-pill bad">No</span></td>
+                <td><span class="cell-pill bad">No</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r5">Password prompts during daily operation</td>
-                <td class="highlight-col"><span class="check-pill">✓ 0 Prompts (Silent)</span></td>
-                <td><span class="warn-pill">Prompts on state changes</span></td>
-                <td><span class="warn-pill">Requires sudo</span></td>
+                <td data-i18n="row_5">Daily password prompts</td>
+                <td class="col-awake"><span class="cell-pill good">✓ 0 Prompts (Silent)</span></td>
+                <td><span class="cell-pill warn">Prompts on state change</span></td>
+                <td><span class="cell-pill warn">Manual sudo required</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r6">Memory footprint</td>
-                <td class="highlight-col"><span class="check-pill">~15 MB RAM</span></td>
+                <td data-i18n="row_6">Memory footprint</td>
+                <td class="col-awake"><span class="cell-pill good">~15 MB RAM</span></td>
                 <td><span>~70–120 MB RAM</span></td>
                 <td><span>~1 MB (CLI only)</span></td>
               </tr>
               <tr>
-                <td data-i18n="comp_r7">100% Open source & zero telemetry</td>
-                <td class="highlight-col"><span class="check-pill">✓ 100% MIT Open Source</span></td>
-                <td><span class="cross-pill">Proprietary</span></td>
-                <td><span class="check-pill">Apple CLI</span></td>
+                <td data-i18n="row_7">License & Telemetry</td>
+                <td class="col-awake"><span class="cell-pill good">✓ 100% MIT Open Source</span></td>
+                <td><span class="cell-pill bad">Closed Source</span></td>
+                <td><span class="cell-pill good">Apple Native CLI</span></td>
               </tr>
             </tbody>
           </table>
@@ -667,322 +582,175 @@
       </div>
     </section>
 
-    <!-- SECURITY & SUDOERS TRANSPARENCY SECTION -->
-    <section class="security-section" id="security">
+    <!-- CREATOR & TIP JAR (ALEX LOUDER) -->
+    <section class="creator-section" id="creator">
       <div class="container">
-        <div class="security-box reveal-on-scroll">
-          <div class="security-text">
-            <div class="section-label" data-i18n="sec_badge">Security & Trust</div>
-            <h2 class="section-title" data-i18n="sec_title">Private by design. Open by principle.</h2>
-            <p class="section-description" data-i18n="sec_desc">
-              Awake! was created with a least privilege security model. No telemetry, no background analytics, and complete user ownership.
-            </p>
-            <ul class="security-features">
-              <li class="security-feature-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="sec_f1">Zero outbound network requests (no telemetry, no trackers).</span>
-              </li>
-              <li class="security-feature-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="sec_f2">Runs in ordinary user space; only pmset is authorized via sudoers.</span>
-              </li>
-              <li class="security-feature-item">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                <span data-i18n="sec_f3">100% clean uninstallation in a single Terminal command.</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="security-code-card">
-            <div class="code-card-header">
-              <span data-i18n="sec_code_title">Strictly scoped /etc/sudoers.d/awake rule</span>
-              <button type="button" class="terminal-copy-btn" data-copy-target="sudoersRuleCode" aria-label="Copy sudoers snippet">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <span class="btn-text">Copy</span>
-              </button>
-            </div>
-            <pre class="code-block" id="sudoersRuleCode"># Configured by Awake! Onboarding
-# Only allows pmset disablesleep without password
-%admin ALL=(ALL) NOPASSWD: /usr/bin/pmset -a disablesleep *</pre>
-            <div class="uninstall-note">
-              Uninstall anytime: <code>sudo rm -f /etc/sudoers.d/awake && rm -rf /Applications/Awake\!.app</code>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CREATOR & TIP JAR (Alex Louder & Real Tip Jar Screenshot) -->
-    <section class="creator-section">
-      <div class="container">
-        <div class="creator-card reveal-on-scroll">
-          <div class="creator-left">
-            <div class="creator-profile">
-              <img src="assets/Memoji.png" alt="Alex Louder Memoji" class="creator-avatar" width="88" height="88">
+        <div class="creator-card">
+          
+          <div class="creator-info">
+            <div class="creator-profile-header">
+              <img src="assets/Memoji.png" alt="Alex Louder Memoji" class="creator-memoji-avatar" width="76" height="76">
               <div>
-                <div class="section-label" data-i18n="creator_badge">Open Source Creator</div>
-                <h3 class="creator-name" data-i18n="creator_name">Alex Louder (@Alex-Louder)</h3>
+                <h3 class="creator-name">Alex Louder</h3>
+                <a href="https://github.com/Alex-Louder" target="_blank" rel="noopener noreferrer" class="creator-handle">@Alex-Louder on GitHub</a>
               </div>
             </div>
+
             <p class="creator-bio" data-i18n="creator_bio">
-              Independent software craftsman passionate about clean macOS native tools, performance, and respectful privacy. If Awake! saves your downloads or remote workflows, support further development with a coffee!
+              Awake! is an independent, 100% open-source tool built with great care. No ads, no telemetry, no tracking. If it saved your downloads or streamlined your remote workflow, consider buying me a coffee to support continuous development!
             </p>
-            <div class="tier-buttons">
-              <!-- No Emoji in buttons per Anti-AI-Slop, clean SVG icons used -->
-              <a href="https://ko-fi.com/alexlouder?amount=1" target="_blank" rel="noopener noreferrer" class="tier-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                  <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                  <line x1="6" y1="1" x2="6" y2="4"></line>
-                  <line x1="10" y1="1" x2="10" y2="4"></line>
-                  <line x1="14" y1="1" x2="14" y2="4"></line>
-                </svg>
-                <span data-i18n="tier_1">$1 Supporter</span>
+
+            <div class="tip-options-row">
+              <a href="https://ko-fi.com/alexlouder?amount=1" target="_blank" rel="noopener noreferrer" class="tip-btn">
+                <span>$1</span>
+                <span data-i18n="tip_1_title">Thanks for your support</span>
               </a>
-              <a href="https://ko-fi.com/alexlouder?amount=3" target="_blank" rel="noopener noreferrer" class="tier-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-                </svg>
-                <span data-i18n="tier_3">$3 Sponsor</span>
+              <a href="https://ko-fi.com/alexlouder?amount=3" target="_blank" rel="noopener noreferrer" class="tip-btn">
+                <span>$3</span>
+                <span data-i18n="tip_3_title">Thank you so much!</span>
               </a>
-              <a href="https://ko-fi.com/alexlouder?amount=5" target="_blank" rel="noopener noreferrer" class="tier-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
-                  <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
-                </svg>
-                <span data-i18n="tier_5">$5 Power Sponsor</span>
+              <a href="https://ko-fi.com/alexlouder?amount=5" target="_blank" rel="noopener noreferrer" class="tip-btn">
+                <span>$5</span>
+                <span data-i18n="tip_5_title">Thank you very much!</span>
               </a>
-              <a href="https://ko-fi.com/alexlouder" target="_blank" rel="noopener noreferrer" class="tier-btn tier-kofi">
-                <span data-i18n="tier_kofi">Support on Ko-fi</span>
+              <a href="https://ko-fi.com/alexlouder" target="_blank" rel="noopener noreferrer" class="tip-btn kofi-highlight">
+                <span data-i18n="tip_kofi_btn">Support on Ko-fi</span>
               </a>
             </div>
           </div>
 
-          <!-- Real Tip Jar Screenshot Display -->
-          <div class="creator-right">
-            <img id="tipjarScreenshotImg" src="screenshots/tipjar_en.png" alt="Awake! Tip Jar Interface" class="tipjar-screenshot-img" width="320" height="396">
+          <!-- Interactive Tip Jar Selector -->
+          <div class="creator-interactive-jar">
+            <div class="jar-header">
+              <span data-i18n="jar_header">Ko-fi Direct Support</span>
+              <span class="jar-tier-pill">0% Platform Fee</span>
+            </div>
+            <div class="jar-selection-cards">
+              <a href="https://ko-fi.com/alexlouder?amount=1" target="_blank" rel="noopener noreferrer" class="jar-card-choice">
+                <span class="jar-price">$1</span>
+                <span class="jar-tier-title" data-i18n="jar_tier1">Coffee</span>
+              </a>
+              <a href="https://ko-fi.com/alexlouder?amount=3" target="_blank" rel="noopener noreferrer" class="jar-card-choice">
+                <span class="jar-price">$3</span>
+                <span class="jar-tier-title" data-i18n="jar_tier2">Sponsor</span>
+              </a>
+              <a href="https://ko-fi.com/alexlouder?amount=5" target="_blank" rel="noopener noreferrer" class="jar-card-choice">
+                <span class="jar-price">$5</span>
+                <span class="jar-tier-title" data-i18n="jar_tier3">Super Supporter</span>
+              </a>
+            </div>
+            <span style="font-size: 11.5px; color: var(--text-tertiary); text-align: center;" data-i18n="jar_footer">
+              Secure payments powered by Stripe & PayPal on Ko-fi
+            </span>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- FAQ ACCORDION SECTION -->
+    <!-- FAQ ACCORDION -->
     <section class="faq-section" id="faq">
       <div class="container">
-        <div class="section-header section-header-center reveal-on-scroll">
-          <div class="section-label" data-i18n="faq_badge">Answers</div>
+        <div style="text-align: center;">
+          <div class="section-label" data-i18n="faq_badge">Clarifications</div>
           <h2 class="section-title" data-i18n="faq_title">Frequently Asked Questions</h2>
-          <p class="section-description" data-i18n="faq_desc">
-            Clear answers to hardware safety, thermal behavior, and security questions.
-          </p>
         </div>
 
         <div class="faq-list">
-          <!-- Question 1 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q1">Will my MacBook overheat with the lid closed in a bag?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
+          
+          <div class="faq-item">
+            <button type="button" class="faq-toggle-btn">
+              <span data-i18n="faq_q1">Will my MacBook overheat with the lid closed in a backpack?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a1">
-                Modern Apple Silicon MacBooks (M1 through M4) are remarkably efficient and generate minimal heat at low to moderate loads. However, if you run heavy CPU/GPU tasks (like 4K video rendering or local LLM training) inside an airtight, insulated bag, heat cannot dissipate efficiently. We recommend toggling Awake! off before packing your laptop for travel during heavy renders.
-              </p>
+            <div class="faq-content" data-i18n="faq_a1">
+              Apple Silicon MacBooks (M1–M4) run exceptionally cool at moderate loads. However, if you are doing intensive 4K exports or training local AI models inside an airtight, insulated backpack, thermal dissipation is limited. We recommend toggling Awake! off before stowing your laptop in a bag for travel during heavy renders.
             </div>
           </div>
 
-          <!-- Question 2 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q2">Why doesn't Awake! ask for my password every time?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
+          <div class="faq-item">
+            <button type="button" class="faq-toggle-btn">
+              <span data-i18n="faq_q2">Why does Awake! never prompt for my password during daily use?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a2">
-                During first run onboarding, Awake! configures a single rule in /etc/sudoers.d/awake granting your user permission to run /usr/bin/pmset -a disablesleep * without password prompts. The app itself never runs as root. You can review or delete this file at any time.
-              </p>
+            <div class="faq-content" data-i18n="faq_a2">
+              During the initial 1-click onboarding setup, Awake! configures a single rule in <code>/etc/sudoers.d/awake</code> granting your specific user account permission to execute <code>pmset -a disablesleep</code> without password prompts. The application itself never runs as root and never makes network connections.
             </div>
           </div>
 
-          <!-- Question 3 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q3">Does Shh! work with AirPods and external USB audio interfaces?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
+          <div class="faq-item">
+            <button type="button" class="faq-toggle-btn">
+              <span data-i18n="faq_q3">Does Shh! work with AirPods and USB audio interfaces?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a3">
-                Yes. Shh! monitors system default output devices via macOS CoreAudio and pauses playback across all media players using MediaRemote. Whether you use internal speakers, AirPods Max, or a professional USB DAC, audio is silenced immediately upon lid close.
-              </p>
+            <div class="faq-content" data-i18n="faq_a3">
+              Yes. Shh! communicates with macOS CoreAudio and MediaRemote. Whether you are using internal MacBook speakers, AirPods, headphones, or external studio audio interfaces (Focusrite Scarlett, Universal Audio Apollo, SSL), playback is immediately paused and audio is muted on lid closure.
             </div>
           </div>
 
-          <!-- Question 4 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q4">Does Awake! consume significant battery power?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
+          <div class="faq-item">
+            <button type="button" class="faq-toggle-btn">
+              <span data-i18n="faq_q4">How do I completely uninstall Awake!?</span>
+              <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a4">
-                Awake! itself consumes approximately 15 MB of RAM and 0.0% idle CPU because it relies on kernel event notifications rather than polling loops. Battery consumption is entirely determined by the background tasks you choose to run (e.g. servers or downloads).
-              </p>
+            <div class="faq-content" data-i18n="faq_a4">
+              Awake! leaves zero hidden daemons or orphaned background services. Simply drag <code>Awake!.app</code> to your Trash, and remove the sudoers rule with: <code>sudo rm -f /etc/sudoers.d/awake</code>.
             </div>
           </div>
 
-          <!-- Question 5 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q5">Which macOS versions are supported?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a5">
-                Awake! is officially tested and supported on macOS 14 Sonoma, macOS 15 Sequoia, and upcoming releases, across all Apple Silicon (M1, M2, M3, M4) and Intel architectures.
-              </p>
-            </div>
-          </div>
-
-          <!-- Question 6 -->
-          <div class="faq-item reveal-on-scroll">
-            <button type="button" class="faq-question-btn" aria-expanded="false">
-              <span data-i18n="faq_q6">How do I completely uninstall Awake!?</span>
-              <svg class="faq-icon-chevron" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
-            <div class="faq-answer">
-              <p data-i18n="faq_a6">
-                Run two simple commands in Terminal: sudo rm -f /etc/sudoers.d/awake and rm -rf /Applications/Awake\!.app. Zero hidden files, zero orphaned system launch daemons.
-              </p>
-            </div>
-          </div>
         </div>
       </div>
     </section>
 
-    <!-- FINAL CTA & INSTALLER PREVIEW (Showcases real dmg_background.png) -->
+    <!-- FINAL CTA -->
     <section class="final-cta-section">
       <div class="container">
-        <div class="final-cta-container reveal-on-scroll">
-          <img src="screenshots/app_icon.png" alt="Awake! App Icon" class="final-app-icon" width="72" height="72">
-          
-          <h2 class="final-cta-title" data-i18n="final_title">Keep your Mac awake on your terms.</h2>
-          <p class="final-cta-desc" data-i18n="final_desc">
-            Download the universal macOS DMG or compile from source. 100% free and open source.
-          </p>
-
-          <div class="final-cta-actions">
-            <a href="https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg" class="btn-primary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span class="btn-text" data-i18n="final_btn_download">Download Awake! v1.0.0 (DMG)</span>
-            </a>
-
-            <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="btn-secondary">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
-              </svg>
-              <span class="btn-text" data-i18n="final_btn_github">View on GitHub</span>
-            </a>
-          </div>
-
-          <!-- Authentic DMG Window Asset Preview -->
-          <div class="dmg-preview-box">
-            <img src="assets/dmg_background.png" alt="Awake! macOS DMG Drag and Drop Installer" class="dmg-preview-img" width="600" height="364">
-          </div>
+        <img src="screenshots/app_icon.png" alt="Awake! Logo" class="final-cta-icon" width="76" height="76">
+        <h2 class="final-cta-title" data-i18n="final_title">Lid down. Work goes on.</h2>
+        <p class="final-cta-desc" data-i18n="final_desc">
+          Download the universal macOS DMG or compile directly from source. 100% free, private, and open source.
+        </p>
+        <div class="final-cta-actions">
+          <a href="https://github.com/Alex-Louder/Awake/releases/download/v1.0.0/Awake-v1.0.0.dmg" class="btn-primary">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span data-i18n="final_download_btn">Download Awake! v1.0.0 (DMG)</span>
+          </a>
+          <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            <span data-i18n="final_github_btn">View Source on GitHub</span>
+          </a>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- APPLE MINIMAL FOOTER -->
+  <!-- SITE FOOTER -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-inner">
-        <div class="footer-left">
-          <img src="screenshots/app_icon.png" alt="Awake! Logo" class="footer-brand-icon" width="18" height="18">
-          <span data-i18n="footer_copy">Awake! by Alex Louder. Released under the MIT License.</span>
+        <div>
+          Awake! is licensed under the <a href="https://github.com/Alex-Louder/Awake/blob/main/LICENSE" target="_blank" rel="noopener noreferrer" class="footer-link">MIT License</a>.
+          Copyright © 2026 <strong>Alex Louder</strong> (<a href="https://github.com/Alex-Louder" target="_blank" rel="noopener noreferrer" class="footer-link">@Alex-Louder</a>).
         </div>
         <ul class="footer-links">
-          <li>
-            <button type="button" class="footer-modal-trigger" id="privacyModalOpenBtn" data-i18n="footer_privacy">
-              Zero Telemetry Guarantee
-            </button>
-          </li>
-          <li>
-            <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="footer-link" data-i18n="footer_repo">
-              GitHub Repository
-            </a>
-          </li>
-          <li>
-            <a href="https://ko-fi.com/alexlouder" target="_blank" rel="noopener noreferrer" class="footer-link" data-i18n="footer_kofi">
-              Ko-fi Tip Jar
-            </a>
-          </li>
+          <li><a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a></li>
+          <li><a href="https://github.com/Alex-Louder/Awake/releases/tag/v1.0.0" target="_blank" rel="noopener noreferrer" class="footer-link">Releases</a></li>
+          <li><a href="https://ko-fi.com/alexlouder" target="_blank" rel="noopener noreferrer" class="footer-link">Ko-fi Sponsor</a></li>
         </ul>
       </div>
     </div>
   </footer>
 
-  <!-- PRIVACY & SECURITY MODAL (B10 Ship Requirements) -->
-  <div class="modal-backdrop" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="modalPrivacyTitle">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title" id="modalPrivacyTitle" data-i18n="modal_privacy_title">Privacy & Security Guarantee</h3>
-        <button type="button" class="modal-close-btn" id="privacyModalCloseBtn" aria-label="Close Privacy Modal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p data-i18n="modal_p1">
-          <strong>100% Offline & Private:</strong> Awake! makes zero outbound network connections. It does not contain telemetry, crash reporters, analytics SDKs, or background trackers. Your workflow, computer name, and system activity never leave your Mac.
-        </p>
-        <p data-i18n="modal_p2">
-          <strong>Least Privilege Execution:</strong> Awake! runs entirely in unprivileged user space. It only calls macOS power management commands through a single, strictly scoped sudoers rule for <code>pmset -a disablesleep</code>. The app itself never runs as root.
-        </p>
-        <p data-i18n="modal_p3">
-          <strong>Auditable Source Code:</strong> Every line of Swift code is published under the open source MIT license at <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="modal-link">github.com/Alex-Louder/Awake</a>. You can inspect, compile, or audit the software independently.
-        </p>
-        <p data-i18n="modal_p4">
-          <strong>Clean Uninstallation:</strong> Deleting Awake! leaves zero orphaned daemons or system hooks. Simply remove <code>/Applications/Awake!.app</code> and <code>/etc/sudoers.d/awake</code>.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Accessible Toast Notice -->
+  <!-- Toast Notification -->
   <div class="toast-notice" id="toastNotice" role="status" aria-live="polite">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="toast-icon">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12"></polyline>
     </svg>
-    <span class="toast-msg">Copied to clipboard</span>
+    <span id="toastMsg">Copied to clipboard</span>
   </div>
 
   <script src="script.js"></script>
