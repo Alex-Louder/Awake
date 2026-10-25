@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Awake! Keep your Mac awake</title>
+  <meta name="description" content="This page went to sleep. Return to the Awake! homepage.">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .not-found-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-400);
+      text-align: center;
+    }
+    .not-found-card {
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--sp-300);
+    }
+    .not-found-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    }
+    .not-found-badge {
+      font-size: var(--text-xs);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--accent-awake);
+      letter-spacing: 0.08em;
+    }
+    .not-found-title {
+      font-size: var(--text-4xl);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+    }
+    .not-found-desc {
+      font-size: var(--text-base);
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .not-found-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-200);
+      margin-top: var(--sp-100);
+    }
+  </style>
+</head>
+<body>
+  <div class="not-found-wrapper">
+    <div class="not-found-card">
+      <img src="screenshots/app_icon.png" alt="Awake! Logo" class="not-found-icon" width="80" height="80">
+      <span class="not-found-badge">ERROR 404</span>
+      <h1 class="not-found-title">This page went to sleep.</h1>
+      <p class="not-found-desc">
+        Unlike your MacBook with Awake! running, the URL you requested could not stay awake or does not exist.
+      </p>
+      <div class="not-found-actions">
+        <a href="index.html" class="btn-primary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Return Home</span>
+        </a>
+        <a href="https://github.com/Alex-Louder/Awake" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          <span>View on GitHub</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
