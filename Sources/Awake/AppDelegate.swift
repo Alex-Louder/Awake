@@ -86,17 +86,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             return
         }
         
-        let window = NSWindow(
+        let window = BorderlessFloatingWindow(
             contentRect: NSRect(x: 0, y: 0, width: 400, height: 520),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+            styleMask: [.borderless],
             backing: .buffered,
             defer: false
         )
         window.isReleasedWhenClosed = false
         window.delegate = self
-        window.title = "Bienvenido a Awake!"
-        window.titlebarAppearsTransparent = true
-        window.titleVisibility = .hidden
         window.isMovableByWindowBackground = true
         window.backgroundColor = .clear
         window.isOpaque = false
@@ -128,17 +125,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             return
         }
         
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 360, height: 430),
-            styleMask: [.titled, .closable, .fullSizeContentView],
+        let window = BorderlessFloatingWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 370, height: 430),
+            styleMask: [.borderless],
             backing: .buffered,
             defer: false
         )
         window.isReleasedWhenClosed = false
         window.delegate = self
-        window.title = "Apoyar Awake!"
-        window.titlebarAppearsTransparent = true
-        window.titleVisibility = .hidden
         window.isMovableByWindowBackground = true
         window.backgroundColor = .clear
         window.isOpaque = false
@@ -243,4 +237,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         BrightnessController.shared.restoreOnQuit()
         AudioManager.shared.restoreOnQuit()
     }
+}
+
+// MARK: - Key-capable Borderless Window
+
+final class BorderlessFloatingWindow: NSWindow {
+    override var canBecomeKey: Bool { true }
+    override var canBecomeMain: Bool { true }
 }

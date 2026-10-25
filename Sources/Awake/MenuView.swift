@@ -3,6 +3,7 @@ import SwiftUI
 struct MenuView: View {
     @ObservedObject var viewModel: AppViewModel
     @ObservedObject private var loc = LocalizationManager.shared
+    @ObservedObject private var launchManager = LaunchAtLoginManager.shared
     
     var body: some View {
         VStack(spacing: 8) {
@@ -97,6 +98,24 @@ struct MenuView: View {
                 Capsule()
                     .fill(Color.white.opacity(0.10))
             )
+            
+            // Launch at login power button
+            Button(action: {
+                launchManager.toggle()
+            }) {
+                Image(systemName: "power")
+                    .font(.system(size: 8.5, weight: .bold))
+                    .foregroundColor(launchManager.isEnabled ? Color(red: 0.2, green: 0.85, blue: 0.55) : Color.white.opacity(0.40))
+                    .frame(width: 17, height: 17)
+                    .background(
+                        Circle()
+                            .fill(launchManager.isEnabled ? Color(red: 0.2, green: 0.85, blue: 0.55).opacity(0.20) : Color.white.opacity(0.10))
+                    )
+            }
+            .buttonStyle(.plain)
+            .help(launchManager.isEnabled
+                ? (loc.currentLanguage == .spanish ? "Iniciar al arrancar: Activado" : "Launch at login: Enabled")
+                : (loc.currentLanguage == .spanish ? "Iniciar al arrancar: Desactivado" : "Launch at login: Disabled"))
             
             HStack(spacing: 4) {
                 Circle()

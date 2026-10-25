@@ -85,6 +85,11 @@ struct OnboardingView: View {
         }
         .frame(width: 400, height: 520)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(Color.white.opacity(0.18), lineWidth: 1)
+        )
         .preferredColorScheme(.dark)
     }
     

@@ -41,6 +41,11 @@ struct TipJarView: View {
         }
         .frame(width: 370, height: 430)
         .background(VisualEffectView(material: .hudWindow, blendingMode: .behindWindow))
+        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .stroke(Color.white.opacity(0.18), lineWidth: 1)
+        )
         .preferredColorScheme(.dark)
     }
     
