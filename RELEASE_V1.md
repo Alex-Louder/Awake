@@ -11,10 +11,13 @@
 ### Objetivos Clave Cumplidos
 1. **Mantener todo activo**: El procesador, las descargas, servidores locales (Docker, Node, Python, bases de datos) y dispositivos USB (hubs, discos externos, interfaces de audio) nunca se suspenden al cerrar la tapa.
 2. **Acceso remoto sin pantallas negras**: Aplicaciones como **Sills**, **VNC**, **TeamViewer** o **AnyDesk** pueden conectarse y ver la pantalla con total normalidad con la MacBook cerrada. La pantalla física se atenúa a brillo cero a nivel de hardware mediante `DisplayServicesSetBrightness`, pero el framebuffer de `WindowServer` y la GPU permanecen activos.
-3. **Silencio al cerrar (Shh!)**: Al cerrar la tapa, la música o videos se pausan inmediatamente y el sonido se silencia tanto en altavoces internos como en **AirPods, auriculares externos o interfaces de audio**.
+3. **Silenciar al cerrar (Shh!)**: Al cerrar la tapa, la música o videos se pausan inmediatamente y el sonido se silencia tanto en altavoces internos como en **AirPods, audífonos o altavoces externos**.
 4. **Cero solicitudes de contraseña**: Tras la autorización inicial (1 clic en el onboarding o script de instalación), Awake! activa y desactiva el modo sin pedir contraseñas ni autenticaciones molestas.
 5. **Selector de Idioma Dinámico (ES / EN)**: Selector integrado en el Onboarding y en el menú desplegable que traduce toda la interfaz al instante.
-6. **Sistema de Donaciones / Tip Jar ($1, $5, $10)**: Sistema idéntico a CaffeinateBar con soporte nativo de StoreKit 2 y fallback a donaciones web (PayPal/Tarjeta).
+6. **Sistema de Donaciones / Tip Jar ($1, $3, $5)**: Sistema idéntico a CaffeinateBar con soporte nativo de StoreKit 2 y fallback a donaciones web (PayPal/Tarjeta):
+   - **$1**: *Gracias por tu apoyo*
+   - **$3**: *¡Muchas gracias!*
+   - **$5**: *¡Muchísimas gracias!*
 7. **Icono Oficial Personalizado**: Squircle oscuro con la MacBook (`A!`) y el Memoji del desarrollador recortado limpiamente sin el aro degradado en la esquina inferior izquierda.
 8. **Diseño Dark HUD Liquid Glass**: Interfaz inspirada directamente en el Centro de Control de macOS, con cápsulas simétricas de esquinas continuas (`cornerRadius: 18`), efecto translúcido HUD y reflejos de borde specular highlight. Cumple estrictamente con los estándares **Anti-AI-Slop UI/UX**.
 
@@ -25,7 +28,7 @@
 | Control | Subtítulo (ES) | Subtítulo (EN) | Función Principal |
 | :--- | :--- | :--- | :--- |
 | **Awake!** | *Mantén despierta tu mac* | *Keep your Mac awake* | Impide que el sistema entre en reposo al cerrar la tapa. Conserva el suministro eléctrico en los puertos USB y previene la interrupción de procesos y sesiones remotas. |
-| **Shh!** | *Silencio al cerrar* | *Silence on lid close* | Pausa automáticamente la música o videos en reproducción y silencia el sonido en AirPods, audífonos o altavoces al bajar la pantalla. |
+| **Shh!** | *Silenciar al cerrar* | *Mute on lid close* | Pausa automáticamente la música o videos en reproducción y silencia el sonido en AirPods, audífonos o altavoces al bajar la pantalla. |
 
 Adicionalmente, el panel incluye un indicador de estado en tiempo real:
 - **Tapa / Lid**: `Abierta` / `Open` (punto verde) o `Cerrada` / `Closed` (punto naranja).
@@ -37,13 +40,13 @@ Adicionalmente, el panel incluye un indicador de estado en tiempo real:
 
 Inspirado en el sistema de CaffeinateBar, Awake! ofrece 3 niveles de contribución:
 
-- **$1 (Un Café / A Coffee)**: Impulsa el desarrollo continuo cotidiano.
-- **$5 (Super Café / Super Coffee)**: Gran gesto de agradecimiento.
-- **$10 (Mega Apoyo / Mega Support)**: Nivel patrocinador oficial de Awake!.
+- **$1**: **Gracias por tu apoyo** (*Thanks for your support*) — *Impulsa el desarrollo continuo*
+- **$3**: **¡Muchas gracias!** (*Thank you so much!*) — *Un gran gesto de agradecimiento*
+- **$5**: **¡Muchísimas gracias!** (*Thank you very much!*) — *Patrocinador oficial de Awake!*
 
 ### Integración Técnica
-1. **StoreKit 2**: Mapeado con productos consumibles (`com.playlouder.Awake.tip.small`, `com.playlouder.Awake.tip.medium`, `com.playlouder.Awake.tip.large`). Incluye archivo de configuración local `AwakeTips.storekit`.
-2. **Fallback Web**: Si la aplicación se ejecuta fuera de la Mac App Store, los botones y el enlace directo redirigen automáticamente a la URL de donación (`https://paypal.me/playlouder/1USD`, `/5USD`, `/10USD`).
+1. **StoreKit 2**: Mapeado con productos consumibles (`com.playlouder.Awake.tip.1`, `com.playlouder.Awake.tip.3`, `com.playlouder.Awake.tip.5`). Incluye archivo de configuración local `AwakeTips.storekit`.
+2. **Fallback Web**: Si la aplicación se ejecuta fuera de la Mac App Store, los botones y el enlace directo redirigen automáticamente a la URL de donación (`https://paypal.me/playlouder/1USD`, `/3USD`, `/5USD`).
 
 ---
 
