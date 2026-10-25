@@ -1,6 +1,7 @@
 import Foundation
 import CoreAudio
 import AppKit
+import IOKit.pwr_mgt
 
 /// Handles comprehensive audio muting, external DAC/USB redirection,
 /// and media playback pausing when the lid closes.
@@ -13,6 +14,7 @@ final class AudioManager: @unchecked Sendable {
     private var originalDeviceID: AudioDeviceID?
     private var didRedirectDevice: Bool = false
     private var didMuteByApp: Bool = false
+    private var audioPlaybackAssertionID: IOPMAssertionID = 0
     
     private init() {
         // Resolve private MediaRemote framework for system-wide media pause
@@ -23,15 +25,18 @@ final class AudioManager: @unchecked Sendable {
         }
     }
     
-    /// Called when the lid closes with audio control enabled.
+    /// Called when the lid closes with audio control (Shh!) enabled.
     func handleLidClosed() {
+        releaseAudioAssertion()
+        
         // 1. Pause active media players safely without triggering application picker dialogs
         pauseAllMedia()
         
-        // 2. Handle audio routing for external interfaces (like Focusrite Scarlett Solo / USB / HDMI)
+        // 2. Handle audio routing: ONLY redirect physical external speakers / HDMI monitors,
+        // NEVER redirect AirPods, Bluetooth headphones, or plugged-in headphones away from the user.
         let current = getDefaultOutputDevice()
-        if let builtIn = getBuiltInSpeakerID() {
-            if current != builtIn {
+        if !isBluetoothOrHeadphones(id: current) {
+            if let builtIn = getBuiltInSpeakerID(), current != builtIn {
                 originalDeviceID = current
                 didRedirectDevice = setDefaultOutputDevice(id: builtIn)
             }
@@ -41,32 +46,66 @@ final class AudioManager: @unchecked Sendable {
         muteSystemOutput()
     }
     
+    /// Called when the lid closes and Shh! is disabled (user wants audio/AirPods to continue playing).
+    func handleLidClosedWithoutMute() {
+        // 1. Ensure audio is not muted
+        ensureUnmuted()
+        
+        // 2. Acquire audio stream power assertion to keep CoreAudio & Bluetooth audio active
+        if audioPlaybackAssertionID == 0 {
+            let reason = "Awake! Audio Stream Protection" as CFString
+            _ = IOPMAssertionCreateWithName(
+                kIOPMAssertionTypePreventUserIdleSystemSleep as CFString,
+                IOPMAssertionLevel(kIOPMAssertionLevelOn),
+                reason,
+                &audioPlaybackAssertionID
+            )
+        }
+        
+        // 3. Counter macOS automatic clamshell pause on Bluetooth devices:
+        // Schedule auto-resume at 150ms and 450ms after lid close
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
+            self?.resumeMediaIfPaused()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { [weak self] in
+            self?.resumeMediaIfPaused()
+        }
+    }
+    
     /// Called when the lid opens.
     func handleLidOpened() {
-        // 1. Restore external audio device if it was redirected
+        releaseAudioAssertion()
+        ensureUnmuted()
+    }
+    
+    /// Ensures audio output is unmuted and any device redirection is restored.
+    func ensureUnmuted() {
         if didRedirectDevice, let orig = originalDeviceID {
             _ = setDefaultOutputDevice(id: orig)
             didRedirectDevice = false
             originalDeviceID = nil
         }
-        
-        // 2. Unmute system volume
         if didMuteByApp {
             unmuteSystemOutput()
             didMuteByApp = false
         }
     }
     
+    func releaseAudioAssertion() {
+        if audioPlaybackAssertionID != 0 {
+            IOPMAssertionRelease(audioPlaybackAssertionID)
+            audioPlaybackAssertionID = 0
+        }
+    }
+    
+    func resumeMediaIfPaused() {
+        // Command 0 = kMRPlay (MediaRemote system-wide resume)
+        _ = sendMediaRemoteCommand?(0, nil)
+    }
+    
     func restoreOnQuit() {
-        if didRedirectDevice, let orig = originalDeviceID {
-            _ = setDefaultOutputDevice(id: orig)
-            didRedirectDevice = false
-            originalDeviceID = nil
-        }
-        if didMuteByApp {
-            unmuteSystemOutput()
-            didMuteByApp = false
-        }
+        releaseAudioAssertion()
+        ensureUnmuted()
     }
     
     // MARK: - Media Controls
@@ -160,6 +199,43 @@ final class AudioManager: @unchecked Sendable {
             }
         }
         return nil
+    }
+    
+    /// Detects if an audio device is AirPods, Bluetooth headphones, or plugged-in headphones.
+    func isBluetoothOrHeadphones(id: AudioDeviceID) -> Bool {
+        var transportAddr = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyTransportType,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var transportType: UInt32 = 0
+        var transportSize = UInt32(MemoryLayout<UInt32>.size)
+        if AudioObjectGetPropertyData(id, &transportAddr, 0, nil, &transportSize, &transportType) == noErr {
+            // kAudioDeviceTransportTypeBluetooth = 1651275109 ('blue')
+            // kAudioDeviceTransportTypeBluetoothLE = 1651275116 ('blea')
+            if transportType == kAudioDeviceTransportTypeBluetooth ||
+               transportType == kAudioDeviceTransportTypeBluetoothLE {
+                return true
+            }
+        }
+        
+        // Also check device name for common headphone indicators
+        var nameSize: UInt32 = 256
+        var name = [CChar](repeating: 0, count: 256)
+        var nameAddr = AudioObjectPropertyAddress(
+            mSelector: kAudioDevicePropertyDeviceName,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        if AudioObjectGetPropertyData(id, &nameAddr, 0, nil, &nameSize, &name) == noErr {
+            let str = name.withUnsafeBufferPointer { ptr in
+                ptr.baseAddress.map { String(cString: $0).lowercased() } ?? ""
+            }
+            if str.contains("airpod") || str.contains("headphone") || str.contains("auricular") || str.contains("buds") || str.contains("beats") {
+                return true
+            }
+        }
+        return false
     }
     
     // MARK: - Volume Muting

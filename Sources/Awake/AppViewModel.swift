@@ -32,8 +32,13 @@ final class AppViewModel: ObservableObject {
         self.isSystemSleepDisabled = currentSystemState
         self.isKeepAwakeEnabled = currentSystemState || savedKeepAwake
         
-        if currentSystemState {
+        if currentSystemState || savedKeepAwake {
             powerManager.acquirePowerAssertions()
+            if savedKeepAwake && !currentSystemState {
+                Task {
+                    try? await powerManager.setSystemSleepDisabled(true)
+                }
+            }
         }
         
         self.isLidClosed = lidDetector.isLidClosed
@@ -79,6 +84,9 @@ final class AppViewModel: ObservableObject {
     func toggleMuteOnLidClose() {
         isMuteOnLidCloseEnabled.toggle()
         UserDefaults.standard.set(isMuteOnLidCloseEnabled, forKey: kMutePrefKey)
+        if !isMuteOnLidCloseEnabled {
+            audioManager.ensureUnmuted()
+        }
     }
     
     func refreshSystemState() {
@@ -101,6 +109,9 @@ final class AppViewModel: ObservableObject {
             if isMuteOnLidCloseEnabled {
                 // Pause media and redirect external DACs to muted speaker
                 audioManager.handleLidClosed()
+            } else {
+                // User explicitly unchecked Shh!: Keep AirPods/audio active & counter clamshell auto-pause
+                audioManager.handleLidClosedWithoutMute()
             }
         } else {
             // Lid opened
@@ -111,6 +122,8 @@ final class AppViewModel: ObservableObject {
             if isMuteOnLidCloseEnabled {
                 // Unmute and restore external DAC
                 audioManager.handleLidOpened()
+            } else {
+                audioManager.ensureUnmuted()
             }
         }
     }

@@ -18,6 +18,7 @@ final class BrightnessController: @unchecked Sendable {
     private var setBrightness: SetBrightnessFn?
     private var savedBrightness: Float?
     private var isDimmed: Bool = false
+    private var cachedBuiltInDisplayID: CGDirectDisplayID?
     
     private init() {
         if let handle = dlopen("/System/Library/PrivateFrameworks/DisplayServices.framework/DisplayServices", RTLD_LAZY) {
@@ -28,29 +29,31 @@ final class BrightnessController: @unchecked Sendable {
                 setBrightness = unsafeBitCast(setSym, to: SetBrightnessFn.self)
             }
         }
+        cachedBuiltInDisplayID = getBuiltInDisplayID()
     }
     
     /// Finds the CGDirectDisplayID of the built-in MacBook panel.
     func getBuiltInDisplayID() -> CGDirectDisplayID? {
         var count: UInt32 = 0
         CGGetOnlineDisplayList(0, nil, &count)
-        guard count > 0 else { return nil }
+        guard count > 0 else { return cachedBuiltInDisplayID }
         
         var displays = [CGDirectDisplayID](repeating: 0, count: Int(count))
         CGGetOnlineDisplayList(count, &displays, &count)
         
         for d in displays {
             if CGDisplayIsBuiltin(d) != 0 {
+                cachedBuiltInDisplayID = d
                 return d
             }
         }
-        return nil
+        return cachedBuiltInDisplayID
     }
     
     /// Dims the built-in display to 0.0 when the lid closes.
     /// Preserves the WindowServer framebuffer for remote access sessions.
     func dimForLidClose() {
-        guard let displayID = getBuiltInDisplayID(), let setBrightness = setBrightness else { return }
+        guard let displayID = getBuiltInDisplayID() ?? cachedBuiltInDisplayID, let setBrightness = setBrightness else { return }
         
         if let getBrightness = getBrightness {
             var current: Float = 0.5
@@ -65,7 +68,7 @@ final class BrightnessController: @unchecked Sendable {
     
     /// Restores the built-in display brightness when the lid is reopened.
     func restoreForLidOpen() {
-        guard isDimmed, let displayID = getBuiltInDisplayID(), let setBrightness = setBrightness else { return }
+        guard isDimmed, let displayID = getBuiltInDisplayID() ?? cachedBuiltInDisplayID, let setBrightness = setBrightness else { return }
         
         let target = savedBrightness ?? 0.5
         _ = setBrightness(displayID, target)

@@ -24,8 +24,9 @@ final class LidDetector: ObservableObject {
     
     func startMonitoring() {
         timer?.invalidate()
-        // Query lid state once per second
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        // Query lid state rapidly (250ms) to ensure instantaneous reaction
+        // without allowing macOS to initiate intermediate sleep or network drop.
+        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.checkState()
             }

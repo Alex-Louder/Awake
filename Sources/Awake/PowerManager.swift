@@ -22,6 +22,9 @@ final class PowerManager: @unchecked Sendable {
     
     private var systemSleepAssertionID: IOPMAssertionID = 0
     private var userIdleAssertionID: IOPMAssertionID = 0
+    private var displayIdleAssertionID: IOPMAssertionID = 0
+    private var networkClientAssertionID: IOPMAssertionID = 0
+    private var remoteUserAssertionID: IOPMAssertionID = 0
     private var didChangeSleepSetting: Bool = false
     
     private init() {}
@@ -126,8 +129,9 @@ final class PowerManager: @unchecked Sendable {
     func acquirePowerAssertions() {
         releasePowerAssertions()
         
-        let reason = "Awake! Mode (USB & Services Protection)" as CFString
+        let reason = "Awake! Mode (Uninterrupted Compute & USB Protection)" as CFString
         
+        // 1. Prevent System Sleep
         _ = IOPMAssertionCreateWithName(
             kIOPMAssertionTypePreventSystemSleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
@@ -135,11 +139,37 @@ final class PowerManager: @unchecked Sendable {
             &systemSleepAssertionID
         )
         
+        // 2. Prevent User Idle Sleep
         _ = IOPMAssertionCreateWithName(
             kIOPMAssertionTypePreventUserIdleSystemSleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
             reason,
             &userIdleAssertionID
+        )
+        
+        // 3. Prevent Display Sleep (Keeps WindowServer framebuffer live at 60 FPS & prevents Bluetooth/Wi-Fi from sleeping on clamshell close)
+        let displayReason = "Awake! Virtual Framebuffer & Network Keep-Alive" as CFString
+        _ = IOPMAssertionCreateWithName(
+            kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
+            IOPMAssertionLevel(kIOPMAssertionLevelOn),
+            displayReason,
+            &displayIdleAssertionID
+        )
+        
+        // 4. Network Client Active (Keeps Wi-Fi card fully powered in D0 state, answering ARP, mDNS, Sill, RustDesk, AnyDesk)
+        let netReason = "Awake! Remote Desktop & Headless Stream" as CFString
+        _ = IOPMAssertionCreateWithName(
+            "NetworkClientActive" as CFString,
+            IOPMAssertionLevel(kIOPMAssertionLevelOn),
+            netReason,
+            &networkClientAssertionID
+        )
+        
+        // 5. Declare Remote User Activity to IOKit power management
+        _ = IOPMAssertionDeclareUserActivity(
+            "Awake! Remote Session Ready" as CFString,
+            kIOPMUserActiveRemote,
+            &remoteUserAssertionID
         )
     }
     
@@ -151,6 +181,18 @@ final class PowerManager: @unchecked Sendable {
         if userIdleAssertionID != 0 {
             IOPMAssertionRelease(userIdleAssertionID)
             userIdleAssertionID = 0
+        }
+        if displayIdleAssertionID != 0 {
+            IOPMAssertionRelease(displayIdleAssertionID)
+            displayIdleAssertionID = 0
+        }
+        if networkClientAssertionID != 0 {
+            IOPMAssertionRelease(networkClientAssertionID)
+            networkClientAssertionID = 0
+        }
+        if remoteUserAssertionID != 0 {
+            IOPMAssertionRelease(remoteUserAssertionID)
+            remoteUserAssertionID = 0
         }
     }
     
