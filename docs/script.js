@@ -47,11 +47,11 @@
       sim_slider_title: "Simulate Lid Angle:",
       hint_click_close: "👆 Click to close lid",
       hint_click_open: "👆 Click to open lid",
-      demo_btn_close: "Close Lid (Simulate)",
-      demo_btn_open: "Open Lid",
+      demo_btn_close: "Close screen",
+      demo_btn_open: "Open screen",
       demo_btn_running: "Simulating...",
-      status_lid_open: "Lid Open",
-      status_lid_closed: "0° • Lid Closed (Awake Active)",
+      status_lid_open: "Screen open (135°)",
+      status_lid_closed: "Screen closed (0°)",
 
       tagline_eyebrow: "Continuous Compute",
       tagline_text: "Close the lid. Your AI agents, local servers, and remote connections keep running.",
@@ -202,11 +202,11 @@
       sim_slider_title: "Simular Ángulo de la Tapa:",
       hint_click_close: "👆 Haz clic para cerrar la tapa",
       hint_click_open: "👆 Haz clic para abrir la tapa",
-      demo_btn_close: "Cerrar Tapa (Simular)",
-      demo_btn_open: "Abrir Tapa",
+      demo_btn_close: "Cerrar pantalla",
+      demo_btn_open: "Abrir pantalla",
       demo_btn_running: "Simulando...",
-      status_lid_open: "Tapa Abierta",
-      status_lid_closed: "0° • Tapa Cerrada (Awake Activo)",
+      status_lid_open: "Pantalla abierta (135°)",
+      status_lid_closed: "Pantalla cerrada (0°)",
 
       tagline_eyebrow: "Cómputo Continuo",
       tagline_text: "Cierra la pantalla. Tus agentes de IA, servidores y conexiones no se detienen.",
@@ -669,7 +669,7 @@
     }
 
     if (lidReadout) {
-      lidReadout.textContent = isLidClosed ? dict.status_lid_closed : `${lidAngle}° • ${dict.status_lid_open}`;
+      lidReadout.textContent = isLidClosed ? dict.status_lid_closed : dict.status_lid_open;
       lidReadout.style.color = isLidClosed ? 'var(--accent-blue)' : 'var(--accent-green)';
     }
 
@@ -1115,8 +1115,8 @@
 
   // --- Rich Scroll-Driven Animations & Staggered Reveal Observer ---
   function initScrollTransitions() {
-    // 1. Assign staggered indices to all grid children
-    const gridContainers = document.querySelectorAll('.app-items-grid, .duel-grid, .bento-grid, .pipeline-grid, .faq-list');
+    // 1. Assign staggered indices to main grid children (skip nested items)
+    const gridContainers = document.querySelectorAll('.duel-grid, .bento-grid, .pipeline-grid, .faq-list');
     gridContainers.forEach((grid) => {
       Array.from(grid.children).forEach((child, idx) => {
         child.style.setProperty('--stagger-i', idx % 4);
@@ -1153,8 +1153,8 @@
         }
       });
     }, {
-      rootMargin: '0px 0px -40px 0px',
-      threshold: 0.08
+      rootMargin: '120px 0px 40px 0px',
+      threshold: 0.01
     });
 
     revealElements.forEach((el) => {

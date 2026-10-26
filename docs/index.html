@@ -150,13 +150,6 @@
             
             <div class="macbook-3d-scene">
               
-              <!-- Floating Direct-Click Interaction Hint -->
-              <div class="macbook-click-hint" id="macbookClickHint" title="Haz clic para abrir o cerrar la tapa">
-                <span class="hint-pulse"></span>
-                <span class="hint-hand">👆</span>
-                <span class="hint-text" id="macbookClickHintText" data-i18n="hint_click_close">Haz clic para cerrar la tapa</span>
-              </div>
-
               <!-- Virtual Floating Display (Blooms when lid is closed) -->
               <div class="virtual-display-hud" id="virtualDisplayHud">
                 <div class="vd-header">
@@ -175,7 +168,7 @@
 
                 <div class="vd-tasks-grid">
                   <div class="vd-task-item">
-                    <img src="assets/logos/sill.svg" alt="Sill" class="vd-app-icon" width="18" height="18">
+                    <img src="assets/logos/sill.png" alt="Sill" class="vd-app-icon" width="18" height="18">
                     <div class="vd-task-info">
                       <span class="vd-task-name">Sill Remote</span>
                       <span class="vd-task-sub" data-i18n="vd_sill_status">Streaming activo a 120 Hz</span>
@@ -198,7 +191,7 @@
               </div>
 
               <!-- Complete 3D MacBook Rig (Base tilted in perspective + Lid hinged at rear) -->
-              <div class="macbook-base" id="macbookModel">
+              <div class="macbook-base" id="macbookModel" title="Haz clic en la MacBook para cerrar o abrir la pantalla">
                 <div class="speaker-grille left"></div>
                 <div class="speaker-grille right"></div>
                 
@@ -238,7 +231,7 @@
                 </div>
 
                 <!-- Hinged Upper Lid Assembly -->
-                <div class="macbook-lid" id="macbookLidAssembly">
+                <div class="macbook-lid" id="macbookLidAssembly" title="Haz clic en la MacBook para cerrar o abrir la pantalla">
                   
                   <!-- Back Face: Space Gray Anodized Aluminum with Laser Apple Logo (Visible when closed) -->
                   <div class="lid-shell-back">
@@ -348,18 +341,18 @@
             <!-- Interactive 3D Control Deck -->
             <div class="simulator-controls">
               <div class="sim-control-top">
-                <button type="button" class="btn-lid-toggle" id="lidToggleBtn" aria-label="Simular cerrar o abrir tapa">
+                <button type="button" class="btn-lid-toggle" id="lidToggleBtn" aria-label="Cerrar o abrir pantalla">
                   <svg class="lid-toggle-icon" id="lidToggleIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="4" width="18" height="12" rx="2"></rect>
                     <path d="M2 20h20"></path>
                     <path d="M9 16l3 3 3-3"></path>
                   </svg>
-                  <span id="lidToggleBtnText">Cerrar Tapa (Simular)</span>
+                  <span id="lidToggleBtnText">Cerrar pantalla</span>
                 </button>
                 
                 <div class="sim-status-pill" id="simStatusPill">
                   <span class="sim-status-dot open" id="simStatusDot"></span>
-                  <span class="sim-status-text" id="lidReadout">135° • Tapa Abierta</span>
+                  <span class="sim-status-text" id="lidReadout">Pantalla abierta (135°)</span>
                 </div>
               </div>
 
@@ -430,7 +423,7 @@
               <!-- Claude -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/claude.svg" alt="Claude Code" width="20" height="20">
+                  <img src="assets/logos/claude.svg" alt="Claude Code" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">Claude Code</span>
@@ -441,7 +434,7 @@
               <!-- Antigravity -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/antigravity.svg" alt="Antigravity" width="20" height="20">
+                  <img src="assets/logos/antigravity.png" alt="Antigravity" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">Antigravity</span>
@@ -452,7 +445,7 @@
               <!-- Codex / Cursor -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/cursor.svg" alt="Cursor" width="20" height="20">
+                  <img src="assets/logos/cursor.svg" alt="Cursor" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">Cursor & Codex</span>
@@ -463,7 +456,7 @@
               <!-- Ollama & Docker -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/ollama.svg" alt="Ollama" width="20" height="20">
+                  <img src="assets/logos/ollama.svg" alt="Ollama" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">Ollama & Docker</span>
@@ -493,7 +486,7 @@
               <!-- Sills -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/sill.svg" alt="Sill" width="20" height="20">
+                  <img src="assets/logos/sill.png" alt="Sill" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">Sill</span>
@@ -504,7 +497,7 @@
               <!-- RustDesk -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/rustdesk.svg" alt="RustDesk" width="20" height="20">
+                  <img src="assets/logos/rustdesk.svg" alt="RustDesk" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">RustDesk</span>
@@ -515,7 +508,7 @@
               <!-- AnyDesk -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/anydesk.svg" alt="AnyDesk" width="20" height="20">
+                  <img src="assets/logos/anydesk.svg" alt="AnyDesk" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">AnyDesk</span>
@@ -526,7 +519,7 @@
               <!-- TeamViewer -->
               <div class="app-chip">
                 <div class="app-chip-icon">
-                  <img src="assets/logos/teamviewer.svg" alt="TeamViewer" width="20" height="20">
+                  <img src="assets/logos/teamviewer.svg" alt="TeamViewer" width="28" height="28">
                 </div>
                 <div class="app-chip-info">
                   <span class="app-chip-name">TeamViewer</span>

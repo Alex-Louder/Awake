@@ -350,8 +350,8 @@ body {
 
 /* --- HERO SECTION --- */
 .hero-section {
-  padding-top: 140px;
-  padding-bottom: 90px;
+  padding-top: 105px;
+  padding-bottom: 60px;
   position: relative;
   z-index: 1;
 }
@@ -539,18 +539,17 @@ body {
 }
 
 /* Virtual Floating Display HUD (Projects above closed MacBook) */
-/* Virtual Floating Display HUD (Floats above closed MacBook) */
 .virtual-display-hud {
   position: absolute;
   top: 10px;
   width: 100%;
-  max-width: 490px;
-  background: rgba(12, 14, 22, 0.94);
+  max-width: 460px;
+  background: rgba(14, 15, 22, 0.96);
   backdrop-filter: blur(28px) saturate(190%);
   -webkit-backdrop-filter: blur(28px) saturate(190%);
-  border: 1px solid rgba(10, 132, 255, 0.45);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(10, 132, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.15);
   padding: 16px 20px;
   display: flex;
   flex-direction: column;
@@ -735,29 +734,30 @@ body {
 
 .macbook-3d-scene {
   perspective: 1200px;
-  perspective-origin: 50% 45%;
+  perspective-origin: 50% 50%;
   width: 100%;
-  max-width: 520px;
-  height: 430px;
+  max-width: 480px;
+  height: 380px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   position: relative;
+  margin: 15px auto 0 auto;
   cursor: pointer;
 }
 
 /* Base: Magic Keyboard, Trackpad & Side Ports tilted on desk plane */
 .macbook-base {
-  width: 480px;
-  height: 300px;
+  width: 460px;
+  height: 270px;
   background: linear-gradient(180deg, #24242d 0%, #121218 100%);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.2);
   position: relative;
   transform-style: preserve-3d;
-  transform: rotateX(54deg);
-  padding: 16px;
+  transform: rotateX(56deg);
+  padding: 14px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -765,17 +765,21 @@ body {
   z-index: 1;
   transition: transform var(--duration-norm) var(--ease-smooth);
   cursor: pointer;
+  margin-bottom: 12px;
+}
+.macbook-base:hover {
+  filter: brightness(1.04);
 }
 
 /* Keyboard Deck */
 .keyboard-deck {
   width: 90%;
-  height: 145px;
+  height: 135px;
   background: #060609;
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 8px;
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.95);
-  margin-top: 8px;
+  margin-top: 6px;
   padding: 4px 6px;
   box-sizing: border-box;
   display: flex;
@@ -785,9 +789,9 @@ body {
 .keyboard-row {
   display: flex;
   gap: 3px;
-  height: 23px;
+  height: 21px;
 }
-.keyboard-row.f-keys { height: 16px; }
+.keyboard-row.f-keys { height: 15px; }
 .key {
   background: #181822;
   border-radius: 3px;
@@ -805,12 +809,12 @@ body {
 .key.touch-id { background: #000000; border: 1px solid rgba(255, 255, 255, 0.18); }
 
 .trackpad {
-  width: 150px;
-  height: 80px;
+  width: 140px;
+  height: 72px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .thumb-scoop {
@@ -1244,18 +1248,18 @@ body {
 
 
 
-/* Control Deck (Auto-Demo Button + Angle Slider + Telemetry Pills) */
+/* Control Deck (Direct Toggle Button + Live Readout + Telemetry) */
 .simulator-controls {
   width: 100%;
-  max-width: 530px;
-  margin-top: 20px;
+  max-width: 460px;
+  margin-top: 12px;
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-xl);
-  padding: 16px 20px;
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   box-shadow: var(--shadow-subtle);
 }
 
@@ -1263,59 +1267,59 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* Direct Click Lid Toggle Button */
+/* Direct Click Lid Toggle Button (Anti-AI-Slop: crisp, tactile, zero pill glow) */
 .btn-lid-toggle {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: linear-gradient(135deg, #0A84FF 0%, #0066CC 100%);
+  background: #0071e3;
   color: #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--radius-full);
-  padding: 8px 18px;
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(10, 132, 255, 0.35);
   transition: all var(--duration-quick) var(--ease-spring);
 }
 .btn-lid-toggle:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 22px rgba(10, 132, 255, 0.5);
-  filter: brightness(1.1);
+  background: #0077ed;
+  transform: translateY(-1px);
 }
 .btn-lid-toggle:active {
-  transform: scale(0.97);
+  transform: translateY(0);
+  filter: brightness(0.92);
 }
 .btn-lid-toggle.is-closed {
-  background: linear-gradient(135deg, #30D158 0%, #248A3D 100%);
-  box-shadow: 0 4px 16px rgba(48, 209, 88, 0.35);
+  background: #248a3d;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.btn-lid-toggle.is-closed:hover {
+  background: #289b44;
 }
 
-/* Status Pill */
+/* Status Pill (Anti-AI-Slop: monospace, crisp border) */
 .sim-status-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   background: var(--bg-surface-2);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-full);
-  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
 }
 .sim-status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
-  transition: background 300ms ease, box-shadow 300ms ease;
+  transition: background 300ms ease;
 }
 .sim-status-dot.closed {
   background: var(--accent-blue);
-  box-shadow: 0 0 8px var(--accent-blue);
 }
 .sim-status-text {
   font-family: var(--font-mono);
@@ -1539,25 +1543,16 @@ body {
 }
 
 .app-chip-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 11px;
-  background: #12131c;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  padding: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: transform var(--duration-quick) var(--ease-spring), border-color var(--duration-quick) ease, box-shadow var(--duration-quick) ease;
+  color: var(--text-primary);
 }
-.app-chip:hover .app-chip-icon {
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: scale(1.08);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
-}
-.app-chip-icon img {
+.app-chip-icon img,
+.app-chip-icon svg {
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -2312,9 +2307,19 @@ body {
     height: 28px;
   }
 
+  .nav-btn-text {
+    display: none;
+  }
+
   .nav-actions .btn-primary {
-    padding: 6px 12px;
-    font-size: 12px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
   }
 
   .hero-section {
@@ -2323,8 +2328,9 @@ body {
   }
 
   .hero-title {
-    font-size: clamp(1.85rem, 6.8vw, 2.5rem);
+    font-size: clamp(1.75rem, 6.5vw, 2.3rem);
     line-height: 1.15;
+    overflow-wrap: break-word;
   }
 
   .hero-desc {
@@ -2370,11 +2376,11 @@ body {
   }
 
   .macbook-3d-scene {
-    width: 480px;
-    max-width: 480px;
+    width: 460px;
+    max-width: 460px;
     transform: scale(0.68);
     transform-origin: center top;
-    height: 290px;
+    height: 270px;
     margin: 0 auto 10px auto;
   }
 
@@ -2469,11 +2475,11 @@ body {
 
 @media (max-width: 420px) {
   .macbook-3d-scene {
-    width: 480px;
-    max-width: 480px;
+    width: 460px;
+    max-width: 460px;
     transform: scale(0.58);
     transform-origin: center top;
-    height: 250px;
+    height: 235px;
     margin: 0 auto 10px auto;
   }
 
@@ -2515,11 +2521,11 @@ body {
 
 @media (max-width: 360px) {
   .macbook-3d-scene {
-    width: 480px;
-    max-width: 480px;
+    width: 460px;
+    max-width: 460px;
     transform: scale(0.50);
     transform-origin: center top;
-    height: 220px;
+    height: 205px;
   }
 }
 
@@ -2529,38 +2535,30 @@ body {
    ========================================================================== */
 
 .t-panel-slide {
-  transform: translateY(24px) scale(0.98);
+  transform: translateY(16px);
   opacity: 0;
-  filter: blur(var(--t-panel-blur, 4px));
-  transition: transform 650ms var(--t-ease-spring),
-              opacity 500ms var(--t-ease-smooth),
-              filter 500ms var(--t-ease-smooth);
-  transition-delay: calc(var(--stagger-i, 0) * 75ms);
-  will-change: transform, opacity, filter;
+  transition: transform 500ms var(--ease-spring),
+              opacity 400ms ease;
+  transition-delay: calc(var(--stagger-i, 0) * 60ms);
 }
 
 .t-panel-slide[data-open="true"],
 .t-panel-slide.t-revealed {
-  transform: translateY(0) scale(1);
+  transform: translateY(0);
   opacity: 1;
-  filter: blur(0);
 }
 
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(20px);
-  filter: blur(4px);
-  transition: opacity 600ms var(--t-ease-smooth),
-              transform 650ms var(--t-ease-spring),
-              filter 600ms var(--t-ease-smooth);
-  transition-delay: calc(var(--stagger-i, 0) * 75ms);
-  will-change: opacity, transform, filter;
+  transform: translateY(14px);
+  transition: opacity 400ms ease,
+              transform 450ms var(--ease-spring);
+  transition-delay: calc(var(--stagger-i, 0) * 50ms);
 }
 
 .reveal-on-scroll.is-revealed {
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
 }
 
 .t-spring-card {
