@@ -626,12 +626,10 @@
       macbookModel.classList.toggle('is-closed', isLidClosed);
     }
 
-    // 1. Physically apply 3D Lid Folding Transform
-    // Maps 135deg (open) -> 115deg (upright facing viewer)
-    // and 0deg (closed) -> 0deg (flat aluminum lid on base)
+    // 1. Physically apply 3D Lid Folding Transform via CSS 3D transition
     if (lidAssembly) {
-      const lidRot = (lidAngle / 135) * 115;
-      lidAssembly.style.setProperty('--lid-rot', `${lidRot.toFixed(2)}deg`);
+      const lidRot = isLidClosed ? 0 : 115;
+      lidAssembly.style.setProperty('--lid-rot', `${lidRot}deg`);
     }
 
     // 2. Synchronize Direct Click Hint Text
@@ -646,7 +644,7 @@
     const lidToggleIcon = document.getElementById('lidToggleIcon');
     const simStatusDot = document.getElementById('simStatusDot');
 
-    if (lidToggleBtnText && !isAutoDemoRunning) {
+    if (lidToggleBtnText) {
       lidToggleBtnText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
     }
 
@@ -674,20 +672,23 @@
     }
 
     // Legacy auto-demo text sync (if present)
-    if (autoDemoText && !isAutoDemoRunning) {
+    if (autoDemoText) {
       autoDemoText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
     }
 
-    // 4. Virtual Display HUD State
+    // 4. Virtual Display HUD State (cleanly reset styles when open)
     if (virtualDisplay) {
       if (isLidClosed) {
-        if (isAwakeActive) {
-          virtualDisplay.style.filter = 'none';
-          virtualDisplay.style.opacity = '1';
-        } else {
+        if (!isAwakeActive) {
           virtualDisplay.style.filter = 'grayscale(1) brightness(0.4)';
-          virtualDisplay.style.opacity = '0.3';
+          virtualDisplay.style.opacity = '0.35';
+        } else {
+          virtualDisplay.style.filter = '';
+          virtualDisplay.style.opacity = '';
         }
+      } else {
+        virtualDisplay.style.filter = '';
+        virtualDisplay.style.opacity = '';
       }
     }
 
@@ -808,68 +809,37 @@
     }
   }
 
-  // --- Smooth Clamshell Animation Engine ---
-  function animateLid(targetAngle, durationMs, onComplete) {
-    const startAngle = lidAngle;
-    const distance = targetAngle - startAngle;
-    if (Math.abs(distance) < 1) {
-      if (onComplete) onComplete();
-      return;
-    }
-
-    const startTime = performance.now();
-
-    function easeInOutCubic(t) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    }
-
-    function step(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(1, elapsed / durationMs);
-      const eased = easeInOutCubic(progress);
-
-      lidAngle = Math.round(startAngle + distance * eased);
-      updateSimulatorState();
-
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        lidAngle = targetAngle;
-        updateSimulatorState();
-        if (onComplete) onComplete();
-      }
-    }
-
-    requestAnimationFrame(step);
-  }
+  // --- Native Hardware-Accelerated Clamshell Animation Engine ---
+  let isLidTransitioning = false;
 
   function runAutoDemo() {
-    if (isAutoDemoRunning) return;
-    isAutoDemoRunning = true;
-
-    const dict = i18n[currentLang] || i18n.es;
-    const autoDemoText = document.getElementById('autoDemoText');
-    const lidToggleBtnText = document.getElementById('lidToggleBtnText');
-    if (autoDemoText) autoDemoText.textContent = dict.demo_btn_running;
-    if (lidToggleBtnText) lidToggleBtnText.textContent = dict.demo_btn_running;
+    if (isLidTransitioning) return;
+    isLidTransitioning = true;
+    setTimeout(() => {
+      isLidTransitioning = false;
+    }, 720);
 
     const shouldClose = lidAngle > 30;
-    const targetAngle = shouldClose ? 0 : 135;
-    trackEvent('lid-toggle-trigger', shouldClose ? 'Lid: Cerrar Tapa' : 'Lid: Abrir Tapa');
+    lidAngle = shouldClose ? 0 : 135;
+    trackEvent('lid-toggle-trigger', shouldClose ? 'Lid: Cerrar Pantalla' : 'Lid: Abrir Pantalla');
 
-    animateLid(targetAngle, 950, () => {
-      isAutoDemoRunning = false;
-      updateSimulatorState();
-      showToast(
-        shouldClose
-          ? (currentLang === 'es' 
-              ? 'Tapa cerrada: Pantalla Virtual activa, agentes e inferencia al 100%' 
-              : 'Lid shut: Virtual Display active, AI agents and streaming running at 100%')
-          : (currentLang === 'es' 
-              ? 'Tapa abierta: Volumen de audio restaurado y pantalla encendida' 
-              : 'Lid opened: Audio volume restored and screen illuminated')
-      );
-    });
+    updateSimulatorState();
+
+    showToast(
+      shouldClose
+        ? (currentLang === 'es' 
+            ? 'Pantalla cerrada: Cómputo activo al 100% y sin suspensión' 
+            : 'Screen closed: 100% compute active with zero sleep')
+        : (currentLang === 'es' 
+            ? 'Pantalla abierta: Brillo y audio restaurados' 
+            : 'Screen opened: Brightness and audio restored')
+    );
+  }
+
+  function animateLid(targetAngle, durationMs, onComplete) {
+    lidAngle = targetAngle;
+    updateSimulatorState();
+    if (onComplete) onComplete();
   }
 
   // --- Dynamic 3D Perspective Tilt on Mouse Movement ---
@@ -971,23 +941,13 @@
       });
     }
 
-    // 3. Direct Click anywhere on the 3D MacBook Model
-    const macbookModel = document.getElementById('macbookModel');
-    if (macbookModel) {
-      macbookModel.addEventListener('click', (e) => {
-        // Prevent toggle if clicking on interactive controls inside open screen HUD
-        if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule')) {
-          return;
-        }
-        runAutoDemo();
-      });
-    }
-
-    // 4. Direct Click on Hinged Lid Assembly (including space gray shell when closed)
-    const lidAssembly = document.getElementById('macbookLidAssembly');
-    if (lidAssembly) {
-      lidAssembly.addEventListener('click', (e) => {
-        if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule')) {
+    // 3. Centralized 3D Scene Click Handler
+    // Clicking anywhere on the 3D scene, laptop body, lid, keyboard, or virtual display toggles the clamshell
+    const macbookScene = document.querySelector('.macbook-3d-scene');
+    if (macbookScene) {
+      macbookScene.addEventListener('click', (e) => {
+        // Prevent toggle if clicking on interactive controls inside open screen HUD or links/buttons
+        if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule, button, a')) {
           return;
         }
         runAutoDemo();

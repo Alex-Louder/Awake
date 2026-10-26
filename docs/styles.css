@@ -556,20 +556,20 @@ body {
   gap: 12px;
   z-index: 50;
   opacity: 0;
-  transform: translateY(24px) scale(0.96);
-  filter: blur(3px);
+  transform: translateY(16px) scale(0.97);
   pointer-events: none;
-  transition: opacity 450ms var(--t-ease-spring),
-              transform 450ms var(--t-ease-spring),
-              filter 450ms var(--t-ease-spring);
+  visibility: hidden;
+  transition: opacity 350ms ease 200ms,
+              transform 350ms cubic-bezier(0.16, 1, 0.3, 1) 200ms,
+              visibility 350ms 200ms;
 }
 
 /* When the MacBook is closed, Virtual Display blooms into view */
 .hero-stage.is-lid-closed .virtual-display-hud {
   opacity: 1;
   transform: translateY(0) scale(1);
-  filter: blur(0);
   pointer-events: auto;
+  visibility: visible;
 }
 
 .vd-header {
@@ -880,9 +880,10 @@ body {
   transform-origin: top center;
   transform-style: preserve-3d;
   transform: rotateX(var(--lid-rot, 115deg));
-  transition: transform 650ms var(--t-ease-spring);
-  border-radius: 14px;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 12px;
   z-index: 10;
+  cursor: pointer;
 }
 
 /* Back Face (Apple Logo): Visible when closed (0deg) */
@@ -891,14 +892,15 @@ body {
   inset: 0;
   background: linear-gradient(145deg, #2c2c36 0%, #15151e 100%);
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease;
 }
 
 .lid-apple-logo {
@@ -914,15 +916,32 @@ body {
   inset: 0;
   background: #08080c;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
   transform: rotateX(180deg);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   z-index: 3;
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 250ms ease 150ms;
+}
+
+/* Guaranteed Closed/Open State Face Switching */
+.hero-stage.is-lid-closed .lid-shell-back,
+.macbook-base.is-closed .lid-shell-back {
+  opacity: 1;
+  pointer-events: auto;
+  transition-delay: 200ms;
+}
+
+.hero-stage.is-lid-closed .lid-screen-inside,
+.macbook-base.is-closed .lid-screen-inside {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 200ms ease, visibility 200ms;
 }
 
 /* Camera Notch */
