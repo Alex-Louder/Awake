@@ -819,6 +819,7 @@
 
     const shouldClose = lidAngle > 30;
     const targetAngle = shouldClose ? 0 : 135;
+    trackEvent('auto-demo-trigger', shouldClose ? 'Auto Demo: Cerrar Tapa' : 'Auto Demo: Abrir Tapa');
 
     animateLid(targetAngle, 1100, () => {
       isAutoDemoRunning = false;
@@ -935,6 +936,39 @@
     updateSimulatorState();
   }
 
+  // --- Privacy-First Analytics Event Dispatcher (GoatCounter) ---
+  function trackEvent(name, title) {
+    if (window.goatcounter && typeof window.goatcounter.count === 'function') {
+      window.goatcounter.count({
+        path: name,
+        title: title || name,
+        event: true
+      });
+    }
+  }
+
+  // --- Track Outbound Conversions (Downloads, GitHub, Ko-fi) ---
+  function initLinkAnalytics() {
+    document.querySelectorAll('a[href]').forEach((link) => {
+      const href = link.getAttribute('href') || '';
+
+      if (href.includes('releases/download')) {
+        link.addEventListener('click', () => {
+          trackEvent('download-dmg-click', 'Descarga de Awake! DMG');
+        });
+      } else if (href.includes('github.com/Alex-Louder/Awake')) {
+        link.addEventListener('click', () => {
+          trackEvent('github-repo-click', 'Visita a Repositorio GitHub');
+        });
+      } else if (href.includes('ko-fi.com/alexlouder')) {
+        link.addEventListener('click', () => {
+          const amount = href.includes('amount=') ? href.split('amount=')[1] : 'general';
+          trackEvent('kofi-tip-click-' + amount, 'Apoyo en Ko-fi: ' + amount);
+        });
+      }
+    });
+  }
+
   // --- Terminal Command Copying & Toast ---
   function showToast(msg) {
     const toast = document.getElementById('toastNotice');
@@ -956,6 +990,7 @@
     if (copyBtn && cmdEl) {
       copyBtn.addEventListener('click', async () => {
         const text = cmdEl.textContent.trim();
+        trackEvent('copy-terminal-command', 'Copiar Comando de Terminal');
         try {
           await navigator.clipboard.writeText(text);
           showToast(currentLang === 'es' ? "Comando copiado al portapapeles" : "Command copied to clipboard");
@@ -1059,6 +1094,7 @@
     initCopyHandler();
     initFaq();
     initScrollTransitions();
+    initLinkAnalytics();
 
     // Scroll listeners (throttled)
     window.addEventListener('scroll', handleTaglineScroll, { passive: true });
