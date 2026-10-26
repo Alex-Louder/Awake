@@ -85,7 +85,7 @@
             <polyline points="7 10 12 15 17 10"></polyline>
             <line x1="12" y1="15" x2="12" y2="3"></line>
           </svg>
-          <span data-i18n="nav_download">Download DMG</span>
+          <span class="nav-btn-text" data-i18n="nav_download">Download DMG</span>
         </a>
       </div>
     </nav>
@@ -150,6 +150,13 @@
             
             <div class="macbook-3d-scene">
               
+              <!-- Floating Direct-Click Interaction Hint -->
+              <div class="macbook-click-hint" id="macbookClickHint" title="Haz clic para abrir o cerrar la tapa">
+                <span class="hint-pulse"></span>
+                <span class="hint-hand">👆</span>
+                <span class="hint-text" id="macbookClickHintText" data-i18n="hint_click_close">Haz clic para cerrar la tapa</span>
+              </div>
+
               <!-- Virtual Floating Display (Blooms when lid is closed) -->
               <div class="virtual-display-hud" id="virtualDisplayHud">
                 <div class="vd-header">
@@ -341,13 +348,18 @@
             <!-- Interactive 3D Control Deck -->
             <div class="simulator-controls">
               <div class="sim-control-top">
-                <button type="button" class="btn-auto-demo" id="autoDemoBtn">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-                  <span id="autoDemoText">Auto Demo: Close Lid</span>
+                <button type="button" class="btn-lid-toggle" id="lidToggleBtn" aria-label="Simular cerrar o abrir tapa">
+                  <svg class="lid-toggle-icon" id="lidToggleIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="12" rx="2"></rect>
+                    <path d="M2 20h20"></path>
+                    <path d="M9 16l3 3 3-3"></path>
+                  </svg>
+                  <span id="lidToggleBtnText">Cerrar Tapa (Simular)</span>
                 </button>
-                <div class="sim-slider-row">
-                  <input type="range" min="0" max="135" value="135" class="lid-slider" id="lidAngleSlider" aria-label="Simulate lid angle">
-                  <span class="sim-lid-readout" id="lidReadout">135° (Open)</span>
+                
+                <div class="sim-status-pill" id="simStatusPill">
+                  <span class="sim-status-dot open" id="simStatusDot"></span>
+                  <span class="sim-status-text" id="lidReadout">135° • Tapa Abierta</span>
                 </div>
               </div>
 

@@ -45,9 +45,13 @@
       hud_usb_unprotected: "USB: Sleep Risk",
 
       sim_slider_title: "Simulate Lid Angle:",
-      demo_btn_close: "Auto Demo: Close Lid",
-      demo_btn_open: "Auto Demo: Open Lid",
+      hint_click_close: "👆 Click to close lid",
+      hint_click_open: "👆 Click to open lid",
+      demo_btn_close: "Close Lid (Simulate)",
+      demo_btn_open: "Open Lid",
       demo_btn_running: "Simulating...",
+      status_lid_open: "Lid Open",
+      status_lid_closed: "0° • Lid Closed (Awake Active)",
 
       tagline_eyebrow: "Continuous Compute",
       tagline_text: "Close the lid. Your AI agents, local servers, and remote connections keep running.",
@@ -196,9 +200,13 @@
       hud_usb_unprotected: "USB: En Riesgo",
 
       sim_slider_title: "Simular Ángulo de la Tapa:",
-      demo_btn_close: "Auto Demo: Cerrar Tapa",
-      demo_btn_open: "Auto Demo: Abrir Tapa",
+      hint_click_close: "👆 Haz clic para cerrar la tapa",
+      hint_click_open: "👆 Haz clic para abrir la tapa",
+      demo_btn_close: "Cerrar Tapa (Simular)",
+      demo_btn_open: "Abrir Tapa",
       demo_btn_running: "Simulando...",
+      status_lid_open: "Tapa Abierta",
+      status_lid_closed: "0° • Tapa Cerrada (Awake Activo)",
 
       tagline_eyebrow: "Cómputo Continuo",
       tagline_text: "Cierra la pantalla. Tus agentes de IA, servidores y conexiones no se detienen.",
@@ -626,20 +634,46 @@
       lidAssembly.style.setProperty('--lid-rot', `${lidRot.toFixed(2)}deg`);
     }
 
-    // 2. Synchronize Slider & Readout text
-    if (lidSlider && parseInt(lidSlider.value, 10) !== lidAngle) {
-      lidSlider.value = lidAngle;
+    // 2. Synchronize Direct Click Hint Text
+    const clickHintText = document.getElementById('macbookClickHintText');
+    if (clickHintText) {
+      clickHintText.textContent = isLidClosed ? dict.hint_click_open : dict.hint_click_close;
+    }
+
+    // 3. Synchronize Primary Lid Toggle Button & Status Pill
+    const lidToggleBtn = document.getElementById('lidToggleBtn');
+    const lidToggleBtnText = document.getElementById('lidToggleBtnText');
+    const lidToggleIcon = document.getElementById('lidToggleIcon');
+    const simStatusDot = document.getElementById('simStatusDot');
+
+    if (lidToggleBtnText && !isAutoDemoRunning) {
+      lidToggleBtnText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
+    }
+
+    if (lidToggleBtn) {
+      lidToggleBtn.classList.toggle('is-closed', isLidClosed);
+    }
+
+    if (lidToggleIcon) {
+      if (isLidClosed) {
+        // Upward opening icon
+        lidToggleIcon.innerHTML = '<rect x="3" y="10" width="18" height="10" rx="2"></rect><path d="M2 20h20"></path><path d="M9 8l3-3 3 3"></path><line x1="12" y1="5" x2="12" y2="12"></line>';
+      } else {
+        // Downward closing icon
+        lidToggleIcon.innerHTML = '<rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M2 20h20"></path><path d="M9 16l3 3 3-3"></path>';
+      }
+    }
+
+    if (simStatusDot) {
+      simStatusDot.className = isLidClosed ? 'sim-status-dot closed' : 'sim-status-dot open';
     }
 
     if (lidReadout) {
-      const stateLabel = isLidClosed 
-        ? (currentLang === 'es' ? 'Cerrada' : 'Closed') 
-        : (currentLang === 'es' ? 'Abierta' : 'Open');
-      lidReadout.textContent = `${lidAngle}° (${stateLabel})`;
-      lidReadout.style.color = isLidClosed ? 'var(--accent-orange)' : 'var(--accent-green)';
+      lidReadout.textContent = isLidClosed ? dict.status_lid_closed : `${lidAngle}° • ${dict.status_lid_open}`;
+      lidReadout.style.color = isLidClosed ? 'var(--accent-blue)' : 'var(--accent-green)';
     }
 
-    // 3. Auto Demo Button Text
+    // Legacy auto-demo text sync (if present)
     if (autoDemoText && !isAutoDemoRunning) {
       autoDemoText.textContent = isLidClosed ? dict.demo_btn_open : dict.demo_btn_close;
     }
@@ -815,13 +849,15 @@
 
     const dict = i18n[currentLang] || i18n.es;
     const autoDemoText = document.getElementById('autoDemoText');
+    const lidToggleBtnText = document.getElementById('lidToggleBtnText');
     if (autoDemoText) autoDemoText.textContent = dict.demo_btn_running;
+    if (lidToggleBtnText) lidToggleBtnText.textContent = dict.demo_btn_running;
 
     const shouldClose = lidAngle > 30;
     const targetAngle = shouldClose ? 0 : 135;
-    trackEvent('auto-demo-trigger', shouldClose ? 'Auto Demo: Cerrar Tapa' : 'Auto Demo: Abrir Tapa');
+    trackEvent('lid-toggle-trigger', shouldClose ? 'Lid: Cerrar Tapa' : 'Lid: Abrir Tapa');
 
-    animateLid(targetAngle, 1100, () => {
+    animateLid(targetAngle, 950, () => {
       isAutoDemoRunning = false;
       updateSimulatorState();
       showToast(
@@ -917,15 +953,54 @@
       });
     }
 
-    // Lid angle slider manual control
+    // 1. Primary Lid Toggle Action Button
+    const lidToggleBtn = document.getElementById('lidToggleBtn');
+    if (lidToggleBtn) {
+      lidToggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        runAutoDemo();
+      });
+    }
+
+    // 2. Direct Click on Floating Hint
+    const clickHint = document.getElementById('macbookClickHint');
+    if (clickHint) {
+      clickHint.addEventListener('click', (e) => {
+        e.stopPropagation();
+        runAutoDemo();
+      });
+    }
+
+    // 3. Direct Click anywhere on the 3D MacBook Model
+    const macbookModel = document.getElementById('macbookModel');
+    if (macbookModel) {
+      macbookModel.addEventListener('click', (e) => {
+        // Prevent toggle if clicking on interactive controls inside open screen HUD
+        if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule')) {
+          return;
+        }
+        runAutoDemo();
+      });
+    }
+
+    // 4. Direct Click on Hinged Lid Assembly (including space gray shell when closed)
+    const lidAssembly = document.getElementById('macbookLidAssembly');
+    if (lidAssembly) {
+      lidAssembly.addEventListener('click', (e) => {
+        if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule')) {
+          return;
+        }
+        runAutoDemo();
+      });
+    }
+
+    // Legacy auto-demo and slider fallbacks (if present)
     if (lidSlider) {
       lidSlider.addEventListener('input', (e) => {
         lidAngle = parseInt(e.target.value, 10);
         updateSimulatorState();
       });
     }
-
-    // Auto-Demo Button
     if (autoDemoBtn) {
       autoDemoBtn.addEventListener('click', () => {
         runAutoDemo();
@@ -1038,12 +1113,32 @@
     });
   }
 
-  // --- Transitions.dev Scroll & Spring Panel Reveal Observer ---
+  // --- Rich Scroll-Driven Animations & Staggered Reveal Observer ---
   function initScrollTransitions() {
-    const panels = document.querySelectorAll('.t-panel-slide');
+    // 1. Assign staggered indices to all grid children
+    const gridContainers = document.querySelectorAll('.app-items-grid, .duel-grid, .bento-grid, .pipeline-grid, .faq-list');
+    gridContainers.forEach((grid) => {
+      Array.from(grid.children).forEach((child, idx) => {
+        child.style.setProperty('--stagger-i', idx % 4);
+        if (!child.classList.contains('t-panel-slide') && !child.classList.contains('reveal-on-scroll')) {
+          child.classList.add('reveal-on-scroll');
+        }
+      });
+    });
+
+    // 2. Assign staggered reveals to section headers
+    document.querySelectorAll('.section-label, .section-title, .section-sub').forEach((hdr) => {
+      hdr.classList.add('reveal-on-scroll');
+      if (hdr.classList.contains('section-label')) hdr.style.setProperty('--stagger-i', '0');
+      else if (hdr.classList.contains('section-title')) hdr.style.setProperty('--stagger-i', '1');
+      else if (hdr.classList.contains('section-sub')) hdr.style.setProperty('--stagger-i', '2');
+    });
+
+    const revealElements = document.querySelectorAll('.t-panel-slide, .reveal-on-scroll');
+
     if (!('IntersectionObserver' in window)) {
-      panels.forEach((el) => {
-        el.classList.add('t-revealed');
+      revealElements.forEach((el) => {
+        el.classList.add('t-revealed', 'is-revealed');
         el.dataset.open = "true";
       });
       return;
@@ -1052,25 +1147,32 @@
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('t-revealed');
+          entry.target.classList.add('t-revealed', 'is-revealed');
           entry.target.dataset.open = "true";
           obs.unobserve(entry.target);
         }
       });
     }, {
-      rootMargin: '0px 0px 40px 0px',
-      threshold: 0.05
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.08
     });
 
-    panels.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight + 50) {
-        el.classList.add('t-revealed');
-        el.dataset.open = "true";
-      } else {
-        observer.observe(el);
-      }
+    revealElements.forEach((el) => {
+      observer.observe(el);
     });
+  }
+
+  // --- Dynamic Floating Navbar Condenser on Scroll ---
+  function handleNavScroll() {
+    const navIsland = document.querySelector('.nav-island');
+    if (navIsland) {
+      navIsland.classList.toggle('is-scrolled', (window.scrollY || 0) > 40);
+    }
+  }
+
+  function handlePageScroll() {
+    handleNavScroll();
+    handleTaglineScroll();
   }
 
   // --- Global Initialization ---
@@ -1097,8 +1199,8 @@
     initLinkAnalytics();
 
     // Scroll listeners (throttled)
-    window.addEventListener('scroll', handleTaglineScroll, { passive: true });
-    handleTaglineScroll();
+    window.addEventListener('scroll', handlePageScroll, { passive: true });
+    handlePageScroll();
   });
 
 })();
