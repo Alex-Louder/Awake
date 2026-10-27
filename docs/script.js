@@ -47,6 +47,8 @@
       sim_slider_title: "Simulate Lid Angle:",
       hint_click_close: "👆 Click to close lid",
       hint_click_open: "👆 Click to open lid",
+      clamshell_badge_open: "Lid open (135°) • Scroll down or click to close",
+      clamshell_badge_closed: "Lid closed (0°) • Virtual Display active in background",
       demo_btn_close: "Close screen",
       demo_btn_open: "Open screen",
       demo_btn_running: "Simulating...",
@@ -202,6 +204,8 @@
       sim_slider_title: "Simular Ángulo de la Tapa:",
       hint_click_close: "👆 Haz clic para cerrar la tapa",
       hint_click_open: "👆 Haz clic para abrir la tapa",
+      clamshell_badge_open: "Tapa abierta (135°) • Haz scroll o clic para cerrar",
+      clamshell_badge_closed: "Tapa cerrada (0°) • Pantalla Virtual activa en segundo plano",
       demo_btn_close: "Cerrar pantalla",
       demo_btn_open: "Abrir pantalla",
       demo_btn_running: "Simulando...",
@@ -402,186 +406,6 @@
     }
   }
 
-  // --- Awwwards-Tier Dark Obsidian Depth & Constellation Mesh Canvas ---
-  function initAmbientCanvas() {
-    const canvas = document.getElementById('ambientCanvas');
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    let mouse = {
-      x: width * 0.5,
-      y: height * 0.35,
-      targetX: width * 0.5,
-      targetY: height * 0.35,
-      active: false
-    };
-
-    // Pre-allocated Constellation Nodes
-    const particleCount = 42;
-    const particles = [];
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
-        r: Math.random() * 1.5 + 0.8,
-        baseAlpha: Math.random() * 0.38 + 0.18
-      });
-    }
-
-    function onResize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', onResize, { passive: true });
-
-    window.addEventListener('mousemove', (e) => {
-      mouse.targetX = e.clientX;
-      mouse.targetY = e.clientY;
-      mouse.active = true;
-    }, { passive: true });
-
-    window.addEventListener('mouseleave', () => {
-      mouse.active = false;
-      mouse.targetX = width * 0.5;
-      mouse.targetY = height * 0.35;
-    });
-
-    let startTime = performance.now();
-
-    function renderCanvas(now) {
-      if (document.hidden) {
-        requestAnimationFrame(renderCanvas);
-        return;
-      }
-
-      // Smooth mouse spring interpolation
-      mouse.x += (mouse.targetX - mouse.x) * 0.05;
-      mouse.y += (mouse.targetY - mouse.y) * 0.05;
-
-      ctx.clearRect(0, 0, width, height);
-
-      const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-      const scrollY = window.scrollY || 0;
-
-      // 1. Perspective Depth Grid (Floor below hero stage)
-      if (isDark) {
-        ctx.save();
-        const horizonY = height * 0.56 - scrollY * 0.15;
-        const gridAlpha = Math.max(0.015, 0.055 - scrollY * 0.00008);
-
-        ctx.strokeStyle = `rgba(255, 255, 255, ${gridAlpha})`;
-        ctx.lineWidth = 1;
-
-        // Radiating perspective lines from vanishing point
-        const vpX = width * 0.5 + (mouse.x - width * 0.5) * 0.08;
-        const rays = 14;
-        for (let i = 0; i <= rays; i++) {
-          const targetX = (width / rays) * i;
-          ctx.beginPath();
-          ctx.moveTo(vpX, horizonY);
-          ctx.lineTo(targetX, height);
-          ctx.stroke();
-        }
-
-        // Horizontal perspective rungs
-        const rungs = 7;
-        for (let j = 1; j <= rungs; j++) {
-          const t = Math.pow(j / rungs, 1.8);
-          const y = horizonY + t * (height - horizonY);
-          ctx.beginPath();
-          ctx.moveTo(0, y);
-          ctx.lineTo(width, y);
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-
-      // 2. Kinetic Constellation Mesh Nodes & Hairlines
-      ctx.save();
-      const nodeColor = isDark ? '255, 255, 255' : '20, 20, 30';
-      const accentColor = isDark ? '10, 132, 255' : '0, 113, 227';
-
-      // Update positions
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        // Bounce gently off bounds
-        if (p.x < 0) { p.x = 0; p.vx *= -1; }
-        if (p.x > width) { p.x = width; p.vx *= -1; }
-        if (p.y < 0) { p.y = 0; p.vy *= -1; }
-        if (p.y > height) { p.y = height; p.vy *= -1; }
-
-        // Cursor soft deflection
-        if (mouse.active) {
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 130 && dist > 0) {
-            const force = (130 - dist) / 130;
-            p.x += (dx / dist) * force * 1.2;
-            p.y += (dy / dist) * force * 1.2;
-          }
-        }
-
-        // Draw particle dot
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${nodeColor}, ${p.baseAlpha})`;
-        ctx.fill();
-      });
-
-      // Draw inter-node connecting hairlines
-      for (let i = 0; i < particleCount; i++) {
-        for (let j = i + 1; j < particleCount; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.hypot(dx, dy);
-
-          if (dist < 115) {
-            const alpha = (1 - dist / 115) * (isDark ? 0.12 : 0.06);
-            ctx.strokeStyle = `rgba(${nodeColor}, ${alpha})`;
-            ctx.lineWidth = 0.8;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // Draw cursor proximity beam to nearby particles
-      if (mouse.active) {
-        particles.forEach((p) => {
-          const dx = p.x - mouse.x;
-          const dy = p.y - mouse.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 160) {
-            const alpha = (1 - dist / 160) * (isDark ? 0.22 : 0.12);
-            ctx.strokeStyle = `rgba(${accentColor}, ${alpha})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(mouse.x, mouse.y);
-            ctx.lineTo(p.x, p.y);
-            ctx.stroke();
-          }
-        });
-      }
-
-      ctx.restore();
-
-      requestAnimationFrame(renderCanvas);
-    }
-
-    requestAnimationFrame(renderCanvas);
-  }
-
   // --- Interactive MacBook & Awake! HUD Simulator Engine ---
   let isAwakeActive = true;
   let isShhActive = true;
@@ -638,7 +462,17 @@
       clickHintText.textContent = isLidClosed ? dict.hint_click_open : dict.hint_click_close;
     }
 
-    // 3. Synchronize Primary Lid Toggle Button & Status Pill
+    // 3. Synchronize Clamshell Status Badge
+    const clamshellBadgeText = document.getElementById('clamshellBadgeText');
+    const clamshellBadgeDot = document.getElementById('clamshellBadgeDot');
+    if (clamshellBadgeText) {
+      clamshellBadgeText.textContent = isLidClosed ? dict.clamshell_badge_closed : dict.clamshell_badge_open;
+    }
+    if (clamshellBadgeDot) {
+      clamshellBadgeDot.className = isLidClosed ? 'clamshell-badge-dot closed' : 'clamshell-badge-dot open';
+    }
+
+    // Fallback sync for buttons/readouts if present
     const lidToggleBtn = document.getElementById('lidToggleBtn');
     const lidToggleBtnText = document.getElementById('lidToggleBtnText');
     const lidToggleIcon = document.getElementById('lidToggleIcon');
@@ -811,8 +645,17 @@
 
   // --- Native Hardware-Accelerated Clamshell Animation Engine ---
   let isLidTransitioning = false;
+  let userManualClickOverride = false;
+  let manualOverrideTimer = null;
 
   function runAutoDemo() {
+    // Notify scroll observer to pause overriding for 4.5 seconds
+    userManualClickOverride = true;
+    clearTimeout(manualOverrideTimer);
+    manualOverrideTimer = setTimeout(() => {
+      userManualClickOverride = false;
+    }, 4500);
+
     if (isLidTransitioning) return;
     isLidTransitioning = true;
     setTimeout(() => {
@@ -844,24 +687,57 @@
 
   // --- Dynamic 3D Perspective Tilt on Mouse Movement ---
   function init3DTilt() {
-    const scene = document.querySelector('.macbook-3d-scene');
-    const model = document.getElementById('macbookModel');
-    if (!scene || !model) return;
+    const scene = document.getElementById('dualFloatingScene') || document.querySelector('.dual-floating-scene');
+    const interactiveUnit = document.getElementById('interactiveMacUnit');
+    const companionUnit = document.querySelector('.mac-unit-companion');
+    if (!scene || !interactiveUnit) return;
 
     scene.addEventListener('mousemove', (e) => {
       const rect = scene.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
 
-      const tiltY = (x / (rect.width / 2)) * 5; // subtle tilt left-right
-      const tiltX = -(y / (rect.height / 2)) * 3; // subtle tilt up-down
+      const tiltY = (x / (rect.width / 2)) * 4.5;
+      const tiltX = -(y / (rect.height / 2)) * 3.5;
 
-      model.style.transform = `rotateX(${54 + tiltX}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+      interactiveUnit.style.transform = `perspective(1400px) rotateY(${-13 + tiltY}deg) rotateX(${14 + tiltX}deg) rotateZ(2deg) translateZ(30px)`;
+      if (companionUnit) {
+        companionUnit.style.transform = `perspective(1400px) rotateY(${16 + tiltY * 0.75}deg) rotateX(${12 + tiltX * 0.75}deg) rotateZ(-3deg) translateZ(-40px)`;
+      }
     });
 
     scene.addEventListener('mouseleave', () => {
-      model.style.transform = 'rotateX(54deg) rotateY(0deg)';
+      interactiveUnit.style.transform = 'perspective(1400px) rotateY(-13deg) rotateX(14deg) rotateZ(2deg) translateZ(30px)';
+      if (companionUnit) {
+        companionUnit.style.transform = 'perspective(1400px) rotateY(16deg) rotateX(12deg) rotateZ(-3deg) translateZ(-40px)';
+      }
     });
+  }
+
+  // --- Scroll-Driven Clamshell Auto-Fold Engine ---
+  function initScrollDrivenClamshell() {
+    let isScrollTicking = false;
+
+    window.addEventListener('scroll', () => {
+      if (userManualClickOverride || isScrollTicking) return;
+      isScrollTicking = true;
+
+      requestAnimationFrame(() => {
+        const hero = document.getElementById('overview');
+        if (hero) {
+          const rect = hero.getBoundingClientRect();
+          // As the user scrolls down through the hero content:
+          if (rect.top < -70 && lidAngle > 25) {
+            lidAngle = 0;
+            updateSimulatorState();
+          } else if (rect.top >= -30 && lidAngle <= 25) {
+            lidAngle = 135;
+            updateSimulatorState();
+          }
+        }
+        isScrollTicking = false;
+      });
+    }, { passive: true });
   }
 
   function initSimulator() {
@@ -923,7 +799,7 @@
       });
     }
 
-    // 1. Primary Lid Toggle Action Button
+    // 1. Primary Lid Toggle Action Button (if present)
     const lidToggleBtn = document.getElementById('lidToggleBtn');
     if (lidToggleBtn) {
       lidToggleBtn.addEventListener('click', (e) => {
@@ -932,20 +808,20 @@
       });
     }
 
-    // 2. Direct Click on Floating Hint
-    const clickHint = document.getElementById('macbookClickHint');
-    if (clickHint) {
-      clickHint.addEventListener('click', (e) => {
+    // 2. Direct Click on Floating Studio Status Badge
+    const clamshellBadge = document.getElementById('clamshellStatusBadge');
+    if (clamshellBadge) {
+      clamshellBadge.addEventListener('click', (e) => {
         e.stopPropagation();
         runAutoDemo();
       });
     }
 
-    // 3. Centralized 3D Scene Click Handler
+    // 3. Centralized 3D Dual Scene Click Handler
     // Clicking anywhere on the 3D scene, laptop body, lid, keyboard, or virtual display toggles the clamshell
-    const macbookScene = document.querySelector('.macbook-3d-scene');
-    if (macbookScene) {
-      macbookScene.addEventListener('click', (e) => {
+    const dualScene = document.getElementById('dualFloatingScene') || document.querySelector('.dual-floating-scene') || document.querySelector('.hero-stage');
+    if (dualScene) {
+      dualScene.addEventListener('click', (e) => {
         // Prevent toggle if clicking on interactive controls inside open screen HUD or links/buttons
         if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule, button, a')) {
           return;
@@ -1151,8 +1027,8 @@
     }
 
     initTheme();
-    initAmbientCanvas();
     initSimulator();
+    initScrollDrivenClamshell();
     initCopyHandler();
     initFaq();
     initScrollTransitions();
