@@ -312,7 +312,7 @@ struct MenuView: View {
     
     private var footerSection: some View {
         HStack(spacing: 5) {
-            Text("v1.0")
+            Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.1")")
                 .font(.system(size: 9))
                 .foregroundColor(.white.opacity(0.4))
             

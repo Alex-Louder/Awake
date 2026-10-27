@@ -105,7 +105,7 @@ struct OnboardingView: View {
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                     
-                    Text("v1.0")
+                    Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.1")")
                         .font(.system(size: 10, weight: .heavy))
                         .foregroundColor(Color.white.opacity(0.5))
                         .padding(.horizontal, 6)
