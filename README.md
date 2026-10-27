@@ -8,7 +8,7 @@
 
 *Keep your Mac fully awake when the lid is closed without external monitors, with complete USB protection, active background services, and smart auto-mute.*
 
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge&logo=apple)](https://github.com/Alex-Louder/Awake/releases)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg?style=for-the-badge&logo=apple)](https://github.com/Alex-Louder/Awake/releases)
 [![Website](https://img.shields.io/badge/Website-alex--louder.github.io%2FAwake-0071e3.svg?style=for-the-badge&logo=safari&logoColor=white)](https://alex-louder.github.io/Awake/)
 [![macOS](https://img.shields.io/badge/macOS-14%2B%20Sonoma%20%7C%2015%20Sequoia%20%7C%2027%20Golden%20Gate-purple.svg?style=for-the-badge&logo=apple)](https://www.apple.com/macos/)
 [![Architecture](https://img.shields.io/badge/Architecture-Apple%20Silicon%20%26%20Intel-success.svg?style=for-the-badge)](https://github.com/Alex-Louder/Awake)
@@ -95,7 +95,7 @@ Las herramientas clásicas de "caffeinate" no resuelven esto: mantienen la CPU a
 ## 🚀 Instalación
 
 ### Opción 1: Descarga directa DMG (Recomendado)
-1. Descarga el instalador oficial [Awake-v1.0.0.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
+1. Descarga el instalador oficial [Awake-v1.0.1.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.1.dmg).
 2. Abre la imagen de disco y arrastra **Awake!** a tu carpeta de **Aplicaciones**.
 3. Al abrirla por primera vez, haz clic en **"Configurar Permiso (1 Clic)"** para activar la autorización sin contraseña.
 
@@ -223,7 +223,7 @@ Standard "caffeinate" tools cannot prevent Clamshell sleep without dummy HDMI do
 ## 🚀 Installation
 
 ### Option 1: Direct DMG Download (Recommended)
-1. Download the latest release: [Awake-v1.0.0.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.0.dmg).
+1. Download the latest release: [Awake-v1.0.1.dmg](https://github.com/Alex-Louder/Awake/releases/latest/download/Awake-v1.0.1.dmg).
 2. Open the disk image and drag **Awake!** into your **Applications** folder.
 3. Open Awake! and click **"Configure Permission (1 Click)"** in the onboarding window.
 

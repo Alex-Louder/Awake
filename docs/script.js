@@ -22,7 +22,7 @@
       hero_badge: "macOS 27 Golden Gate",
       hero_title: "Lid down.<br>Your Mac keeps working.",
       hero_desc: "Prevent macOS from putting your work to sleep when you close your laptop. Your background AI agents, downloads, and remote desktop sessions keep running at full speed, with automatic audio mute on lid shut.",
-      hero_cta_dmg: "Download Awake! v1.0.0",
+      hero_cta_dmg: "Download Awake! v1.0.1",
       hero_cta_github: "GitHub Repository",
 
       vd_title: "Virtual Display • Headless Stream",
@@ -162,7 +162,7 @@
 
       final_title: "Lid down. Your Mac keeps working.",
       final_desc: "Download the universal macOS DMG or compile directly from source. 100% free, private, and open source.",
-      final_download_btn: "Download Awake! v1.0.0 (DMG)",
+      final_download_btn: "Download Awake! v1.0.1 (DMG)",
       final_github_btn: "View Source on GitHub"
     },
 
@@ -179,7 +179,7 @@
       hero_badge: "macOS 27 Golden Gate",
       hero_title: "Bajas la tapa.<br>Tu Mac sigue trabajando.",
       hero_desc: "Evita que macOS suspenda tus procesos al cerrar la pantalla. Tus agentes de IA, descargas y sesiones de escritorio remoto continúan ejecutándose a toda velocidad, con silencio automático al bajar la pantalla.",
-      hero_cta_dmg: "Descargar Awake! v1.0.0",
+      hero_cta_dmg: "Descargar Awake! v1.0.1",
       hero_cta_github: "Repositorio en GitHub",
 
       vd_title: "Pantalla Virtual • Stream Headless",
@@ -319,7 +319,7 @@
 
       final_title: "Bajas la tapa. Tu Mac sigue trabajando.",
       final_desc: "Descarga el DMG universal para macOS o compila directamente desde código fuente. 100% libre y seguro.",
-      final_download_btn: "Descargar Awake! v1.0.0 (DMG)",
+      final_download_btn: "Descargar Awake! v1.0.1 (DMG)",
       final_github_btn: "Ver Código en GitHub"
     }
   };

@@ -2,17 +2,17 @@
 set -e
 
 # ==============================================================================
-# Awake! v1.0.0 Release Packaging Script
+# Awake! v1.0.1 Release Packaging Script
 # Generates:
-#   1. Awake-v1.0.0.dmg (Custom background, icon layout, /Applications symlink)
-#   2. Awake-v1.0.0.zip (Optimized for GitHub Releases)
+#   1. Awake-v1.0.1.dmg (Custom background, icon layout, /Applications symlink)
+#   2. Awake-v1.0.1.zip (Optimized for GitHub Releases)
 # Copies DMG to Desktop and outputs checksums.
 # ==============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR"
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 APP_NAME="Awake!"
 APP_BUNDLE="$DIR/Awake!.app"
 RELEASE_DIR="$DIR/build/releases"
@@ -34,6 +34,7 @@ echo "==> [2/6] Building $APP_NAME Release bundle..."
 # 3. Prepare Release Directory
 echo "==> [3/6] Preparing output directory..."
 mkdir -p "$RELEASE_DIR"
+rm -f "$RELEASE_DIR"/rw.*.Awake* 2>/dev/null || true
 
 # 4. Ensure DMG background exists
 echo "==> [4/6] Checking DMG background artwork..."
@@ -65,9 +66,15 @@ if command -v create-dmg >/dev/null 2>&1; then
       --icon "Awake!.app" 180 190 \
       --hide-extension "Awake!.app" \
       --app-drop-link 480 190 \
+      --hdiutil-retries 15 \
       --overwrite \
       "$DMG_OUT" \
-      "$STAGING_DIR"
+      "$STAGING_DIR" || {
+          echo "    create-dmg failed, falling back to hdiutil..."
+          ln -sf /Applications "$STAGING_DIR/Applications"
+          rm -f "$DMG_OUT"
+          hdiutil create -volname "Awake! v$VERSION" -srcfolder "$STAGING_DIR" -ov -format UDZO "$DMG_OUT"
+      }
 else
     echo "    create-dmg not found, creating clean DMG using hdiutil..."
     ln -s /Applications "$STAGING_DIR/Applications"
