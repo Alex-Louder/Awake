@@ -80,6 +80,7 @@ final class AudioManager: @unchecked Sendable {
     
     /// Ensures audio output is unmuted and any device redirection is restored.
     func ensureUnmuted() {
+        releaseAudioAssertion()
         if didRedirectDevice, let orig = originalDeviceID {
             _ = setDefaultOutputDevice(id: orig)
             didRedirectDevice = false

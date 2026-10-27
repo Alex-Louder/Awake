@@ -66,6 +66,12 @@ final class AppViewModel: ObservableObject {
                     self.isSystemSleepDisabled = targetState
                     self.isBusy = false
                     UserDefaults.standard.set(targetState, forKey: self.kKeepAwakePrefKey)
+                    
+                    if !targetState {
+                        // Ensure any audio assertion is released and display brightness restored immediately
+                        self.audioManager.releaseAudioAssertion()
+                        self.brightnessController.restoreForLidOpen()
+                    }
                 }
             } catch {
                 await MainActor.run {
@@ -84,7 +90,9 @@ final class AppViewModel: ObservableObject {
     func toggleMuteOnLidClose() {
         isMuteOnLidCloseEnabled.toggle()
         UserDefaults.standard.set(isMuteOnLidCloseEnabled, forKey: kMutePrefKey)
-        if !isMuteOnLidCloseEnabled {
+        if isMuteOnLidCloseEnabled {
+            audioManager.releaseAudioAssertion()
+        } else {
             audioManager.ensureUnmuted()
         }
     }
@@ -102,10 +110,15 @@ final class AppViewModel: ObservableObject {
         
         if isClosed {
             // Lid closed
-            if isKeepAwakeEnabled {
-                // Dim physical screen backlight without killing WindowServer framebuffer
-                brightnessController.dimForLidClose()
+            guard isKeepAwakeEnabled else {
+                // If Awake! is disabled, NEVER prevent sleep, dim screen, or hold assertions!
+                audioManager.releaseAudioAssertion()
+                return
             }
+            
+            // Dim physical screen backlight without killing WindowServer framebuffer
+            brightnessController.dimForLidClose()
+            
             if isMuteOnLidCloseEnabled {
                 // Pause media and redirect external DACs to muted speaker
                 audioManager.handleLidClosed()
@@ -114,17 +127,9 @@ final class AppViewModel: ObservableObject {
                 audioManager.handleLidClosedWithoutMute()
             }
         } else {
-            // Lid opened
-            if isKeepAwakeEnabled {
-                // Restore physical screen brightness
-                brightnessController.restoreForLidOpen()
-            }
-            if isMuteOnLidCloseEnabled {
-                // Unmute and restore external DAC
-                audioManager.handleLidOpened()
-            } else {
-                audioManager.ensureUnmuted()
-            }
+            // Lid opened: Always restore display brightness and release any audio assertions
+            brightnessController.restoreForLidOpen()
+            audioManager.handleLidOpened()
         }
     }
 }

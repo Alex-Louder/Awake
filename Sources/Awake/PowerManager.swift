@@ -194,6 +194,7 @@ final class PowerManager: @unchecked Sendable {
             IOPMAssertionRelease(remoteUserAssertionID)
             remoteUserAssertionID = 0
         }
+        AudioManager.shared.releaseAudioAssertion()
     }
     
     // MARK: - Passwordless sudo status & setup
