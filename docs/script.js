@@ -47,12 +47,12 @@
       sim_slider_title: "Simulate Lid Angle:",
       hint_click_close: "👆 Click to close lid",
       hint_click_open: "👆 Click to open lid",
-      clamshell_badge_open: "Lid open (135°) • Scroll down or click to close",
+      clamshell_badge_open: "Lid open (108°) • Scroll down or click to close",
       clamshell_badge_closed: "Lid closed (0°) • Virtual Display active in background",
       demo_btn_close: "Close screen",
       demo_btn_open: "Open screen",
       demo_btn_running: "Simulating...",
-      status_lid_open: "Screen open (135°)",
+      status_lid_open: "Screen open (108°)",
       status_lid_closed: "Screen closed (0°)",
 
       tagline_eyebrow: "Continuous Compute",
@@ -196,7 +196,7 @@
       capsule_shh_sub: "Silenciar al cerrar",
       hud_audio_label: "NowPlaying: Activo",
       hud_audio_muted: "NowPlaying: Silenciado y en Pausa",
-      hud_lid_open: "Tapa: Abierta (135°)",
+      hud_lid_open: "Tapa: Abierta (108°)",
       hud_lid_closed: "Tapa: Cerrada (0°)",
       hud_usb_active: "USB: Activo (5V)",
       hud_usb_unprotected: "USB: En Riesgo",
@@ -204,12 +204,12 @@
       sim_slider_title: "Simular Ángulo de la Tapa:",
       hint_click_close: "👆 Haz clic para cerrar la tapa",
       hint_click_open: "👆 Haz clic para abrir la tapa",
-      clamshell_badge_open: "Tapa abierta (135°) • Haz scroll o clic para cerrar",
+      clamshell_badge_open: "Tapa abierta (108°) • Haz scroll o clic para cerrar",
       clamshell_badge_closed: "Tapa cerrada (0°) • Pantalla Virtual activa en segundo plano",
       demo_btn_close: "Cerrar pantalla",
       demo_btn_open: "Abrir pantalla",
       demo_btn_running: "Simulando...",
-      status_lid_open: "Pantalla abierta (135°)",
+      status_lid_open: "Pantalla abierta (108°)",
       status_lid_closed: "Pantalla cerrada (0°)",
 
       tagline_eyebrow: "Cómputo Continuo",
@@ -410,7 +410,7 @@
   let isAwakeActive = true;
   let isShhActive = true;
   let isLaunchAtLogin = true;
-  let lidAngle = 135; // degrees: 135 = fully open, 0 = fully closed
+  let lidAngle = (typeof window !== 'undefined' && window.location && window.location.search && (window.location.search.includes('closed=1') || window.location.search.includes('lid=0'))) ? 0 : 108; // degrees: 108 = fully open, 0 = fully closed
   let isAutoDemoRunning = false;
 
   function updateSimulatorState() {
@@ -426,6 +426,7 @@
     const usbText = document.getElementById('simUsbStatusText');
     const portLeft = document.getElementById('portLeft');
     const portRight = document.getElementById('portRight');
+    const portStatusLed = document.getElementById('portStatusLed');
     const waveformRow = document.getElementById('simWaveformRow');
     const audioLabel = waveformRow ? waveformRow.querySelector('span') : null;
     const lidSlider = document.getElementById('lidAngleSlider');
@@ -452,7 +453,7 @@
 
     // 1. Physically apply 3D Lid Folding Transform via CSS 3D transition
     if (lidAssembly) {
-      const lidRot = isLidClosed ? 0 : 115;
+      const lidRot = isLidClosed ? 0 : 108;
       lidAssembly.style.setProperty('--lid-rot', `${lidRot}deg`);
     }
 
@@ -548,14 +549,19 @@
       }
     }
 
+    if (portStatusLed) {
+      portStatusLed.className = isAwakeActive ? 'port-status-led active' : (isLidClosed ? 'port-status-led sleep-risk' : 'port-status-led active');
+    }
+
     if (portLeft && portRight) {
       if (isAwakeActive) {
-        portLeft.className = 'usb-port active';
-        portRight.className = 'usb-port active';
+        portLeft.className = 'ports-left active';
+        portRight.className = 'ports-right active';
       } else {
-        const cls = isLidClosed ? 'usb-port sleep-risk' : 'usb-port active';
-        portLeft.className = cls;
-        portRight.className = cls;
+        const clsLeft = isLidClosed ? 'ports-left sleep-risk' : 'ports-left active';
+        const clsRight = isLidClosed ? 'ports-right sleep-risk' : 'ports-right active';
+        portLeft.className = clsLeft;
+        portRight.className = clsRight;
       }
     }
 
@@ -629,14 +635,14 @@
 
     if (telRemote) {
       if (isAwakeActive) {
-        telRemote.textContent = currentLang === 'es' ? '60 FPS Transmitiendo' : '60 FPS Streaming';
+        telRemote.textContent = currentLang === 'es' ? '120 FPS Transmitiendo' : '120 FPS Streaming';
         telRemote.className = 'telemetry-pill-val green';
       } else {
         if (isLidClosed) {
           telRemote.textContent = currentLang === 'es' ? 'Pantalla Negra (0 FPS)' : 'Black Screen (0 FPS)';
           telRemote.className = 'telemetry-pill-val red';
         } else {
-          telRemote.textContent = currentLang === 'es' ? '60 FPS Local' : '60 FPS Local';
+          telRemote.textContent = currentLang === 'es' ? '120 FPS Local' : '120 FPS Local';
           telRemote.className = 'telemetry-pill-val green';
         }
       }
@@ -660,10 +666,10 @@
     isLidTransitioning = true;
     setTimeout(() => {
       isLidTransitioning = false;
-    }, 720);
+    }, 680);
 
     const shouldClose = lidAngle > 30;
-    lidAngle = shouldClose ? 0 : 135;
+    lidAngle = shouldClose ? 0 : 108;
     trackEvent('lid-toggle-trigger', shouldClose ? 'Lid: Cerrar Pantalla' : 'Lid: Abrir Pantalla');
 
     updateSimulatorState();
@@ -685,33 +691,69 @@
     if (onComplete) onComplete();
   }
 
-  // --- Dynamic 3D Perspective Tilt on Mouse Movement ---
+  // --- Dynamic 3D Perspective Tilt with Smooth Spring Damping ---
   function init3DTilt() {
-    const scene = document.getElementById('dualFloatingScene') || document.querySelector('.dual-floating-scene');
-    const interactiveUnit = document.getElementById('interactiveMacUnit');
-    const companionUnit = document.querySelector('.mac-unit-companion');
-    if (!scene || !interactiveUnit) return;
+    const stage = document.getElementById('heroStage') || document.querySelector('.hero-stage');
+    const rig = document.getElementById('macbookRig');
+    if (!stage || !rig) return;
 
-    scene.addEventListener('mousemove', (e) => {
-      const rect = scene.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+    let targetTiltY = 0;
+    let targetTiltX = 0;
+    let currentTiltY = 0;
+    let currentTiltX = 0;
+    let isTracking = false;
+    let rAFId = null;
 
-      const tiltY = (x / (rect.width / 2)) * 4.5;
-      const tiltX = -(y / (rect.height / 2)) * 3.5;
+    const baseRotateY = -14;
+    const baseRotateX = 12;
+    const baseRotateZ = 2;
 
-      interactiveUnit.style.transform = `perspective(1400px) rotateY(${-13 + tiltY}deg) rotateX(${14 + tiltX}deg) rotateZ(2deg) translateZ(30px)`;
-      if (companionUnit) {
-        companionUnit.style.transform = `perspective(1400px) rotateY(${16 + tiltY * 0.75}deg) rotateX(${12 + tiltX * 0.75}deg) rotateZ(-3deg) translateZ(-40px)`;
+    function updateTilt() {
+      // Damped spring interpolation
+      currentTiltY += (targetTiltY - currentTiltY) * 0.08;
+      currentTiltX += (targetTiltX - currentTiltX) * 0.08;
+
+      rig.style.setProperty('--tilt-y', `${currentTiltY.toFixed(2)}deg`);
+      rig.style.setProperty('--tilt-x', `${currentTiltX.toFixed(2)}deg`);
+
+      if (isTracking || Math.abs(targetTiltY - currentTiltY) > 0.01 || Math.abs(targetTiltX - currentTiltX) > 0.01) {
+        rAFId = requestAnimationFrame(updateTilt);
+      } else {
+        rAFId = null;
       }
-    });
+    }
 
-    scene.addEventListener('mouseleave', () => {
-      interactiveUnit.style.transform = 'perspective(1400px) rotateY(-13deg) rotateX(14deg) rotateZ(2deg) translateZ(30px)';
-      if (companionUnit) {
-        companionUnit.style.transform = 'perspective(1400px) rotateY(16deg) rotateX(12deg) rotateZ(-3deg) translateZ(-40px)';
+    function onMouseMove(e) {
+      const rect = stage.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const normX = ((mouseX / rect.width) * 2 - 1);
+      const normY = ((mouseY / rect.height) * 2 - 1);
+
+      targetTiltY = Math.max(-1, Math.min(1, normX)) * 5.0; // +/- 5 deg
+      targetTiltX = -Math.max(-1, Math.min(1, normY)) * 4.0; // +/- 4 deg
+
+      if (!rAFId) {
+        isTracking = true;
+        rAFId = requestAnimationFrame(updateTilt);
       }
-    });
+    }
+
+    function onMouseLeave() {
+      targetTiltY = 0;
+      targetTiltX = 0;
+      isTracking = false;
+      if (!rAFId) {
+        rAFId = requestAnimationFrame(updateTilt);
+      }
+    }
+
+    // Parallax tracking only on devices with pointer hover
+    if (window.matchMedia('(hover: hover)').matches) {
+      stage.addEventListener('mousemove', onMouseMove, { passive: true });
+      stage.addEventListener('mouseleave', onMouseLeave, { passive: true });
+    }
   }
 
   // --- Scroll-Driven Clamshell Auto-Fold Engine ---
@@ -723,17 +765,14 @@
       isScrollTicking = true;
 
       requestAnimationFrame(() => {
-        const hero = document.getElementById('overview');
-        if (hero) {
-          const rect = hero.getBoundingClientRect();
-          // As the user scrolls down through the hero content:
-          if (rect.top < -70 && lidAngle > 25) {
-            lidAngle = 0;
-            updateSimulatorState();
-          } else if (rect.top >= -30 && lidAngle <= 25) {
-            lidAngle = 135;
-            updateSimulatorState();
-          }
+        const scrollY = window.scrollY || window.pageYOffset;
+        // As the user scrolls down through the hero content:
+        if (scrollY > 110 && lidAngle > 25) {
+          lidAngle = 0;
+          updateSimulatorState();
+        } else if (scrollY < 40 && lidAngle <= 25) {
+          lidAngle = 108;
+          updateSimulatorState();
         }
         isScrollTicking = false;
       });
@@ -744,7 +783,10 @@
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('lid')) {
       const parsed = parseInt(urlParams.get('lid'), 10);
-      if (!isNaN(parsed)) lidAngle = Math.max(0, Math.min(135, parsed));
+      if (!isNaN(parsed)) {
+        lidAngle = Math.max(0, Math.min(108, parsed));
+        userManualClickOverride = true; // Respect manual test query param
+      }
     }
 
     const awakeCapsule = document.getElementById('simAwakeCapsule');
@@ -817,11 +859,11 @@
       });
     }
 
-    // 3. Centralized 3D Dual Scene Click Handler
+    // 3. Centralized 3D MacBook Click Handler
     // Clicking anywhere on the 3D scene, laptop body, lid, keyboard, or virtual display toggles the clamshell
-    const dualScene = document.getElementById('dualFloatingScene') || document.querySelector('.dual-floating-scene') || document.querySelector('.hero-stage');
-    if (dualScene) {
-      dualScene.addEventListener('click', (e) => {
+    const clickTarget = document.getElementById('macbook3DScene') || document.getElementById('macbookRig') || document.querySelector('.hero-stage');
+    if (clickTarget) {
+      clickTarget.addEventListener('click', (e) => {
         // Prevent toggle if clicking on interactive controls inside open screen HUD or links/buttons
         if (e.target.closest('#simPowerBtn, #simLangToggle, #simAwakeCapsule, #simShhCapsule, .hud-power-btn, .hud-lang-toggle, .hud-capsule, button, a')) {
           return;

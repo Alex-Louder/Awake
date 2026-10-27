@@ -73,6 +73,13 @@
   /* Layout Constraints */
   --container-max: 1200px;
   --container-narrow: 860px;
+
+  /* 3D Hardware Presentation Defaults */
+  --rig-scale: 0.90;
+  --rig-ty: 58px;
+  --base-ry: -14deg;
+  --base-rx: 12deg;
+  --base-rz: 2deg;
 }
 
 /* Light Theme Variables */
@@ -356,6 +363,53 @@ body {
   z-index: 1;
 }
 
+/* --- Framer Aurora Flow WebGL Canvas Background --- */
+.aurora-flow-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 135%;
+  pointer-events: none;
+  z-index: 0;
+  /* Graceful CSS dark radial background fallback */
+  background:
+    radial-gradient(ellipse 65% 50% at 68% 35%, rgba(0, 210, 180, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 75% 60% at 35% 42%, rgba(24, 119, 242, 0.18) 0%, rgba(10, 68, 120, 0.10) 40%, transparent 75%),
+    radial-gradient(ellipse 90% 80% at 50% 50%, #090e18 0%, #06080e 70%, #050508 100%);
+  /* Hardware-accelerated smooth bottom bleed into the obsidian page body */
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+  transition: opacity var(--duration-norm) ease;
+}
+
+/* Ensure container content and 3D MacBook simulator stay elevated and fully interactive */
+.hero-section > .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Fallback styling if WebGL context is unavailable */
+.aurora-flow-canvas.aurora-fallback {
+  background:
+    radial-gradient(ellipse 65% 50% at 68% 32%, rgba(0, 210, 180, 0.14) 0%, transparent 65%),
+    radial-gradient(ellipse 75% 60% at 35% 42%, rgba(24, 119, 242, 0.20) 0%, rgba(10, 68, 120, 0.12) 45%, transparent 75%),
+    #06080e;
+}
+
+/* Light Theme: subtle translucent glaze with multiply blend mode */
+[data-theme="light"] .aurora-flow-canvas {
+  opacity: 0.22;
+  filter: contrast(1.1) brightness(1.15) saturate(1.2);
+  mix-blend-mode: multiply;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-flow-canvas {
+    transition: none;
+  }
+}
+
 .hero-grid {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -526,8 +580,8 @@ body {
 }
 
 /* ==========================================================================
-   INTERACTIVE 3D MACBOOK CLAMSHELL SIMULATION
-   Real 3D Perspective + Physically Accurate Folding Hinge + Ports & HUD
+   INTERACTIVE 3D MACBOOK PRO CLAMSHELL HARDWARE PRESENTATION
+   Authentic Space Black Unibody + Precision CNC Chamfers + Real Hinge Physics
    ========================================================================== */
 
 .hero-stage {
@@ -535,42 +589,66 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
+  min-height: 540px;
+  margin-top: 32px;
+  user-select: none;
+  touch-action: pan-y;
 }
 
-/* Virtual Floating Display HUD (Projects above closed MacBook) */
+/* Virtual Floating Display HUD (Headless Stream blooms when lid is closed) */
 .virtual-display-hud {
   position: absolute;
-  top: -85px;
+  top: -55px;
   left: 50%;
-  width: 380px;
+  width: 410px;
   max-width: 94%;
-  background: rgba(14, 15, 22, 0.94);
-  backdrop-filter: blur(32px) saturate(190%);
-  -webkit-backdrop-filter: blur(32px) saturate(190%);
+  background: rgba(12, 13, 19, 0.94);
+  backdrop-filter: blur(36px) saturate(190%);
+  -webkit-backdrop-filter: blur(36px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius-lg);
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08);
-  padding: 14px 18px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.08), 0 0 45px rgba(10, 132, 255, 0.14);
+  padding: 13px 16px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 10px;
   z-index: 50;
   opacity: 0;
-  transform: translateX(-50%) translateY(16px) scale(0.97);
+  transform: translateX(-50%) translateY(20px) scale(0.92);
   pointer-events: none;
   visibility: hidden;
-  transition: opacity 350ms ease 180ms,
-              transform 350ms cubic-bezier(0.16, 1, 0.3, 1) 180ms,
-              visibility 350ms 180ms;
+  transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 450ms cubic-bezier(0.34, 1.4, 0.64, 1),
+              visibility 350ms;
+}
+
+/* Telemetry Connection Beam between closed MacBook and HUD */
+.vd-beam {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 62px;
+  background: radial-gradient(ellipse at top, rgba(10, 132, 255, 0.3) 0%, rgba(48, 209, 88, 0.14) 40%, transparent 75%);
+  filter: blur(12px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease 150ms;
 }
 
 /* When the MacBook is closed, Virtual Display blooms into view */
 .hero-stage.is-lid-closed .virtual-display-hud {
   opacity: 1;
-  transform: translateX(-50%) translateY(0) scale(1);
+  transform: translateX(-50%) translateY(-24px) scale(1);
   pointer-events: auto;
   visibility: visible;
+}
+
+.hero-stage.is-lid-closed .vd-beam {
+  opacity: 1;
 }
 
 .vd-header {
@@ -578,12 +656,12 @@ body {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 8px;
+  padding-bottom: 9px;
 }
 .vd-title-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 .vd-pulse-dot {
   width: 8px;
@@ -592,10 +670,15 @@ body {
   background: var(--accent-green);
   box-shadow: 0 0 10px var(--accent-green);
   animation: vd-pulse 2s infinite ease-in-out;
+  flex-shrink: 0;
 }
 @keyframes vd-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.5; transform: scale(1.2); }
+  50% { opacity: 0.45; transform: scale(1.25); }
+}
+.vd-title-stack {
+  display: flex;
+  flex-direction: column;
 }
 .vd-title {
   font-size: 11.5px;
@@ -605,30 +688,30 @@ body {
   color: var(--accent-blue);
   font-family: var(--font-mono);
 }
+.vd-sub {
+  font-size: 9.5px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+.vd-specs-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 .vd-badge {
-  font-size: 10.5px;
+  font-size: 10px;
   background: var(--accent-green-dim);
   color: var(--accent-green);
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: var(--radius-full);
   font-weight: 600;
   font-family: var(--font-mono);
 }
-
-.vd-terminal {
-  background: #08090f;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-md);
-  padding: 9px 12px;
+.vd-latency {
+  font-size: 9.5px;
+  color: var(--text-tertiary);
   font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1.5;
 }
-.term-prompt { color: var(--accent-green); font-weight: 600; }
-.term-cmd { color: #ffffff; font-weight: 600; }
-.term-dim { color: var(--text-tertiary); }
-.term-highlight { color: var(--accent-blue); font-weight: 600; }
-.term-success { color: var(--accent-green); }
 
 .vd-tasks-grid {
   display: grid;
@@ -638,11 +721,35 @@ body {
 .vd-task-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-md);
-  padding: 7px 10px;
+  padding: 8px 10px;
+  transition: background var(--duration-quick) ease;
+}
+.vd-task-item:hover {
+  background: rgba(255, 255, 255, 0.055);
+}
+.vd-app-icon-wrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.vd-app-icon-wrap.icon-claude {
+  color: var(--accent-blue);
+}
+.vd-app-icon-wrap.icon-ollama {
+  color: #ffffff;
+}
+.vd-app-icon-wrap.icon-hardware {
+  color: var(--accent-green);
 }
 .vd-app-icon {
   width: 18px;
@@ -652,16 +759,58 @@ body {
 .vd-task-info {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+.vd-task-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
 }
 .vd-task-name {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vd-live-chip,
+.vd-gpu-chip,
+.vd-tok-chip,
+.vd-usb-chip {
+  font-size: 8.5px;
+  font-family: var(--font-mono);
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.vd-live-chip {
+  color: var(--accent-green);
+  background: rgba(48, 209, 88, 0.14);
+}
+.vd-gpu-chip {
+  color: var(--accent-blue);
+  background: rgba(10, 132, 255, 0.14);
+}
+.vd-tok-chip {
+  color: var(--accent-green);
+  background: rgba(48, 209, 88, 0.14);
+}
+.vd-usb-chip {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
 }
 .vd-task-sub {
-  font-size: 10px;
-  color: var(--accent-green);
+  font-size: 9px;
+  color: var(--text-secondary);
   font-family: var(--font-mono);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .vd-footer {
@@ -669,324 +818,430 @@ body {
   align-items: center;
   justify-content: space-between;
   font-size: 10px;
-  color: var(--text-tertiary);
-  padding-top: 6px;
+  color: var(--text-secondary);
+  padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.vd-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.stat-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.stat-dot.green {
+  background: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+}
+.stat-dot.blue {
+  background: var(--accent-blue);
+  box-shadow: 0 0 6px var(--accent-blue);
 }
 
 /* ==========================================================================
-   AUTHENTIC 3D MACBOOK CLAMSHELL ENGINE
-   Perspective Base + Rear Hinged Liquid Retina Lid Assembly
+   AUTHENTIC 3D MACBOOK PRO RIG & CNC UNIBODY HARDWARE
    ========================================================================== */
 
-/* Interactive Floating Click-to-Toggle Hint */
-.macbook-click-hint {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(14, 16, 24, 0.94);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 20px rgba(10, 132, 255, 0.25);
-  z-index: 60;
-  cursor: pointer;
-  user-select: none;
-  transition: all var(--duration-quick) var(--ease-spring);
-  animation: hint-float 3s ease-in-out infinite;
-}
-.macbook-click-hint:hover {
-  transform: translateX(-50%) scale(1.05);
-  border-color: var(--accent-blue);
-  background: rgba(20, 24, 40, 0.98);
-}
-@keyframes hint-float {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-5px); }
-}
-.hint-hand {
-  font-size: 13px;
-  animation: hand-bounce 1.6s ease-in-out infinite;
-}
-@keyframes hand-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-.hint-pulse {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent-blue);
-  box-shadow: 0 0 8px var(--accent-blue);
-  animation: pulse-dot 2s infinite;
-}
-.hint-text {
-  font-size: 12px;
-  font-weight: 600;
-  color: #FFFFFF;
-  letter-spacing: -0.01em;
-}
-
-/* --- DUAL FLOATING MAC STUDIO PRESENTATION (Anti-AI-Slop Hardware Presentation) --- */
-.dual-floating-scene {
+.macbook-3d-scene {
   perspective: 1400px;
   perspective-origin: 50% 45%;
   width: 100%;
-  max-width: 600px;
-  height: 450px;
+  max-width: 560px;
+  height: 380px;
   position: relative;
-  margin: 20px auto 0 auto;
-  cursor: pointer;
-  transform-style: preserve-3d;
-}
-
-/* Floating Units */
-.floating-mac-unit {
-  position: absolute;
-  transform-style: preserve-3d;
-}
-
-/* Multi-stage ambient drop shadows */
-.mac-unit-shadow {
-  position: absolute;
-  bottom: -28px;
-  left: 8%;
-  width: 84%;
-  height: 38px;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0) 70%);
-  filter: blur(16px);
-  pointer-events: none;
-  transform: translateZ(-50px);
-}
-
-/* Left Companion Mac: Positioned on the left, tilted in dynamic studio perspective */
-.mac-unit-companion {
-  left: -35px;
-  bottom: 40px;
-  width: 370px;
-  height: 230px;
-  transform: perspective(1400px) rotateY(18deg) rotateX(9deg) rotateZ(-3deg) translateZ(-40px);
-  opacity: 0.88;
-  z-index: 2;
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms ease, filter 400ms ease;
-}
-
-.mac-unit-companion:hover {
-  opacity: 1;
-  transform: perspective(1400px) rotateY(15deg) rotateX(7deg) rotateZ(-2deg) translateZ(-20px);
-}
-
-.hero-stage.is-lid-closed .mac-unit-companion {
-  opacity: 0.65;
-  filter: blur(0.4px);
-  transform: perspective(1400px) rotateY(22deg) rotateX(12deg) rotateZ(-4deg) translateZ(-75px);
-}
-
-/* Right Interactive Mac: Hero foreground unit, tilted right */
-.mac-unit-interactive {
-  right: 0px;
-  bottom: 0px;
-  width: 440px;
-  height: 265px;
-  transform: perspective(1400px) rotateY(-12deg) rotateX(13deg) rotateZ(2deg) translateZ(30px);
-  z-index: 10;
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Photorealistic Chassis */
-.macbook-chassis-model,
-.macbook-base {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(165deg, #32323e 0%, #1c1c24 45%, #101016 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 14px;
-  box-shadow: 0 35px 80px -15px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  position: relative;
-  transform-style: preserve-3d;
-  padding: 12px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: transform var(--duration-norm) var(--ease-smooth);
-}
-
-.macbook-chassis-model:hover,
-.macbook-base:hover {
-  filter: brightness(1.04);
-}
-
-/* Keyboard Deck */
-.keyboard-deck {
-  width: 90%;
-  height: 135px;
-  background: #060609;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 8px;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.95);
-  margin-top: 6px;
-  padding: 4px 6px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.keyboard-row {
-  display: flex;
-  gap: 3px;
-  height: 21px;
-}
-.keyboard-row.f-keys { height: 15px; }
-.key {
-  background: #181822;
-  border-radius: 3px;
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 7.5px;
-  color: rgba(255, 255, 255, 0.45);
-  font-family: var(--font-sans);
-  border-bottom: 1px solid #101015;
-  user-select: none;
-}
-.key.space { flex: 5; }
-.key.touch-id { background: #000000; border: 1px solid rgba(255, 255, 255, 0.18); }
-
-.trackpad {
-  width: 140px;
-  height: 72px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  margin-top: 10px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  margin-top: 36px;
 }
 
-.thumb-scoop {
-  width: 54px;
-  height: 4px;
-  background: #000000;
-  border-radius: 0 0 6px 6px;
+.macbook-rig {
+  position: relative;
+  width: 520px;
+  height: 340px;
+  transform-style: preserve-3d;
+  transform: translateY(var(--rig-ty, 58px)) scale(var(--rig-scale, 0.90)) rotateY(calc(var(--base-ry, -14deg) + var(--tilt-y, 0deg))) rotateX(calc(var(--base-rx, 12deg) + var(--tilt-x, 0deg))) rotateZ(var(--base-rz, 2deg));
+  transform-origin: center center;
+  transition: transform 120ms cubic-bezier(0.2, 0, 0, 1);
+  will-change: transform;
+}
+
+/* Ambient Floor Contact & Screen Reflection Shadows */
+.macbook-shadow {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: -32px;
+  left: 6%;
+  width: 88%;
+  height: 44px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.45) 45%, transparent 75%);
+  filter: blur(20px);
+  transform: translateZ(-50px);
+  pointer-events: none;
+  transition: all 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.macbook-ground-reflection {
+  position: absolute;
+  bottom: -28px;
+  left: 16%;
+  width: 68%;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(10, 132, 255, 0.16) 0%, transparent 70%);
+  filter: blur(14px);
+  transform: translateZ(-45px);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 500ms ease;
+}
+.hero-stage.is-lid-closed .macbook-ground-reflection {
+  opacity: 0;
 }
 
+/* Space Black Aluminum Unibody Base Chassis */
+.macbook-base {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(165deg, #1b1b24 0%, #111116 50%, #0a0a0e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), inset 0 -1px 0 rgba(0, 0, 0, 0.9), 0 32px 75px -15px rgba(0, 0, 0, 0.95);
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: filter var(--duration-quick) ease;
+}
+.macbook-base:hover {
+  filter: brightness(1.03);
+}
+
+/* CNC Unibody Side Extrusion Profile */
+.base-thickness-rim {
+  position: absolute;
+  left: 1px;
+  right: 1px;
+  bottom: -8px;
+  height: 10px;
+  border-radius: 0 0 16px 16px;
+  background: linear-gradient(180deg, #141419 0%, #07070a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: none;
+  pointer-events: none;
+}
+
+/* Side Hardware Ports */
+.ports-left {
+  position: absolute;
+  bottom: 8px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 5;
+}
+.port-magsafe {
+  width: 14px;
+  height: 6px;
+  border-radius: 3px;
+  background: #08080c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.port-magsafe .port-led {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 6px #30d158;
+}
+.port-tb4 {
+  width: 10px;
+  height: 4px;
+  border-radius: 2px;
+  background: #08080c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.ports-right {
+  position: absolute;
+  bottom: 8px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 5;
+}
+.port-hdmi {
+  width: 12px;
+  height: 5px;
+  border-radius: 2px;
+  background: #08080c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.port-status-led {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+}
+.port-status-led .port-led {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 7px var(--accent-green);
+}
+.port-status-led.sleep-risk .port-led {
+  background: var(--accent-red);
+  box-shadow: 0 0 7px var(--accent-red);
+}
+
+/* Laser Micro-Perforated Speaker Grilles */
 .speaker-grille {
   position: absolute;
-  top: 24px;
+  top: 18px;
   width: 14px;
-  height: 110px;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
-  background-size: 3px 3px;
+  height: 165px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.13) 0.8px, transparent 0.8px);
+  background-size: 2.6px 2.6px;
+  border-radius: 2px;
+  opacity: 0.85;
+  pointer-events: none;
+  transition: opacity 220ms ease, visibility 220ms;
 }
 .speaker-grille.left { left: 12px; }
 .speaker-grille.right { right: 12px; }
 
-.usb-port {
+/* Recessed Magic Keyboard Well */
+.keyboard-well {
   position: absolute;
-  bottom: 12px;
+  top: 14px;
+  left: 32px;
+  right: 32px;
+  height: 172px;
+  background: #07070a;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.95), inset 0 0 0 1px rgba(0, 0, 0, 0.8), 0 1px 0 rgba(255, 255, 255, 0.06);
+  padding: 5px 6px;
+  box-sizing: border-box;
+  transition: opacity 220ms ease, visibility 220ms;
+}
+.keyboard-grid {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.k-row {
+  display: flex;
+  gap: 3px;
+  height: 23px;
+}
+.k-row.f-row {
+  height: 16px;
+}
+
+/* Magic Keyboard Keycaps */
+.k-cap {
+  background: #14141c;
+  border-radius: 3px;
+  color: rgba(255, 255, 255, 0.65);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  font-size: 7.5px;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  transition: all var(--duration-quick) ease;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), inset 0 0.5px 0 rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid #09090d;
+  user-select: none;
+  flex: 1;
+  min-width: 0;
+  line-height: 1;
 }
-#portLeft { left: 14px; }
-#portRight { right: 14px; }
-
-.port-led {
-  width: 5px;
-  height: 5px;
+.k-esc { flex: 1.4; font-size: 6.5px; }
+.k-f { flex: 1; font-size: 6.5px; }
+.k-touchid {
+  flex: 1.4;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.touchid-ring {
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  background: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
+  border: 1px solid rgba(255, 255, 255, 0.28);
 }
-.usb-port.active .port-led {
-  background: var(--accent-green);
-  box-shadow: 0 0 10px var(--accent-green);
+.k-del { flex: 1.4; font-size: 6.5px; }
+.k-tab { flex: 1.4; font-size: 6.5px; }
+.k-caps { flex: 1.7; font-size: 6.5px; position: relative; }
+.caps-led {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #30d158;
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  box-shadow: 0 0 3px #30d158;
 }
-.usb-port.sleep-risk .port-led {
-  background: var(--accent-red);
-  box-shadow: 0 0 8px var(--accent-red);
+.k-ret { flex: 1.7; font-size: 6.5px; }
+.k-shift { flex: 2.2; font-size: 6.5px; }
+.k-shift-r { flex: 2.2; font-size: 6.5px; }
+.k-space { flex: 5.5; }
+.k-cmd { flex: 1.3; font-size: 6px; }
+.k-mod { flex: 1.1; font-size: 6px; }
+.k-arrow-cluster {
+  display: flex;
+  gap: 2px;
+  flex: 2;
+  height: 100%;
+}
+.k-arr { flex: 1; font-size: 6px; }
+.k-arr-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  height: 100%;
+}
+.k-arr-half {
+  flex: 1;
+  height: 50%;
+  font-size: 5px;
 }
 
-/* Hinged Upper Lid Assembly (Attached at top: 0 rear edge of base) */
+/* Force Touch Glass Trackpad */
+.trackpad {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 170px;
+  height: 95px;
+  background: rgba(255, 255, 255, 0.018);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.03);
+  transition: opacity 220ms ease, visibility 220ms;
+}
+
+/* Ergonomic Thumb Scoop */
+.thumb-scoop {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 4px;
+  background: #060608;
+  border-radius: 0 0 6px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: none;
+}
+
+/* ==========================================================================
+   AUTHENTIC 3D HINGED DISPLAY LID ASSEMBLY
+   Rotates smoothly around rear edge from open (108°) to closed (0°)
+   ========================================================================== */
+
 .macbook-lid {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  transform-origin: top center;
+  transform-origin: 50% 0% 0;
   transform-style: preserve-3d;
-  transform: rotateX(var(--lid-rot, 115deg));
-  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
-  border-radius: 12px;
-  z-index: 10;
+  transform: rotateX(var(--lid-rot, 108deg));
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 16px;
+  z-index: 20;
   cursor: pointer;
 }
 
-/* Back Face (Apple Logo): Visible when closed (0deg) */
+/* Outer Shell (Space Black Aluminum + Polished Apple Logo) - Visible when closed */
 .lid-shell-back {
   position: absolute;
   inset: 0;
-  background: linear-gradient(145deg, #2c2c36 0%, #15151e 100%);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  background: linear-gradient(150deg, #1f1f28 0%, #121217 50%, #08080c 100%);
+  border: 1px solid rgba(255, 255, 255, 0.20);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26), 0 28px 65px rgba(0, 0, 0, 0.95);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
+  transform: translateZ(4px);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 300ms ease;
+  transition: opacity 280ms ease;
 }
-
-.lid-apple-logo {
-  width: 54px;
-  height: 54px;
-  fill: rgba(255, 255, 255, 0.88);
-  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
-}
-
-/* Inside Face (Screen & Popover HUD): Visible when open (115deg) */
-.lid-screen-inside {
-  position: absolute;
-  inset: 0;
-  background: #08080c;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
-  transform: rotateX(180deg);
-  overflow: hidden;
+.lid-back-surface {
   display: flex;
-  flex-direction: column;
-  z-index: 3;
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 250ms ease 150ms;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.lid-apple-logo {
+  width: 58px;
+  height: 58px;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.7));
 }
 
 /* Guaranteed Closed/Open State Face Switching */
 .hero-stage.is-lid-closed .lid-shell-back,
 .macbook-base.is-closed .lid-shell-back {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateZ(6px) !important;
+  z-index: 30 !important;
+  visibility: visible !important;
+}
+
+/* Conceal keyboard well, trackpad, and speaker grilles completely when closed */
+.hero-stage.is-lid-closed .keyboard-well,
+.macbook-base.is-closed .keyboard-well,
+.hero-stage.is-lid-closed .trackpad,
+.macbook-base.is-closed .trackpad,
+.hero-stage.is-lid-closed .speaker-grille,
+.macbook-base.is-closed .speaker-grille {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* Inner Liquid Retina XDR Display - Visible when open */
+.lid-screen-inside {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: #040406;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+  backface-visibility: hidden;
+  transform: rotateX(180deg) translateZ(1px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   opacity: 1;
   pointer-events: auto;
-  transition-delay: 200ms;
+  transition: opacity 250ms ease 100ms;
 }
 
 .hero-stage.is-lid-closed .lid-screen-inside,
@@ -997,53 +1252,60 @@ body {
   transition: opacity 200ms ease, visibility 200ms;
 }
 
-/* Camera Notch */
+/* Screen Notch & Camera */
 .macbook-camera-notch {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 76px;
   height: 11px;
   background: #000000;
-  border-radius: 0 0 8px 8px;
-  z-index: 10;
+  border-radius: 0 0 6px 6px;
+  z-index: 15;
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
 }
 .macbook-camera-lens {
-  width: 5px;
-  height: 5px;
-  background: #111116;
-  border: 1px solid #22222b;
+  width: 4.5px;
+  height: 4.5px;
+  background: #111118;
+  border: 1px solid #252532;
   border-radius: 50%;
+}
+.notch-indicator-led {
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 3px #30d158;
 }
 
 /* Simulated macOS Menu Bar */
 .macbook-menubar {
-  height: 24px;
-  background: rgba(20, 20, 28, 0.92);
+  height: 22px;
+  background: rgba(18, 18, 25, 0.94);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 12px;
-  font-size: 11px;
+  font-size: 10.5px;
   color: rgba(255, 255, 255, 0.9);
   user-select: none;
   z-index: 5;
 }
-
 .menubar-left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .apple-logo {
-  width: 11px;
-  height: 11px;
+  width: 10.5px;
+  height: 10.5px;
   fill: currentColor;
 }
 .menubar-title {
@@ -1051,13 +1313,16 @@ body {
 }
 .menubar-item {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 10.5px;
+  font-size: 10px;
 }
-
 .menubar-right {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.menubar-clock {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.85);
 }
 .menubar-awake-pill {
   display: flex;
@@ -1067,7 +1332,7 @@ body {
   padding: 2px 7px;
   border-radius: var(--radius-full);
   font-weight: 600;
-  font-size: 10px;
+  font-size: 9.5px;
   color: #ffffff;
   cursor: pointer;
   transition: all var(--duration-quick) var(--ease-spring);
@@ -1080,16 +1345,17 @@ body {
 /* Screen Canvas & Desktop Wallpaper */
 .macbook-screen-canvas {
   flex: 1;
-  background: radial-gradient(circle at 50% 35%, #181824 0%, #09090e 100%);
+  background: radial-gradient(circle at 50% 32%, #171826 0%, #07070b 100%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 10px;
   position: relative;
   overflow: hidden;
 }
 
-/* Power-Save Dimming Overlay */
+/* Power-Save Dimming Overlay (Backlight drops to 0%) */
 .screen-sleep-overlay {
   position: absolute;
   top: 0;
@@ -1103,25 +1369,25 @@ body {
   z-index: 8;
 }
 .screen-sleep-overlay.dimmed {
-  opacity: 0.85;
+  opacity: 0.92;
 }
 .screen-sleep-overlay.dark-sleep {
-  opacity: 0.98;
+  opacity: 0.99;
 }
 
 /* Native Vector HUD Popover */
 .awake-hud-card {
   width: 250px;
-  background: rgba(22, 22, 32, 0.88);
+  background: rgba(20, 20, 30, 0.9);
   backdrop-filter: blur(36px) saturate(190%);
   -webkit-backdrop-filter: blur(36px) saturate(190%);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-hud);
-  padding: 14px;
+  padding: 13px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
   user-select: none;
   position: relative;
   z-index: 9;
@@ -1145,7 +1411,7 @@ body {
 }
 .hud-app-name {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13.5px;
   letter-spacing: -0.02em;
 }
 
@@ -1155,8 +1421,8 @@ body {
   gap: 6px;
 }
 .hud-power-btn {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.06);
@@ -1175,7 +1441,7 @@ body {
 }
 .hud-lang-toggle {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   color: var(--text-secondary);
   background: rgba(255, 255, 255, 0.06);
@@ -1195,7 +1461,7 @@ body {
   background: rgba(0, 0, 0, 0.38);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
-  padding: 10px 12px;
+  padding: 9px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1218,18 +1484,18 @@ body {
 }
 .capsule-label {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
 .capsule-sub {
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--text-secondary);
 }
 
 .hud-switch {
-  width: 36px;
-  height: 20px;
+  width: 34px;
+  height: 19px;
   background: rgba(255, 255, 255, 0.18);
   border-radius: var(--radius-full);
   position: relative;
@@ -1241,8 +1507,8 @@ body {
   position: absolute;
   top: 2px;
   left: 2px;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   background: #ffffff;
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
@@ -1252,7 +1518,7 @@ body {
   background: var(--accent-blue);
 }
 .hud-capsule.active .hud-switch::after {
-  transform: translateX(16px);
+  transform: translateX(15px);
 }
 
 /* Audio Waveform Meter */
@@ -1261,7 +1527,7 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 2px 4px;
-  font-size: 10.5px;
+  font-size: 10px;
   font-family: var(--font-mono);
   color: var(--text-secondary);
 }
@@ -1269,7 +1535,7 @@ body {
   display: flex;
   align-items: center;
   gap: 3px;
-  height: 12px;
+  height: 11px;
 }
 .waveform-bar {
   width: 3px;
@@ -1290,7 +1556,7 @@ body {
 
 @keyframes wave-bounce {
   0%, 100% { height: 3px; }
-  50% { height: 12px; }
+  50% { height: 11px; }
 }
 
 /* Hardware Status Strip */
@@ -1298,9 +1564,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 6px;
+  padding-top: 5px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 10.5px;
+  font-size: 10px;
   color: var(--text-secondary);
 }
 .hud-status-item {
@@ -1318,69 +1584,35 @@ body {
   background: var(--accent-orange);
 }
 
-
-
-/* --- COMPANION MAC SCREEN & TERMINAL STYLES --- */
-.macbook-screen-open {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform-origin: top center;
-  transform-style: preserve-3d;
-  transform: rotateX(115deg) rotateX(180deg);
-  border-radius: 12px;
-  background: #08080c;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-.terminal-screen-body {
-  flex: 1;
-  background: radial-gradient(circle at 50% 30%, #151520 0%, #07070b 100%);
-  padding: 12px 14px;
+/* Screen Terminal Status Pill */
+.screen-terminal-pill {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  padding: 3px 10px;
   font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1.55;
+  font-size: 9px;
   color: var(--text-secondary);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
   user-select: none;
 }
-.term-code-line {
+.term-status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 6px var(--accent-green);
+  flex-shrink: 0;
+}
+.term-code-snippet {
   white-space: nowrap;
 }
-.term-code-line .t-prompt {
+.t-green {
   color: var(--accent-green);
   font-weight: 700;
-  margin-right: 4px;
-}
-.term-code-line .t-cmd {
-  color: #FFFFFF;
-  font-weight: 600;
-}
-.term-code-line.t-cyan {
-  color: #64d2ff;
-}
-.term-code-line.t-green {
-  color: #30d158;
-}
-.term-code-line.t-dim {
-  color: var(--text-tertiary);
-}
-.term-status-badge {
-  font-size: 9px;
-  font-family: var(--font-mono);
-  background: rgba(40, 205, 65, 0.16);
-  color: var(--accent-green);
-  border: 1px solid rgba(40, 205, 65, 0.3);
-  padding: 1px 5px;
-  border-radius: 4px;
 }
 
 /* Minimalist Studio Scroll/Click Hint Badge (Anti-AI-Slop) */
@@ -1388,22 +1620,23 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  background: rgba(22, 22, 30, 0.85);
+  background: rgba(20, 20, 28, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-full);
-  padding: 8px 18px;
-  font-size: 12.5px;
+  padding: 7px 18px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--text-secondary);
-  margin-top: 18px;
+  margin-top: 14px;
   cursor: pointer;
   transition: all 200ms ease;
   user-select: none;
+  z-index: 10;
 }
 .clamshell-status-badge:hover {
-  background: rgba(30, 30, 42, 0.95);
+  background: rgba(28, 28, 40, 0.98);
   border-color: rgba(255, 255, 255, 0.22);
   color: var(--text-primary);
   transform: translateY(-1px);
@@ -1415,6 +1648,7 @@ body {
   background: var(--accent-green);
   box-shadow: 0 0 8px var(--accent-green);
   transition: background 300ms ease, box-shadow 300ms ease;
+  flex-shrink: 0;
 }
 .hero-stage.is-lid-closed .clamshell-badge-dot,
 .clamshell-badge-dot.closed {
@@ -2268,8 +2502,11 @@ body {
 
 /* --- RESPONSIVE MEDIA QUERIES --- */
 @media (max-width: 960px) {
+  :root {
+    --rig-scale: 0.90;
+  }
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     text-align: center;
     gap: 40px;
     width: 100%;
@@ -2389,9 +2626,10 @@ body {
   }
 
   .hero-title {
-    font-size: clamp(1.75rem, 6.5vw, 2.3rem);
+    font-size: clamp(1.6rem, 5.2vw, 2.1rem);
     line-height: 1.15;
     overflow-wrap: break-word;
+    text-wrap: balance;
   }
 
   .hero-desc {
@@ -2430,47 +2668,30 @@ body {
   .hero-stage {
     width: 100%;
     max-width: 100%;
-    overflow: hidden;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .dual-floating-scene {
+  :root {
+    --rig-scale: 0.76;
+    --rig-ty: 0px;
+    --base-ry: -12deg;
+  }
+
+  .macbook-3d-scene {
     width: 100%;
-    max-width: 480px;
-    height: 330px;
-    margin: 0 auto 10px auto;
-  }
-
-  .mac-unit-companion {
-    width: 300px;
-    height: 185px;
-    left: -15px;
-    bottom: 30px;
-    transform: perspective(1200px) rotateY(16deg) rotateX(12deg) scale(0.85);
-    opacity: 0.7;
-  }
-
-  .mac-unit-interactive {
-    width: 380px;
-    height: 230px;
-    right: -10px;
-    bottom: 5px;
-    transform: perspective(1200px) rotateY(-10deg) rotateX(14deg) scale(0.9);
+    max-width: 100%;
+    height: 310px;
+    margin: 10px auto 0 auto;
   }
 
   .virtual-display-hud {
-    width: 340px;
-    max-width: 96%;
-    top: -75px;
-    padding: 10px 14px;
+    width: min(390px, 94%);
+    top: -15px;
+    padding: 12px 14px;
     gap: 8px;
-  }
-
-  .vd-terminal {
-    font-size: 9px;
-    padding: 6px 8px;
   }
 
   .vd-tasks-grid {
@@ -2491,7 +2712,7 @@ body {
 
   .awake-hud-card {
     width: 100%;
-    max-width: 260px;
+    max-width: 250px;
   }
 
   .bento-card {
@@ -2527,36 +2748,29 @@ body {
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 440px) {
+  :root {
+    --rig-scale: 0.62;
+    --base-ry: -8deg;
+  }
+
   .hero-stage {
-    margin-top: 24px;
+    min-height: 400px;
+    margin-top: 15px;
   }
 
-  .dual-floating-scene {
+  .macbook-3d-scene {
     width: 100%;
-    max-width: 340px;
-    height: 340px;
-    margin: 10px auto 0 auto;
-  }
-
-  .mac-unit-companion {
-    display: none; /* Focus solely on hero interactive Mac on small mobile screens */
-  }
-
-  .mac-unit-interactive {
-    width: 330px;
-    height: 205px;
-    right: auto;
-    left: 50%;
-    bottom: 20px;
-    transform: translateX(-50%) rotateY(0deg) rotateX(14deg) scale(0.92);
-    transform-origin: center bottom;
+    max-width: 100%;
+    height: 260px;
+    margin: 5px auto 0 auto;
   }
 
   .virtual-display-hud {
-    width: 310px;
-    top: -55px;
-    padding: 8px 10px;
+    width: min(330px, 92%);
+    top: -20px;
+    padding: 10px 12px;
+    gap: 7px;
   }
 
   .nav-island {
@@ -2591,19 +2805,29 @@ body {
   }
 
   .hero-title {
-    font-size: 1.85rem;
+    font-size: clamp(1.45rem, 5vw, 1.75rem);
+    line-height: 1.18;
   }
 }
 
 @media (max-width: 360px) {
-  .dual-floating-scene {
-    max-width: 300px;
-    height: 225px;
+  :root {
+    --rig-scale: 0.50;
+    --base-ry: -5deg;
   }
-  .mac-unit-interactive {
-    width: 300px;
-    height: 190px;
-    transform: translateX(-50%) rotateY(0deg) rotateX(16deg) scale(0.85);
+
+  .hero-stage {
+    min-height: 350px;
+  }
+
+  .macbook-3d-scene {
+    max-width: 100%;
+    height: 220px;
+  }
+
+  .virtual-display-hud {
+    width: min(290px, 92%);
+    padding: 8px 10px;
   }
 }
 

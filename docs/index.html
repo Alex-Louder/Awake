@@ -92,6 +92,7 @@
 
     <!-- HERO SECTION: EDITORIAL COPY + 3D MACBOOK HARDWARE SIMULATOR -->
     <section class="hero-section" id="overview">
+      <canvas id="auroraCanvas" class="aurora-flow-canvas" aria-hidden="true"></canvas>
       <div class="container">
         <div class="hero-grid">
           
@@ -142,187 +143,285 @@
             </div>
           </div>
 
-          <!-- Dual Floating Studio Mockup Stage (Anti-AI-Slop, High-End Hardware Presentation) -->
+          <!-- Single Dominant 3D Floating MacBook Pro Mockup Stage (Anti-AI-Slop Hardware Presentation) -->
           <div class="hero-stage" id="heroStage">
             
-            <div class="dual-floating-scene" id="dualFloatingScene">
-              
-              <!-- 1. Left Companion Mac (Open: Autonomous AI Agent & Terminal Session) -->
-              <div class="floating-mac-unit mac-unit-companion" title="MacBook Pro • Agente de IA e Inferencia Activa">
-                <div class="mac-unit-shadow"></div>
-                
-                <div class="macbook-chassis-model">
-                  <div class="speaker-grille left"></div>
-                  <div class="speaker-grille right"></div>
-                  
-                  <div class="keyboard-deck">
-                    <div class="keyboard-row f-keys">
-                      <span class="key esc">esc</span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key touch-id"></span>
-                    </div>
-                    <div class="keyboard-row numbers">
-                      <span class="key">~</span><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span><span class="key">6</span><span class="key">7</span><span class="key">8</span><span class="key">9</span><span class="key">0</span><span class="key">-</span><span class="key">+</span><span class="key del">del</span>
-                    </div>
-                    <div class="keyboard-row letters-1">
-                      <span class="key tab">tab</span><span class="key">Q</span><span class="key">W</span><span class="key">E</span><span class="key">R</span><span class="key">T</span><span class="key">Y</span><span class="key">U</span><span class="key">I</span><span class="key">O</span><span class="key">P</span><span class="key">[</span><span class="key">]</span><span class="key">\</span>
-                    </div>
-                    <div class="keyboard-row letters-2">
-                      <span class="key caps">caps</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><span class="key">F</span><span class="key">G</span><span class="key">H</span><span class="key">J</span><span class="key">K</span><span class="key">L</span><span class="key">;</span><span class="key">'</span><span class="key ret">ret</span>
-                    </div>
-                    <div class="keyboard-row bottom-row">
-                      <span class="key fn">fn</span><span class="key">ctrl</span><span class="key">opt</span><span class="key cmd">cmd</span><span class="key space"></span><span class="key cmd">cmd</span><span class="key opt">opt</span><span class="key arrows">◄▼►</span>
-                    </div>
+            <!-- Virtual Floating Display HUD (Blooms when lid is closed: Headless 120Hz Stream + AI Inference) -->
+            <div class="virtual-display-hud" id="virtualDisplayHud" role="region" aria-label="Virtual Display Telemetry HUD">
+              <!-- Ethereal Telemetry Beam connecting closed Mac to HUD -->
+              <div class="vd-beam" aria-hidden="true"></div>
+
+              <div class="vd-header">
+                <div class="vd-title-group">
+                  <span class="vd-pulse-dot" aria-hidden="true"></span>
+                  <div class="vd-title-stack">
+                    <span class="vd-title" data-i18n="vd_title">Sill • iPad Pro Stream (120 Hz)</span>
+                    <span class="vd-sub">Apple Silicon Framebuffer • Metal Headless</span>
                   </div>
+                </div>
+                <div class="vd-specs-pill">
+                  <span class="vd-badge" data-i18n="vd_badge">120 FPS Activo</span>
+                  <span class="vd-latency">3ms • ProMotion</span>
+                </div>
+              </div>
 
-                  <div class="trackpad"></div>
-                  <div class="thumb-scoop"></div>
+              <!-- Live Active Pipelines Grid -->
+              <div class="vd-tasks-grid">
+                <!-- 1. Sill Remote Display Stream -->
+                <div class="vd-task-item">
+                  <div class="vd-app-icon-wrap">
+                    <img src="assets/logos/sill.png" alt="Sill" class="vd-app-icon" width="20" height="20">
+                  </div>
+                  <div class="vd-task-info">
+                    <div class="vd-task-row">
+                      <span class="vd-task-name">Sill Remote Display</span>
+                      <span class="vd-live-chip">120 Hz</span>
+                    </div>
+                    <span class="vd-task-sub" data-i18n="vd_sill_status">Streaming activo a 120 Hz</span>
+                  </div>
+                </div>
 
-                  <!-- Companion Open Screen: Live Developer Agent Session -->
-                  <div class="macbook-screen-open">
-                    <div class="macbook-camera-notch"><div class="macbook-camera-lens"></div></div>
-                    <div class="macbook-menubar">
-                      <div class="menubar-left">
-                        <svg class="apple-logo" viewBox="0 0 170 170"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/></svg>
-                        <span class="menubar-title">Claude Code</span>
-                        <span class="menubar-item">zsh</span>
-                      </div>
-                      <div class="menubar-right">
-                        <span class="term-status-badge">GPU 96%</span>
-                        <span>9:41 AM</span>
-                      </div>
+                <!-- 2. Claude Code Autonomous Agent -->
+                <div class="vd-task-item">
+                  <div class="vd-app-icon-wrap icon-claude">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm2 4v2h4V8H6zm6 0v2h6V8h-6zm-6 4v2h8v-2H6zm10 0v2h2v-2h-2zm-10 4v2h5v-2H6zm7 0v2h5v-2h-5z"/>
+                    </svg>
+                  </div>
+                  <div class="vd-task-info">
+                    <div class="vd-task-row">
+                      <span class="vd-task-name">Claude Code Session</span>
+                      <span class="vd-gpu-chip">GPU 96%</span>
                     </div>
-                    <div class="terminal-screen-body">
-                      <div class="term-code-line"><span class="t-prompt">$</span> <span class="t-cmd">claude code --autonomous</span></div>
-                      <div class="term-code-line t-cyan">● Tarea autónoma: Ejecutando inferencia...</div>
-                      <div class="term-code-line t-dim">  ├─ Ollama llama3.3 [48 tok/s]</div>
-                      <div class="term-code-line t-dim">  ├─ Localhost:3000 [Activo]</div>
-                      <div class="term-code-line t-green">  └─ Cero suspensión con Awake!</div>
+                    <span class="vd-task-sub">$ claude code --autonomous (Background)</span>
+                  </div>
+                </div>
+
+                <!-- 3. Ollama Llama 3.3 Inference -->
+                <div class="vd-task-item">
+                  <div class="vd-app-icon-wrap icon-ollama">
+                    <svg class="brand-chip-svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                      <path d="M16.361 10.26a.894.894 0 0 0-.558.47l-.072.148.001.207c0 .193.004.217.059.353.076.193.152.312.291.448.24.238.51.3.872.205a.86.86 0 0 0 .517-.436.752.752 0 0 0 .08-.498c-.064-.453-.33-.782-.724-.897a1.06 1.06 0 0 0-.466 0zm-9.203.005c-.305.096-.533.32-.65.639a1.187 1.187 0 0 0-.06.52c.057.309.31.59.598.667.362.095.632.033.872-.205.14-.136.215-.255.291-.448.055-.136.059-.16.059-.353l.001-.207-.072-.148a.894.894 0 0 0-.565-.472 1.02 1.02 0 0 0-.474.007Zm4.184 2c-.131.071-.223.25-.195.383.031.143.157.288.353.407.105.063.112.072.117.136.004.038-.01.146-.029.243-.02.094-.036.194-.036.222.002.074.07.195.143.253.064.052.076.054.255.059.164.005.198.001.264-.03.169-.082.212-.234.15-.525-.052-.243-.042-.28.087-.355.137-.08.281-.219.324-.314a.365.365 0 0 0-.175-.48.394.394 0 0 0-.181-.033c-.126 0-.207.03-.355.124l-.085.053-.053-.032c-.219-.13-.259-.145-.391-.143a.396.396 0 0 0-.193.032zm.39-2.195c-.373.036-.475.05-.654.086-.291.06-.68.195-.951.328-.94.46-1.589 1.226-1.787 2.114-.04.176-.045.234-.045.53 0 .294.005.357.043.524.264 1.16 1.332 2.017 2.714 2.173.3.033 1.596.033 1.896 0 1.11-.125 2.064-.727 2.493-1.571.114-.226.169-.372.22-.602.039-.167.044-.23.044-.523 0-.297-.005-.355-.045-.531-.288-1.29-1.539-2.304-3.072-2.497a6.873 6.873 0 0 0-.855-.031zm.645.937a3.283 3.283 0 0 1 1.44.514c.223.148.537.458.671.662.166.251.26.508.303.82.02.143.01.251-.043.482-.08.345-.332.705-.672.957a3.115 3.115 0 0 1-.689.348c-.382.122-.632.144-1.525.138-.582-.006-.686-.01-.853-.042-.57-.107-1.022-.334-1.35-.68-.264-.28-.385-.535-.45-.946-.03-.192.025-.509.137-.776.136-.326.488-.73.836-.963.403-.269.934-.46 1.422-.512.187-.02.586-.02.773-.002zm-5.503-11a1.653 1.653 0 0 0-.683.298C5.617.74 5.173 1.666 4.985 2.819c-.07.436-.119 1.04-.119 1.503 0 .544.064 1.24.155 1.721.02.107.031.202.023.208a8.12 8.12 0 0 1-.187.152 5.324 5.324 0 0 0-.949 1.02 5.49 5.49 0 0 0-.94 2.339 6.625 6.625 0 0 0-.023 1.357c.091.78.325 1.438.727 2.04l.13.195-.037.064c-.269.452-.498 1.105-.605 1.732-.084.496-.095.629-.095 1.294 0 .67.009.803.088 1.266.095.555.288 1.143.503 1.534.071.128.243.393.264.407.007.003-.014.067-.046.141a7.405 7.405 0 0 0-.548 1.873c-.062.417-.071.552-.071.991 0 .56.031.832.148 1.279L3.42 24h1.478l-.05-.091c-.297-.552-.325-1.575-.068-2.597.117-.472.25-.819.498-1.296l.148-.29v-.177c0-.165-.003-.184-.057-.293a.915.915 0 0 0-.194-.25 1.74 1.74 0 0 1-.385-.543c-.424-.92-.506-2.286-.208-3.451.124-.486.329-.918.544-1.154a.787.787 0 0 0 .223-.531c0-.195-.07-.355-.224-.522a3.136 3.136 0 0 1-.817-1.729c-.14-.96.114-2.005.69-2.834.563-.814 1.353-1.336 2.237-1.475.199-.033.57-.028.776.01.226.04.367.028.512-.041.179-.085.268-.19.374-.431.093-.215.165-.333.36-.576.234-.29.46-.489.822-.729.413-.27.884-.467 1.352-.561.17-.035.25-.04.569-.04.319 0 .398.005.569.04a4.07 4.07 0 0 1 1.914.997c.117.109.398.457.488.602.034.057.095.177.132.267.105.241.195.346.374.43.14.068.286.082.503.045.343-.058.607-.053.943.016 1.144.23 2.14 1.173 2.581 2.437.385 1.108.276 2.267-.296 3.153-.097.15-.193.27-.333.419-.301.322-.301.722-.001 1.053.493.539.801 1.866.708 3.036-.062.772-.26 1.463-.533 1.854a2.096 2.096 0 0 1-.224.258.916.916 0 0 0-.194.25c-.054.109-.057.128-.057.293v.178l.148.29c.248.476.38.823.498 1.295.253 1.008.231 2.01-.059 2.581a.845.845 0 0 0-.044.098c0 .006.329.009.732.009h.73l.02-.074.036-.134c.019-.076.057-.3.088-.516.029-.217.029-1.016 0-1.258-.11-.875-.295-1.57-.597-2.226-.032-.074-.053-.138-.046-.141.008-.005.057-.074.108-.152.376-.569.607-1.284.724-2.228.031-.26.031-1.378 0-1.628-.083-.645-.182-1.082-.348-1.525a6.083 6.083 0 0 0-.329-.7l-.038-.064.131-.194c.402-.604.636-1.262.727-2.04a6.625 6.625 0 0 0-.024-1.358 5.512 5.512 0 0 0-.939-2.339 5.325 5.325 0 0 0-.95-1.02 8.097 8.097 0 0 1-.186-.152.692.692 0 0 1 .023-.208c.208-1.087.201-2.443-.017-3.503-.19-.924-.535-1.658-.98-2.082-.354-.338-.716-.482-1.15-.455-.996.059-1.8 1.205-2.116 3.01a6.805 6.805 0 0 0-.097.726c0 .036-.007.066-.015.066a.96.96 0 0 1-.149-.078A4.857 4.857 0 0 0 12 3.03c-.832 0-1.687.243-2.456.698a.958.958 0 0 1-.148.078c-.008 0-.015-.03-.015-.066a6.71 6.71 0 0 0-.097-.725C8.997 1.392 8.337.319 7.46.048a2.096 2.096 0 0 0-.585-.041Zm.293 1.402c.248.197.523.759.682 1.388.03.113.06.244.069.292.007.047.026.152.041.233.067.365.098.76.102 1.24l.002.475-.12.175-.118.178h-.278c-.324 0-.646.041-.954.124l-.238.06c-.033.007-.038-.003-.057-.144a8.438 8.438 0 0 1 .016-2.323c.124-.788.413-1.501.696-1.711.067-.05.079-.049.157.013zm9.825-.012c.17.126.358.46.498.888.28.854.36 2.028.212 3.145-.019.14-.024.151-.057.144l-.238-.06a3.693 3.693 0 0 0-.954-.124h-.278l-.119-.178-.119-.175.002-.474c.004-.669.066-1.19.214-1.772.157-.623.434-1.185.68-1.382.078-.062.09-.063.159-.012z"/>
+                    </svg>
+                  </div>
+                  <div class="vd-task-info">
+                    <div class="vd-task-row">
+                      <span class="vd-task-name">Ollama • Llama 3.3 (70B)</span>
+                      <span class="vd-tok-chip">48 tok/s</span>
                     </div>
+                    <span class="vd-task-sub" data-i18n="vd_ollama_status">Generando a 48 tok/s</span>
+                  </div>
+                </div>
+
+                <!-- 4. Active Bus & Peripheral Hardware -->
+                <div class="vd-task-item">
+                  <div class="vd-app-icon-wrap icon-hardware">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                  </div>
+                  <div class="vd-task-info">
+                    <div class="vd-task-row">
+                      <span class="vd-task-name">Hardware Bus Power</span>
+                      <span class="vd-usb-chip">USB 5V DC</span>
+                    </div>
+                    <span class="vd-task-sub" data-i18n="vd_footer_usb">Wi-Fi D0: Conectado</span>
                   </div>
                 </div>
               </div>
 
-              <!-- 2. Right Foreground Mac: Interactive Clamshell Mac (Awake! Running, Closes on scroll/click) -->
-              <div class="floating-mac-unit mac-unit-interactive" id="interactiveMacUnit" title="Haz scroll o clic para cerrar/abrir la pantalla">
-                <div class="mac-unit-shadow"></div>
+              <!-- Telemetry Status Strip -->
+              <div class="vd-footer">
+                <span class="vd-stat-badge"><span class="stat-dot green"></span><strong data-i18n="vd_footer_screen">Pantalla física: 0% brillo</strong></span>
+                <span class="vd-stat-badge"><span class="stat-dot blue"></span><strong data-i18n="vd_footer_shh">Audio: Protegido (AirPods)</strong></span>
+                <span class="vd-stat-badge"><span class="stat-dot green"></span><strong>Zero Throttling</strong></span>
+              </div>
+            </div>
 
-                <!-- Virtual Floating Display (Blooms cleanly when lid is closed) -->
-                <div class="virtual-display-hud" id="virtualDisplayHud">
-                  <div class="vd-header">
-                    <div class="vd-title-group">
-                      <span class="vd-pulse-dot"></span>
-                      <span class="vd-title" data-i18n="vd_title">Sill • iPad Pro Stream (120 Hz)</span>
-                    </div>
-                    <span class="vd-badge" data-i18n="vd_badge">60 FPS Activo</span>
+            <!-- Single Dominant 3D Floating MacBook Pro Assembly -->
+            <div class="macbook-3d-scene" id="macbook3DScene">
+              <div class="macbook-rig" id="macbookRig" title="Haz clic o haz scroll para cerrar o abrir la pantalla">
+                
+                <!-- Realistic Floor Contact & Specular Shadow Plane -->
+                <div class="macbook-shadow"></div>
+                <div class="macbook-ground-reflection"></div>
+
+                <!-- MacBook Base Chassis (CNC Unibody Space Black) -->
+                <div class="macbook-base" id="macbookModel">
+                  
+                  <!-- Unibody Thickness & Edge Profile -->
+                  <div class="base-thickness-rim"></div>
+
+                  <!-- Side Hardware Ports & Status Indicators -->
+                  <div class="ports-left" id="portLeft">
+                    <div class="port-magsafe" title="MagSafe 3"><span class="port-led"></span></div>
+                    <div class="port-tb4" title="Thunderbolt 4 / USB4"></div>
+                    <div class="port-tb4" title="Thunderbolt 4 / USB4"></div>
                   </div>
-
-                  <div class="vd-terminal">
-                    <div class="vd-term-line"><span class="term-prompt">$</span> <span class="term-cmd">claude code --autonomous</span></div>
-                    <div class="vd-term-line term-dim">● Antigravity en segundo plano... <span class="term-highlight">GPU 96%</span></div>
-                    <div class="vd-term-line term-success">✓ Servidor activo en localhost:3000. Cero suspensión.</div>
-                  </div>
-
-                  <div class="vd-tasks-grid">
-                    <div class="vd-task-item">
-                      <img src="assets/logos/sill.png" alt="Sill" class="vd-app-icon" width="18" height="18">
-                      <div class="vd-task-info">
-                        <span class="vd-task-name">Sill Remote</span>
-                        <span class="vd-task-sub" data-i18n="vd_sill_status">Streaming activo a 120 Hz</span>
-                      </div>
-                    </div>
-                    <div class="vd-task-item">
-                      <svg class="vd-app-icon brand-chip-svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" role="img" aria-label="Ollama" style="color: #ffffff;">
-                        <path d="M16.361 10.26a.894.894 0 0 0-.558.47l-.072.148.001.207c0 .193.004.217.059.353.076.193.152.312.291.448.24.238.51.3.872.205a.86.86 0 0 0 .517-.436.752.752 0 0 0 .08-.498c-.064-.453-.33-.782-.724-.897a1.06 1.06 0 0 0-.466 0zm-9.203.005c-.305.096-.533.32-.65.639a1.187 1.187 0 0 0-.06.52c.057.309.31.59.598.667.362.095.632.033.872-.205.14-.136.215-.255.291-.448.055-.136.059-.16.059-.353l.001-.207-.072-.148a.894.894 0 0 0-.565-.472 1.02 1.02 0 0 0-.474.007Zm4.184 2c-.131.071-.223.25-.195.383.031.143.157.288.353.407.105.063.112.072.117.136.004.038-.01.146-.029.243-.02.094-.036.194-.036.222.002.074.07.195.143.253.064.052.076.054.255.059.164.005.198.001.264-.03.169-.082.212-.234.15-.525-.052-.243-.042-.28.087-.355.137-.08.281-.219.324-.314a.365.365 0 0 0-.175-.48.394.394 0 0 0-.181-.033c-.126 0-.207.03-.355.124l-.085.053-.053-.032c-.219-.13-.259-.145-.391-.143a.396.396 0 0 0-.193.032zm.39-2.195c-.373.036-.475.05-.654.086-.291.06-.68.195-.951.328-.94.46-1.589 1.226-1.787 2.114-.04.176-.045.234-.045.53 0 .294.005.357.043.524.264 1.16 1.332 2.017 2.714 2.173.3.033 1.596.033 1.896 0 1.11-.125 2.064-.727 2.493-1.571.114-.226.169-.372.22-.602.039-.167.044-.23.044-.523 0-.297-.005-.355-.045-.531-.288-1.29-1.539-2.304-3.072-2.497a6.873 6.873 0 0 0-.855-.031zm.645.937a3.283 3.283 0 0 1 1.44.514c.223.148.537.458.671.662.166.251.26.508.303.82.02.143.01.251-.043.482-.08.345-.332.705-.672.957a3.115 3.115 0 0 1-.689.348c-.382.122-.632.144-1.525.138-.582-.006-.686-.01-.853-.042-.57-.107-1.022-.334-1.35-.68-.264-.28-.385-.535-.45-.946-.03-.192.025-.509.137-.776.136-.326.488-.73.836-.963.403-.269.934-.46 1.422-.512.187-.02.586-.02.773-.002zm-5.503-11a1.653 1.653 0 0 0-.683.298C5.617.74 5.173 1.666 4.985 2.819c-.07.436-.119 1.04-.119 1.503 0 .544.064 1.24.155 1.721.02.107.031.202.023.208a8.12 8.12 0 0 1-.187.152 5.324 5.324 0 0 0-.949 1.02 5.49 5.49 0 0 0-.94 2.339 6.625 6.625 0 0 0-.023 1.357c.091.78.325 1.438.727 2.04l.13.195-.037.064c-.269.452-.498 1.105-.605 1.732-.084.496-.095.629-.095 1.294 0 .67.009.803.088 1.266.095.555.288 1.143.503 1.534.071.128.243.393.264.407.007.003-.014.067-.046.141a7.405 7.405 0 0 0-.548 1.873c-.062.417-.071.552-.071.991 0 .56.031.832.148 1.279L3.42 24h1.478l-.05-.091c-.297-.552-.325-1.575-.068-2.597.117-.472.25-.819.498-1.296l.148-.29v-.177c0-.165-.003-.184-.057-.293a.915.915 0 0 0-.194-.25 1.74 1.74 0 0 1-.385-.543c-.424-.92-.506-2.286-.208-3.451.124-.486.329-.918.544-1.154a.787.787 0 0 0 .223-.531c0-.195-.07-.355-.224-.522a3.136 3.136 0 0 1-.817-1.729c-.14-.96.114-2.005.69-2.834.563-.814 1.353-1.336 2.237-1.475.199-.033.57-.028.776.01.226.04.367.028.512-.041.179-.085.268-.19.374-.431.093-.215.165-.333.36-.576.234-.29.46-.489.822-.729.413-.27.884-.467 1.352-.561.17-.035.25-.04.569-.04.319 0 .398.005.569.04a4.07 4.07 0 0 1 1.914.997c.117.109.398.457.488.602.034.057.095.177.132.267.105.241.195.346.374.43.14.068.286.082.503.045.343-.058.607-.053.943.016 1.144.23 2.14 1.173 2.581 2.437.385 1.108.276 2.267-.296 3.153-.097.15-.193.27-.333.419-.301.322-.301.722-.001 1.053.493.539.801 1.866.708 3.036-.062.772-.26 1.463-.533 1.854a2.096 2.096 0 0 1-.224.258.916.916 0 0 0-.194.25c-.054.109-.057.128-.057.293v.178l.148.29c.248.476.38.823.498 1.295.253 1.008.231 2.01-.059 2.581a.845.845 0 0 0-.044.098c0 .006.329.009.732.009h.73l.02-.074.036-.134c.019-.076.057-.3.088-.516.029-.217.029-1.016 0-1.258-.11-.875-.295-1.57-.597-2.226-.032-.074-.053-.138-.046-.141.008-.005.057-.074.108-.152.376-.569.607-1.284.724-2.228.031-.26.031-1.378 0-1.628-.083-.645-.182-1.082-.348-1.525a6.083 6.083 0 0 0-.329-.7l-.038-.064.131-.194c.402-.604.636-1.262.727-2.04a6.625 6.625 0 0 0-.024-1.358 5.512 5.512 0 0 0-.939-2.339 5.325 5.325 0 0 0-.95-1.02 8.097 8.097 0 0 1-.186-.152.692.692 0 0 1 .023-.208c.208-1.087.201-2.443-.017-3.503-.19-.924-.535-1.658-.98-2.082-.354-.338-.716-.482-1.15-.455-.996.059-1.8 1.205-2.116 3.01a6.805 6.805 0 0 0-.097.726c0 .036-.007.066-.015.066a.96.96 0 0 1-.149-.078A4.857 4.857 0 0 0 12 3.03c-.832 0-1.687.243-2.456.698a.958.958 0 0 1-.148.078c-.008 0-.015-.03-.015-.066a6.71 6.71 0 0 0-.097-.725C8.997 1.392 8.337.319 7.46.048a2.096 2.096 0 0 0-.585-.041Zm.293 1.402c.248.197.523.759.682 1.388.03.113.06.244.069.292.007.047.026.152.041.233.067.365.098.76.102 1.24l.002.475-.12.175-.118.178h-.278c-.324 0-.646.041-.954.124l-.238.06c-.033.007-.038-.003-.057-.144a8.438 8.438 0 0 1 .016-2.323c.124-.788.413-1.501.696-1.711.067-.05.079-.049.157.013zm9.825-.012c.17.126.358.46.498.888.28.854.36 2.028.212 3.145-.019.14-.024.151-.057.144l-.238-.06a3.693 3.693 0 0 0-.954-.124h-.278l-.119-.178-.119-.175.002-.474c.004-.669.066-1.19.214-1.772.157-.623.434-1.185.68-1.382.078-.062.09-.063.159-.012z"/>
-                      </svg>
-                      <div class="vd-task-info">
-                        <span class="vd-task-name">Ollama • Llama 3.3</span>
-                        <span class="vd-task-sub" data-i18n="vd_ollama_status">Generando a 48 tok/s</span>
-                      </div>
+                  <div class="ports-right" id="portRight">
+                    <div class="port-hdmi" title="HDMI 2.1"></div>
+                    <div class="port-tb4" title="Thunderbolt 4 / USB4"></div>
+                    <div class="port-status-led active" id="portStatusLed" title="Active 5V Continuous Bus Power">
+                      <span class="port-led"></span>
+                      <span class="port-led-label">5V DC</span>
                     </div>
                   </div>
 
-                  <div class="vd-footer">
-                    <span data-i18n="vd_footer_screen">Pantalla física: 0% brillo</span>
-                    <span data-i18n="vd_footer_shh">Audio: Protegido (AirPods)</span>
-                    <span data-i18n="vd_footer_usb">Wi-Fi D0: Conectado</span>
-                  </div>
-                </div>
-
-                <!-- Chassis of Foreground Interactive Mac -->
-                <div class="macbook-chassis-model macbook-base" id="macbookModel">
+                  <!-- Laser Micro-Perforated Speaker Grilles -->
                   <div class="speaker-grille left"></div>
                   <div class="speaker-grille right"></div>
 
-                  <div class="keyboard-deck">
-                    <div class="keyboard-row f-keys">
-                      <span class="key esc">esc</span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key"></span><span class="key touch-id"></span>
-                    </div>
-                    <div class="keyboard-row numbers">
-                      <span class="key">~</span><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span><span class="key">6</span><span class="key">7</span><span class="key">8</span><span class="key">9</span><span class="key">0</span><span class="key">-</span><span class="key">+</span><span class="key del">del</span>
-                    </div>
-                    <div class="keyboard-row letters-1">
-                      <span class="key tab">tab</span><span class="key">Q</span><span class="key">W</span><span class="key">E</span><span class="key">R</span><span class="key">T</span><span class="key">Y</span><span class="key">U</span><span class="key">I</span><span class="key">O</span><span class="key">P</span><span class="key">[</span><span class="key">]</span><span class="key">\</span>
-                    </div>
-                    <div class="keyboard-row letters-2">
-                      <span class="key caps">caps</span><span class="key">A</span><span class="key">S</span><span class="key">D</span><span class="key">F</span><span class="key">G</span><span class="key">H</span><span class="key">J</span><span class="key">K</span><span class="key">L</span><span class="key">;</span><span class="key">'</span><span class="key ret">ret</span>
-                    </div>
-                    <div class="keyboard-row bottom-row">
-                      <span class="key fn">fn</span><span class="key">ctrl</span><span class="key">opt</span><span class="key cmd">cmd</span><span class="key space"></span><span class="key cmd">cmd</span><span class="key opt">opt</span><span class="key arrows">◄▼►</span>
+                  <!-- Recessed Magic Keyboard Well -->
+                  <div class="keyboard-well">
+                    <div class="keyboard-grid">
+                      <!-- Row 0: Full-Height Function Keys & Touch ID -->
+                      <div class="k-row f-row">
+                        <span class="k-cap k-esc">esc</span>
+                        <span class="k-cap k-f"><span class="k-sub">F1</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F2</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F3</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F4</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F5</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F6</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F7</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F8</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F9</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F10</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F11</span></span>
+                        <span class="k-cap k-f"><span class="k-sub">F12</span></span>
+                        <span class="k-cap k-touchid" title="Touch ID Sensor"><span class="touchid-ring"></span></span>
+                      </div>
+
+                      <!-- Row 1: Numbers -->
+                      <div class="k-row n-row">
+                        <span class="k-cap">~</span>
+                        <span class="k-cap">1</span>
+                        <span class="k-cap">2</span>
+                        <span class="k-cap">3</span>
+                        <span class="k-cap">4</span>
+                        <span class="k-cap">5</span>
+                        <span class="k-cap">6</span>
+                        <span class="k-cap">7</span>
+                        <span class="k-cap">8</span>
+                        <span class="k-cap">9</span>
+                        <span class="k-cap">0</span>
+                        <span class="k-cap">-</span>
+                        <span class="k-cap">+</span>
+                        <span class="k-cap k-del">delete</span>
+                      </div>
+
+                      <!-- Row 2: QWERTY -->
+                      <div class="k-row q-row">
+                        <span class="k-cap k-tab">tab</span>
+                        <span class="k-cap">Q</span><span class="k-cap">W</span><span class="k-cap">E</span><span class="k-cap">R</span><span class="k-cap">T</span><span class="k-cap">Y</span><span class="k-cap">U</span><span class="k-cap">I</span><span class="k-cap">O</span><span class="k-cap">P</span>
+                        <span class="k-cap">[</span><span class="k-cap">]</span><span class="k-cap">\</span>
+                      </div>
+
+                      <!-- Row 3: ASDF -->
+                      <div class="k-row a-row">
+                        <span class="k-cap k-caps"><span class="caps-led"></span>caps</span>
+                        <span class="k-cap">A</span><span class="k-cap">S</span><span class="k-cap">D</span><span class="k-cap">F</span><span class="k-cap">G</span><span class="k-cap">H</span><span class="k-cap">J</span><span class="k-cap">K</span><span class="k-cap">L</span>
+                        <span class="k-cap">;</span><span class="k-cap">'</span>
+                        <span class="k-cap k-ret">return</span>
+                      </div>
+
+                      <!-- Row 4: ZXCV -->
+                      <div class="k-row z-row">
+                        <span class="k-cap k-shift">shift</span>
+                        <span class="k-cap">Z</span><span class="k-cap">X</span><span class="k-cap">C</span><span class="k-cap">V</span><span class="k-cap">B</span><span class="k-cap">N</span><span class="k-cap">M</span>
+                        <span class="k-cap">,</span><span class="k-cap">.</span><span class="k-cap">/</span>
+                        <span class="k-cap k-shift-r">shift</span>
+                      </div>
+
+                      <!-- Row 5: Modifiers & Inverted-T Arrows -->
+                      <div class="k-row b-row">
+                        <span class="k-cap k-mod">fn</span>
+                        <span class="k-cap k-mod">control</span>
+                        <span class="k-cap k-mod">option</span>
+                        <span class="k-cap k-cmd">command ⌘</span>
+                        <span class="k-cap k-space"></span>
+                        <span class="k-cap k-cmd">command ⌘</span>
+                        <span class="k-cap k-mod">option</span>
+                        <div class="k-arrow-cluster">
+                          <span class="k-cap k-arr">◀</span>
+                          <div class="k-arr-col">
+                            <span class="k-cap k-arr-half">▲</span>
+                            <span class="k-cap k-arr-half">▼</span>
+                          </div>
+                          <span class="k-cap k-arr">▶</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  <div class="trackpad"></div>
+                  <!-- Force Touch Glass Trackpad -->
+                  <div class="trackpad">
+                    <div class="trackpad-rim"></div>
+                  </div>
+
+                  <!-- Ergonomic Thumb Scoop -->
                   <div class="thumb-scoop"></div>
 
-                  <!-- Side USB-C Status Ports -->
-                  <div class="usb-port active" id="portLeft">
-                    <span class="port-led"></span>
-                    <span>USB 5V</span>
-                  </div>
-                  <div class="usb-port active" id="portRight">
-                    <span>TB4</span>
-                    <span class="port-led"></span>
-                  </div>
-
-                  <!-- Hinged Upper Lid Assembly -->
+                  <!-- Hinged Display Lid Assembly (Attached to rear edge, rotates 108° -> 0°) -->
                   <div class="macbook-lid" id="macbookLidAssembly">
-                    <!-- Back Face (Apple Logo): Visible when closed (0deg) -->
+                    
+                    <!-- Outer Shell (Space Black Aluminum + Polished Apple Logo) - Visible when closed -->
                     <div class="lid-shell-back">
-                      <svg class="lid-apple-logo" viewBox="0 0 170 170">
-                        <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
-                      </svg>
+                      <div class="lid-back-surface">
+                        <svg class="lid-apple-logo" viewBox="0 0 170 170" aria-label="Apple">
+                          <defs>
+                            <linearGradient id="appleSpecular" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+                              <stop offset="45%" stop-color="#b8bcc8" stop-opacity="0.8"/>
+                              <stop offset="70%" stop-color="#eef2fa" stop-opacity="0.95"/>
+                              <stop offset="100%" stop-color="#8a90a0" stop-opacity="0.75"/>
+                            </linearGradient>
+                          </defs>
+                          <path fill="url(#appleSpecular)" d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/>
+                        </svg>
+                      </div>
                     </div>
 
-                    <!-- Inside Face: Screen & Awake! HUD Card (Visible when open) -->
+                    <!-- Inner Liquid Retina XDR Display (Bezel, Notch, macOS Menu Bar, Awake! Popover UI) -->
                     <div class="lid-screen-inside">
-                      <div class="macbook-camera-notch"><div class="macbook-camera-lens"></div></div>
+                      
+                      <!-- Thin Screen Bezel & Camera Notch -->
+                      <div class="macbook-camera-notch">
+                        <div class="macbook-camera-lens"></div>
+                        <span class="notch-indicator-led"></span>
+                      </div>
 
+                      <!-- macOS Menu Bar -->
                       <div class="macbook-menubar">
                         <div class="menubar-left">
                           <svg class="apple-logo" viewBox="0 0 170 170"><path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.66-7.79-11.91-14.24-5.63-8.62-10.08-18.42-13.34-29.41-3.26-10.99-4.89-21.68-4.89-32.07 0-14.28 3.59-26.06 10.77-35.34 7.18-9.28 16.32-13.98 27.42-14.11 4.58 0 9.83 1.25 15.76 3.75 5.93 2.5 9.77 3.81 11.53 3.93 1.48-.26 5.51-1.63 12.09-4.11 6.58-2.48 12.16-3.52 16.74-3.13 12.87 1.01 22.84 5.88 29.91 14.6-11.45 6.94-17.06 16.48-16.83 28.62.24 9.54 3.97 17.51 11.19 23.91 4.12 3.65 8.91 6.3 14.37 7.95-2.03 6.07-4.32 12.06-6.87 17.97zM119.22 33.56c0-6.72 2.45-13.14 7.34-18.25 4.89-5.11 11.02-8.58 18.39-10.41.22 1.48.33 2.82.33 4.02 0 6.64-2.58 13.06-7.74 18.27-5.16 5.21-11.27 8.65-18.32 10.33v-3.96z"/></svg>
                           <span class="menubar-title">Awake!</span>
                           <span class="menubar-item">File</span>
                           <span class="menubar-item">Edit</span>
+                          <span class="menubar-item">Window</span>
                         </div>
                         <div class="menubar-right">
-                          <div class="menubar-awake-pill active" id="menuBarIcon">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                          <div class="menubar-awake-pill active" id="menuBarIcon" title="Toggle Awake!">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                             </svg>
                             <span>Awake!</span>
                           </div>
-                          <span>100%</span>
-                          <span>9:41 AM</span>
+                          <span class="menubar-item">100%</span>
+                          <span class="menubar-clock">9:41 AM</span>
                         </div>
                       </div>
 
+                      <!-- Liquid Retina XDR Screen Canvas -->
                       <div class="macbook-screen-canvas" id="macbookScreenCanvas">
+                        <!-- Power-Save 0% Backlight Dimmer -->
                         <div class="screen-sleep-overlay" id="screenSleepOverlay"></div>
                         
-                        <!-- Native Vector HUD Card -->
+                        <!-- Crisp Native Awake! Control Center Popover -->
                         <div class="awake-hud-card" id="hudCard">
                           <div class="hud-header">
                             <div class="hud-title-lockup">
-                              <img src="screenshots/app_icon.png" alt="Awake! Icon" class="hud-icon" width="18" height="18">
+                              <img src="screenshots/app_icon.png" alt="Awake! Icon" class="hud-icon" width="20" height="20">
                               <span class="hud-app-name">Awake!</span>
                             </div>
                             <div class="hud-actions">
@@ -336,7 +435,7 @@
                             </div>
                           </div>
 
-                          <div class="hud-capsule active" id="simAwakeCapsule">
+                          <div class="hud-capsule active" id="simAwakeCapsule" title="Toggle Awake!">
                             <div class="capsule-info">
                               <span class="capsule-label" data-i18n="capsule_awake_label">Awake!</span>
                               <span class="capsule-sub" data-i18n="capsule_awake_sub">Mantén despierta tu mac</span>
@@ -344,7 +443,7 @@
                             <div class="hud-switch"></div>
                           </div>
 
-                          <div class="hud-capsule active" id="simShhCapsule">
+                          <div class="hud-capsule active" id="simShhCapsule" title="Toggle Shh!">
                             <div class="capsule-info">
                               <span class="capsule-label" data-i18n="capsule_shh_label">Shh!</span>
                               <span class="capsule-sub" data-i18n="capsule_shh_sub">Silenciar al cerrar</span>
@@ -362,7 +461,7 @@
                           <div class="hud-status-strip">
                             <div class="hud-status-item">
                               <span class="indicator-circle" id="simLidDot"></span>
-                              <span id="simLidStatusText" data-i18n="hud_lid_open">Tapa: Abierta (135°)</span>
+                              <span id="simLidStatusText" data-i18n="hud_lid_open">Tapa: Abierta (108°)</span>
                             </div>
                             <div class="hud-status-item">
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
@@ -371,18 +470,24 @@
                           </div>
                         </div>
 
+                        <!-- Inside Screen Live Terminal Status Strip -->
+                        <div class="screen-terminal-pill">
+                          <span class="term-status-dot"></span>
+                          <span class="term-code-snippet"><span class="t-green">$</span> claude code --autonomous &bull; Ollama 48 tok/s</span>
+                        </div>
+
                       </div>
                     </div>
                   </div>
+
                 </div>
               </div>
-
             </div>
 
             <!-- Minimalist Studio Scroll/Click Hint Badge -->
             <div class="clamshell-status-badge" id="clamshellStatusBadge" title="Haz clic o haz scroll para cerrar o abrir la pantalla">
               <span class="clamshell-badge-dot" id="clamshellBadgeDot"></span>
-              <span id="clamshellBadgeText" data-i18n="clamshell_badge_open">Tapa abierta (135°) • Haz scroll o clic para cerrar</span>
+              <span id="clamshellBadgeText" data-i18n="clamshell_badge_open">Tapa abierta (108°) • Haz scroll o clic para cerrar</span>
             </div>
 
           </div>
@@ -1024,6 +1129,7 @@
     <span id="toastMsg">Copied to clipboard</span>
   </div>
 
+  <script src="aurora-flow.js" defer></script>
   <script src="script.js"></script>
 </body>
 </html>
