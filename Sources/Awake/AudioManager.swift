@@ -62,14 +62,9 @@ final class AudioManager: @unchecked Sendable {
             )
         }
         
-        // 3. Counter macOS automatic clamshell pause on Bluetooth devices:
-        // Schedule auto-resume at 150ms and 450ms after lid close
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
-            self?.resumeMediaIfPaused()
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) { [weak self] in
-            self?.resumeMediaIfPaused()
-        }
+        // DO NOT send media play/resume commands.
+        // If the user was playing music or in a call, it will continue seamlessly without muting.
+        // Sending kMRPlay here was a critical bug that caused music to spontaneously start playing.
     }
     
     /// Called when the lid opens.
@@ -97,11 +92,6 @@ final class AudioManager: @unchecked Sendable {
             IOPMAssertionRelease(audioPlaybackAssertionID)
             audioPlaybackAssertionID = 0
         }
-    }
-    
-    func resumeMediaIfPaused() {
-        // Command 0 = kMRPlay (MediaRemote system-wide resume)
-        _ = sendMediaRemoteCommand?(0, nil)
     }
     
     func restoreOnQuit() {

@@ -116,6 +116,9 @@ final class AppViewModel: ObservableObject {
                 return
             }
             
+            // Refresh user activity immediately to prevent App Nap or clamshell throttle
+            powerManager.refreshUserActivity()
+            
             // Dim physical screen backlight without killing WindowServer framebuffer
             brightnessController.dimForLidClose()
             
@@ -123,13 +126,14 @@ final class AppViewModel: ObservableObject {
                 // Pause media and redirect external DACs to muted speaker
                 audioManager.handleLidClosed()
             } else {
-                // User explicitly unchecked Shh!: Keep AirPods/audio active & counter clamshell auto-pause
+                // User explicitly unchecked Shh!: Keep AirPods/audio active without muting
                 audioManager.handleLidClosedWithoutMute()
             }
         } else {
             // Lid opened: Always restore display brightness and release any audio assertions
             brightnessController.restoreForLidOpen()
             audioManager.handleLidOpened()
+            powerManager.refreshUserActivity()
         }
     }
 }

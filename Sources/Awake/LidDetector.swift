@@ -24,13 +24,15 @@ final class LidDetector: ObservableObject {
     
     func startMonitoring() {
         timer?.invalidate()
-        // Query lid state rapidly (250ms) to ensure instantaneous reaction
-        // without allowing macOS to initiate intermediate sleep or network drop.
-        timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
+        // Query lid state rapidly (250ms) using .common RunLoop modes to ensure instantaneous reaction
+        // without timer suppression when menus are open or during system mode transitions.
+        let t = Timer(timeInterval: 0.25, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.checkState()
             }
         }
+        RunLoop.main.add(t, forMode: .common)
+        self.timer = t
     }
     
     func checkState() {

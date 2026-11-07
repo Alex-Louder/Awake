@@ -23,8 +23,11 @@ final class PowerManager: @unchecked Sendable {
     private var systemSleepAssertionID: IOPMAssertionID = 0
     private var userIdleAssertionID: IOPMAssertionID = 0
     private var displayIdleAssertionID: IOPMAssertionID = 0
+    private var diskIdleAssertionID: IOPMAssertionID = 0
     private var networkClientAssertionID: IOPMAssertionID = 0
     private var remoteUserAssertionID: IOPMAssertionID = 0
+    private var processActivityToken: NSObjectProtocol?
+    private var heartbeatTimer: DispatchSourceTimer?
     private var didChangeSleepSetting: Bool = false
     
     private init() {}
@@ -47,10 +50,14 @@ final class PowerManager: @unchecked Sendable {
             let output = String(decoding: data, as: UTF8.self)
             
             for line in output.components(separatedBy: .newlines) {
-                let trimmed = line.trimmingCharacters(in: .whitespaces)
+                let trimmed = line.trimmingCharacters(in: .whitespacesAndNewlines)
                 if trimmed.starts(with: "SleepDisabled") {
-                    let parts = trimmed.split(separator: " ").map { String($0) }
+                    // Split on any whitespace (including tabs \t emitted by pmset)
+                    let parts = trimmed.split(whereSeparator: { $0.isWhitespace }).map { String($0) }
                     if parts.count >= 2, parts[1] == "1" {
+                        return true
+                    }
+                    if trimmed.contains("1") {
                         return true
                     }
                 }
@@ -147,7 +154,7 @@ final class PowerManager: @unchecked Sendable {
             &userIdleAssertionID
         )
         
-        // 3. Prevent Display Sleep (Keeps WindowServer framebuffer live at 60 FPS & prevents Bluetooth/Wi-Fi from sleeping on clamshell close)
+        // 3. Prevent Display Sleep (Keeps WindowServer framebuffer live & prevents clamshell sleep)
         let displayReason = "Awake! Virtual Framebuffer & Network Keep-Alive" as CFString
         _ = IOPMAssertionCreateWithName(
             kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
@@ -156,7 +163,16 @@ final class PowerManager: @unchecked Sendable {
             &displayIdleAssertionID
         )
         
-        // 4. Network Client Active (Keeps Wi-Fi card fully powered in D0 state, answering ARP, mDNS, Sill, RustDesk, AnyDesk)
+        // 4. Prevent Disk Idle (Prevents internal/external SSDs from spinning down or throttling large downloads)
+        let diskReason = "Awake! High-Speed Disk I/O & Download Protection" as CFString
+        _ = IOPMAssertionCreateWithName(
+            "PreventDiskIdle" as CFString,
+            IOPMAssertionLevel(kIOPMAssertionLevelOn),
+            diskReason,
+            &diskIdleAssertionID
+        )
+        
+        // 5. Network Client Active (Keeps Wi-Fi card fully powered in D0 state, answering ARP, mDNS, Chrome downloads, Sills, SSH)
         let netReason = "Awake! Remote Desktop & Headless Stream" as CFString
         _ = IOPMAssertionCreateWithName(
             "NetworkClientActive" as CFString,
@@ -165,15 +181,55 @@ final class PowerManager: @unchecked Sendable {
             &networkClientAssertionID
         )
         
-        // 5. Declare Remote User Activity to IOKit power management
+        // 6. NSProcessInfo activity assertion (exempts process from macOS App Nap and latency throttling)
+        if processActivityToken == nil {
+            processActivityToken = ProcessInfo.processInfo.beginActivity(
+                options: [.userInitiated, .idleSystemSleepDisabled, .latencyCritical],
+                reason: "Awake! Uninterrupted Compute & Download Protection"
+            )
+        }
+        
+        // 7. Start continuous Keep-Alive Heartbeat (declares user activity every 30s to keep DeclUser active)
+        startHeartbeat()
+    }
+    
+    /// Periodically signals user activity to macOS IOKit power management so DeclUser never times out,
+    /// preventing App Nap from throttling background browser downloads or closing sockets.
+    func refreshUserActivity() {
         _ = IOPMAssertionDeclareUserActivity(
-            "Awake! Remote Session Ready" as CFString,
-            kIOPMUserActiveRemote,
+            "Awake! Continuous Compute & Download Guard" as CFString,
+            kIOPMUserActiveLocal,
             &remoteUserAssertionID
         )
     }
     
+    private func startHeartbeat() {
+        stopHeartbeat()
+        
+        // Immediate initial refresh
+        refreshUserActivity()
+        
+        let timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .userInitiated))
+        timer.schedule(deadline: .now() + 30.0, repeating: 30.0, leeway: .seconds(2))
+        timer.setEventHandler { [weak self] in
+            self?.refreshUserActivity()
+        }
+        timer.resume()
+        self.heartbeatTimer = timer
+    }
+    
+    private func stopHeartbeat() {
+        heartbeatTimer?.cancel()
+        heartbeatTimer = nil
+    }
+    
     func releasePowerAssertions() {
+        stopHeartbeat()
+        
+        if let token = processActivityToken {
+            ProcessInfo.processInfo.endActivity(token)
+            processActivityToken = nil
+        }
         if systemSleepAssertionID != 0 {
             IOPMAssertionRelease(systemSleepAssertionID)
             systemSleepAssertionID = 0
@@ -185,6 +241,10 @@ final class PowerManager: @unchecked Sendable {
         if displayIdleAssertionID != 0 {
             IOPMAssertionRelease(displayIdleAssertionID)
             displayIdleAssertionID = 0
+        }
+        if diskIdleAssertionID != 0 {
+            IOPMAssertionRelease(diskIdleAssertionID)
+            diskIdleAssertionID = 0
         }
         if networkClientAssertionID != 0 {
             IOPMAssertionRelease(networkClientAssertionID)
