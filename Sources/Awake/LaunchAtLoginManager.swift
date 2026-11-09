@@ -20,11 +20,11 @@ final class LaunchAtLoginManager: ObservableObject {
     }
     
     func checkStatus() {
+        cleanLegacyLaunchAgentIfModernAvailable()
+        
         if #available(macOS 13.0, *) {
-            if SMAppService.mainApp.status == .enabled {
-                isEnabled = true
-                return
-            }
+            isEnabled = SMAppService.mainApp.status == .enabled
+            return
         }
         isEnabled = FileManager.default.fileExists(atPath: launchAgentURL.path)
             || UserDefaults.standard.bool(forKey: "awake.launchAtLogin")
@@ -39,12 +39,22 @@ final class LaunchAtLoginManager: ObservableObject {
     }
     
     func enable() {
+        cleanLegacyLaunchAgentIfModernAvailable()
+        
         if #available(macOS 13.0, *) {
-            try? SMAppService.mainApp.register()
+            do {
+                try SMAppService.mainApp.register()
+                isEnabled = SMAppService.mainApp.status == .enabled
+            } catch {
+                // If modern SMAppService fails, fallback to LaunchAgent
+                installLaunchAgent()
+                isEnabled = FileManager.default.fileExists(atPath: launchAgentURL.path)
+            }
+        } else {
+            installLaunchAgent()
+            isEnabled = true
         }
-        installLaunchAgent()
-        isEnabled = true
-        UserDefaults.standard.set(true, forKey: "awake.launchAtLogin")
+        UserDefaults.standard.set(isEnabled, forKey: "awake.launchAtLogin")
     }
     
     func disable() {
@@ -54,6 +64,21 @@ final class LaunchAtLoginManager: ObservableObject {
         removeLaunchAgent()
         isEnabled = false
         UserDefaults.standard.set(false, forKey: "awake.launchAtLogin")
+    }
+    
+    /// Cleans up any legacy LaunchAgent plist so launchd never launches duplicate jobs on login.
+    private func cleanLegacyLaunchAgentIfModernAvailable() {
+        if #available(macOS 13.0, *) {
+            if FileManager.default.fileExists(atPath: launchAgentURL.path) {
+                let proc = Process()
+                proc.executableURL = URL(fileURLWithPath: "/bin/launchctl")
+                proc.arguments = ["bootout", "gui/\(getuid())/\(launchAgentLabel)"]
+                try? proc.run()
+                proc.waitUntilExit()
+                
+                try? FileManager.default.removeItem(at: launchAgentURL)
+            }
+        }
     }
     
     private func installLaunchAgent() {

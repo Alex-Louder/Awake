@@ -2,17 +2,17 @@
 set -e
 
 # ==============================================================================
-# Awake! v1.0.2 Release Packaging Script
+# Awake! v1.0.3 Release Packaging Script
 # Generates:
-#   1. Awake-v1.0.2.dmg (Custom background, icon layout, /Applications symlink)
-#   2. Awake-v1.0.2.zip (Optimized for GitHub Releases)
+#   1. Awake-v1.0.3.dmg (Custom background, icon layout, /Applications symlink)
+#   2. Awake-v1.0.3.zip (Optimized for GitHub Releases)
 # Copies DMG to Desktop and outputs checksums.
 # ==============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 cd "$DIR"
 
-VERSION="1.0.2"
+VERSION="1.0.3"
 APP_NAME="Awake!"
 APP_BUNDLE="$DIR/Awake!.app"
 RELEASE_DIR="$DIR/build/releases"
