@@ -28,7 +28,7 @@ final class PowerManager: @unchecked Sendable {
     private var remoteUserAssertionID: IOPMAssertionID = 0
     private var processActivityToken: NSObjectProtocol?
     private var heartbeatTimer: DispatchSourceTimer?
-    private var didChangeSleepSetting: Bool = false
+    private var isKeepAwakeActive: Bool = false
     
     private init() {}
     
@@ -71,25 +71,36 @@ final class PowerManager: @unchecked Sendable {
     /// Sets the system-wide disablesleep setting without asking for passwords
     /// using passwordless sudoers, falling back to osascript if needed.
     func setSystemSleepDisabled(_ disabled: Bool) async throws {
+        if !disabled {
+            // Releasing assertions BEFORE modifying pmset guarantees
+            // no background assertion keeps the machine awake if pmset succeeds.
+            self.releasePowerAssertions()
+        }
+        
         // 1. Try passwordless sudo first (runs in 1 millisecond, 0 prompts!)
         let sudoProcess = Process()
         sudoProcess.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
         sudoProcess.arguments = ["-n", "/usr/bin/pmset", "-a", "disablesleep", disabled ? "1" : "0"]
+        var sudoSucceeded = false
         do {
             try sudoProcess.run()
             sudoProcess.waitUntilExit()
             if sudoProcess.terminationStatus == 0 {
-                if disabled {
-                    self.didChangeSleepSetting = true
-                    self.acquirePowerAssertions()
-                } else {
-                    self.releasePowerAssertions()
-                    self.didChangeSleepSetting = false
-                }
-                return
+                sudoSucceeded = true
             }
         } catch {
-            // Continue to fallback
+            sudoSucceeded = false
+        }
+        
+        if sudoSucceeded {
+            if disabled {
+                self.isKeepAwakeActive = true
+                self.acquirePowerAssertions()
+            } else {
+                self.isKeepAwakeActive = false
+                self.releasePowerAssertions()
+            }
+            return
         }
         
         // 2. Fallback to osascript only if sudoers entry is not available
@@ -119,11 +130,11 @@ final class PowerManager: @unchecked Sendable {
                 }
                 
                 if disabled {
-                    self.didChangeSleepSetting = true
+                    self.isKeepAwakeActive = true
                     self.acquirePowerAssertions()
                 } else {
+                    self.isKeepAwakeActive = false
                     self.releasePowerAssertions()
-                    self.didChangeSleepSetting = false
                 }
                 
                 continuation.resume()
@@ -135,6 +146,7 @@ final class PowerManager: @unchecked Sendable {
     
     func acquirePowerAssertions() {
         releasePowerAssertions()
+        self.isKeepAwakeActive = true
         
         let reason = "Awake! Mode (Uninterrupted Compute & USB Protection)" as CFString
         
@@ -172,7 +184,7 @@ final class PowerManager: @unchecked Sendable {
             &diskIdleAssertionID
         )
         
-        // 5. Network Client Active (Keeps Wi-Fi card fully powered in D0 state, answering ARP, mDNS, Chrome downloads, Sills, SSH)
+        // 5. Network Client Active (Keeps Wi-Fi card fully powered in D0 state, answering ARP, mDNS, Chrome downloads, SSH)
         let netReason = "Awake! Remote Desktop & Headless Stream" as CFString
         _ = IOPMAssertionCreateWithName(
             "NetworkClientActive" as CFString,
@@ -195,7 +207,10 @@ final class PowerManager: @unchecked Sendable {
     
     /// Periodically signals user activity to macOS IOKit power management so DeclUser never times out,
     /// preventing App Nap from throttling background browser downloads or closing sockets.
+    /// CRUCIAL: Only executes if Awake! is currently ACTIVE, preventing DarkWake-to-FullWake bugs!
     func refreshUserActivity() {
+        guard isKeepAwakeActive else { return }
+        
         _ = IOPMAssertionDeclareUserActivity(
             "Awake! Continuous Compute & Download Guard" as CFString,
             kIOPMUserActiveLocal,
@@ -205,6 +220,7 @@ final class PowerManager: @unchecked Sendable {
     
     private func startHeartbeat() {
         stopHeartbeat()
+        guard isKeepAwakeActive else { return }
         
         // Immediate initial refresh
         refreshUserActivity()
@@ -212,7 +228,8 @@ final class PowerManager: @unchecked Sendable {
         let timer = DispatchSource.makeTimerSource(flags: [], queue: DispatchQueue.global(qos: .userInitiated))
         timer.schedule(deadline: .now() + 30.0, repeating: 30.0, leeway: .seconds(2))
         timer.setEventHandler { [weak self] in
-            self?.refreshUserActivity()
+            guard let self = self, self.isKeepAwakeActive else { return }
+            self.refreshUserActivity()
         }
         timer.resume()
         self.heartbeatTimer = timer
@@ -224,6 +241,7 @@ final class PowerManager: @unchecked Sendable {
     }
     
     func releasePowerAssertions() {
+        isKeepAwakeActive = false
         stopHeartbeat()
         
         if let token = processActivityToken {
@@ -307,9 +325,11 @@ final class PowerManager: @unchecked Sendable {
     
     // MARK: - Clean exit restoration
     
+    /// Restores system power settings to default when quitting.
+    /// Always forces disablesleep to 0 if sleep is currently disabled.
     func restoreOnQuit() {
         releasePowerAssertions()
-        if didChangeSleepSetting {
+        if readSleepDisabledStatus() || isKeepAwakeActive {
             let sudoProcess = Process()
             sudoProcess.executableURL = URL(fileURLWithPath: "/usr/bin/sudo")
             sudoProcess.arguments = ["-n", "/usr/bin/pmset", "-a", "disablesleep", "0"]

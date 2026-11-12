@@ -193,6 +193,7 @@ struct MenuView: View {
                     .toggleStyle(SwitchToggleStyle(tint: Color(red: 0.0, green: 0.48, blue: 1.0)))
                     .labelsHidden()
                     .scaleEffect(0.75)
+                    .allowsHitTesting(false) // Prevents double click / event bubbling collision
                 }
             }
             .padding(.horizontal, 10)
@@ -201,6 +202,7 @@ struct MenuView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
+        .disabled(isBusy)
         .frame(maxWidth: .infinity)
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
@@ -312,7 +314,7 @@ struct MenuView: View {
     
     private var footerSection: some View {
         HStack(spacing: 5) {
-            Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.3")")
+            Text("v\(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.4")")
                 .font(.system(size: 9))
                 .foregroundColor(.white.opacity(0.4))
             

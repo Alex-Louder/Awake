@@ -30,6 +30,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             updateStatusIcon(isActive: viewModel.isKeepAwakeEnabled)
             button.target = self
             button.action = #selector(handleStatusItemClick)
+            button.sendAction(on: [.leftMouseUp, .rightMouseUp])
         }
         
         // React to KeepAwake state changes to update the menu bar icon
@@ -69,7 +70,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     @objc private func handleStatusItemClick() {
         guard let button = statusItem.button else { return }
         
-        // Clicking the menu bar icon simply toggles the Liquid Glass popover
+        let isOptionPressed = NSApp.currentEvent?.modifierFlags.contains(.option) ?? false
+        let isRightClick = (NSApp.currentEvent?.type == .rightMouseUp) || (NSApp.currentEvent?.type == .rightMouseDown)
+        
+        // Option-Click or Right-Click directly toggles Awake on/off immediately
+        if isOptionPressed || isRightClick {
+            viewModel.toggleKeepAwake()
+            return
+        }
+        
+        // Regular click toggles the Liquid Glass popover
         if popover.isShown {
             popover.performClose(nil)
         } else {
@@ -166,13 +176,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private func updateStatusIcon(isActive: Bool) {
         guard let button = statusItem.button else { return }
         
-        // MacBook icon with "A!" rendered on the screen
+        // MacBook icon with "A!" rendered on the screen (bright when active, dimmed when asleep)
         let icon = createMacBookAIcon(isActive: isActive)
         button.image = icon
-        button.toolTip = isActive ? "Awake!: Activo" : "Awake!: Inactivo"
+        button.toolTip = isActive 
+            ? "Awake!: Activo (Clic para menú, ⌥-Clic para desactivar)" 
+            : "Awake!: Inactivo (Clic para menú, ⌥-Clic para activar)"
     }
     
-    /// Generates a crisp vector MacBook with "A!" on the screen for the menu bar
+    /// Generates a crisp vector MacBook with "A!" on the screen for the menu bar.
+    /// Uses full-alpha bright solid fill for ACTIVE state, and a clearly dimmed 35% alpha
+    /// sleeping outline for INACTIVE state.
     private func createMacBookAIcon(isActive: Bool) -> NSImage {
         let size = NSSize(width: 19, height: 18)
         let img = NSImage(size: size)
@@ -193,39 +207,66 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         let screenPath = NSBezierPath(roundedRect: screenRect, xRadius: 1.5, yRadius: 1.5)
         
         if isActive {
+            // Bright solid screen
             NSColor.labelColor.setFill()
             screenPath.fill()
+            
+            // Text "A!" inside inverted
+            let font = NSFont.systemFont(ofSize: 7.0, weight: .black)
+            let text = "A!" as NSString
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: NSColor.windowBackgroundColor
+            ]
+            let textSize = text.size(withAttributes: attrs)
+            let textRect = CGRect(
+                x: screenRect.midX - textSize.width / 2,
+                y: screenRect.midY - textSize.height / 2 + 0.3,
+                width: textSize.width,
+                height: textSize.height
+            )
+            text.draw(in: textRect, withAttributes: attrs)
+            
+            // Solid laptop Base
+            let baseW = w
+            let baseH: CGFloat = 2.0
+            let baseY = y
+            let baseRect = CGRect(x: x, y: baseY, width: baseW, height: baseH)
+            let basePath = NSBezierPath(roundedRect: baseRect, xRadius: 1.0, yRadius: 1.0)
+            NSColor.labelColor.setFill()
+            basePath.fill()
         } else {
-            NSColor.labelColor.setStroke()
-            screenPath.lineWidth = 1.2
+            // Translucent dimmed sleeping screen (35% alpha clearly signals INACTIVE)
+            let dimmedColor = NSColor.labelColor.withAlphaComponent(0.35)
+            dimmedColor.setStroke()
+            screenPath.lineWidth = 1.0
             screenPath.stroke()
+            
+            // Subtle "z" sleep indicator inside screen
+            let font = NSFont.systemFont(ofSize: 6.5, weight: .bold)
+            let text = "z" as NSString
+            let attrs: [NSAttributedString.Key: Any] = [
+                .font: font,
+                .foregroundColor: dimmedColor
+            ]
+            let textSize = text.size(withAttributes: attrs)
+            let textRect = CGRect(
+                x: screenRect.midX - textSize.width / 2,
+                y: screenRect.midY - textSize.height / 2 + 0.2,
+                width: textSize.width,
+                height: textSize.height
+            )
+            text.draw(in: textRect, withAttributes: attrs)
+            
+            // Dimmed laptop Base
+            let baseW = w
+            let baseH: CGFloat = 2.0
+            let baseY = y
+            let baseRect = CGRect(x: x, y: baseY, width: baseW, height: baseH)
+            let basePath = NSBezierPath(roundedRect: baseRect, xRadius: 1.0, yRadius: 1.0)
+            dimmedColor.setFill()
+            basePath.fill()
         }
-        
-        // Text "A!" inside screen
-        let font = NSFont.systemFont(ofSize: 7.0, weight: .black)
-        let text = "A!" as NSString
-        let textColor = isActive ? NSColor.windowBackgroundColor : NSColor.labelColor
-        let attrs: [NSAttributedString.Key: Any] = [
-            .font: font,
-            .foregroundColor: textColor
-        ]
-        let textSize = text.size(withAttributes: attrs)
-        let textRect = CGRect(
-            x: screenRect.midX - textSize.width / 2,
-            y: screenRect.midY - textSize.height / 2 + 0.3,
-            width: textSize.width,
-            height: textSize.height
-        )
-        text.draw(in: textRect, withAttributes: attrs)
-        
-        // Laptop Base
-        let baseW = w
-        let baseH: CGFloat = 2.0
-        let baseY = y
-        let baseRect = CGRect(x: x, y: baseY, width: baseW, height: baseH)
-        let basePath = NSBezierPath(roundedRect: baseRect, xRadius: 1.0, yRadius: 1.0)
-        NSColor.labelColor.setFill()
-        basePath.fill()
         
         img.unlockFocus()
         img.isTemplate = true

@@ -30,17 +30,28 @@ final class AppViewModel: ObservableObject {
         // Sync system state
         let currentSystemState = powerManager.readSleepDisabledStatus()
         self.isSystemSleepDisabled = currentSystemState
-        self.isKeepAwakeEnabled = currentSystemState || savedKeepAwake
         
-        if currentSystemState || savedKeepAwake {
+        // Respect user's explicit preference as source of truth
+        if savedKeepAwake {
+            self.isKeepAwakeEnabled = true
             powerManager.acquirePowerAssertions()
-            if savedKeepAwake && !currentSystemState {
+            if !currentSystemState {
                 Task {
                     try? await powerManager.setSystemSleepDisabled(true)
                 }
             }
+        } else {
+            self.isKeepAwakeEnabled = false
+            powerManager.releasePowerAssertions()
+            // Clean up any orphaned pmset state left by crashes or reboots
+            if currentSystemState {
+                Task {
+                    try? await powerManager.setSystemSleepDisabled(false)
+                }
+            }
         }
         
+        lidDetector.setHighFrequencyMonitoring(self.isKeepAwakeEnabled)
         self.isLidClosed = lidDetector.isLidClosed
         
         // Listen to physical lid changes
@@ -54,6 +65,7 @@ final class AppViewModel: ObservableObject {
     // MARK: - User Actions
     
     func toggleKeepAwake() {
+        guard !isBusy else { return }
         let targetState = !isKeepAwakeEnabled
         isBusy = true
         errorMessage = nil
@@ -66,6 +78,7 @@ final class AppViewModel: ObservableObject {
                     self.isSystemSleepDisabled = targetState
                     self.isBusy = false
                     UserDefaults.standard.set(targetState, forKey: self.kKeepAwakePrefKey)
+                    self.lidDetector.setHighFrequencyMonitoring(targetState)
                     
                     if !targetState {
                         // Ensure any audio assertion is released and display brightness restored immediately
@@ -88,6 +101,7 @@ final class AppViewModel: ObservableObject {
     }
     
     func toggleMuteOnLidClose() {
+        guard !isBusy else { return }
         isMuteOnLidCloseEnabled.toggle()
         UserDefaults.standard.set(isMuteOnLidCloseEnabled, forKey: kMutePrefKey)
         if isMuteOnLidCloseEnabled {
@@ -100,6 +114,14 @@ final class AppViewModel: ObservableObject {
     func refreshSystemState() {
         let currentSystemState = powerManager.readSleepDisabledStatus()
         self.isSystemSleepDisabled = currentSystemState
+        
+        // Re-synchronize isKeepAwakeEnabled with system state if changed externally
+        if self.isKeepAwakeEnabled != currentSystemState {
+            self.isKeepAwakeEnabled = currentSystemState
+            UserDefaults.standard.set(currentSystemState, forKey: self.kKeepAwakePrefKey)
+        }
+        
+        lidDetector.checkState()
         self.isLidClosed = lidDetector.isLidClosed
     }
     
@@ -133,7 +155,12 @@ final class AppViewModel: ObservableObject {
             // Lid opened: Always restore display brightness and release any audio assertions
             brightnessController.restoreForLidOpen()
             audioManager.handleLidOpened()
-            powerManager.refreshUserActivity()
+            
+            // CRUCIAL: Only refresh user activity if Awake! is ACTIVE!
+            // Refreshing user activity while inactive wakes up macOS from DarkWake!
+            if isKeepAwakeEnabled {
+                powerManager.refreshUserActivity()
+            }
         }
     }
 }
